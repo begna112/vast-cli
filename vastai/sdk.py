@@ -13,8 +13,8 @@ import logging
 from pyparsing import Word, alphas, alphanums, oneOf, Optional, Group, ZeroOrMore, quotedString, delimitedList, Suppress
 
 from .vastai_base import VastAIBase
-from .vast import parser, APIKEY_FILE
-from . import vast as _vast
+from vast import parser, APIKEY_FILE
+import vast as _vast
 from textwrap import dedent
 
 #ogging.basicConfig(level=os.getenv('LOGLEVEL') or logging.INFO)
