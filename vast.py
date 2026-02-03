@@ -1916,8 +1916,13 @@ def cloud__copy(args: argparse.Namespace):
         req_url = apiurl(args, "/instances/{id}/".format(id=args.instance) , {"owner": "me"} )
         r = http_get(args, req_url)
         r.raise_for_status()
-        row = r.json()["instances"]
-        
+        try:
+            rj = r.json()
+        except JSONDecodeError:
+            print("Error: API returned invalid JSON response", file=sys.stderr)
+            return
+        row = rj["instances"]
+
         if args.transfer.lower() == "instance to cloud":
             if row: 
                 # Get the cost per TB of internet upload
@@ -2085,7 +2090,11 @@ def add_scheduled_job(args, req_json, cli_command, api_endpoint, request_method,
     elif response.status_code == 422:
         user_input = input("Existing scheduled job found. Do you want to update it (y|n)? ")
         if user_input.strip().lower() == "y":
-            scheduled_job_id = response.json()["scheduled_job_id"]
+            try:
+                scheduled_job_id = response.json()["scheduled_job_id"]
+            except JSONDecodeError:
+                print("Error: API returned invalid JSON response", file=sys.stderr)
+                return
             schedule_job_url = apiurl(args, f"/commands/schedule_job/{scheduled_job_id}/")
             response = update_scheduled_job(args, cli_command, schedule_job_url, frequency, args.start_date, args.end_date, request_body)
         else:
@@ -2101,13 +2110,19 @@ def update_scheduled_job(args, cli_command, schedule_job_url, frequency, start_d
     response.raise_for_status()
     if response.status_code == 200:
         print(f"add_scheduled_job update: success - Scheduling {frequency} job to {cli_command} from {start_date} UTC to {end_date} UTC")
-        print(response.json())
+        try:
+            print(response.json())
+        except JSONDecodeError:
+            print(response.text)
     elif response.status_code == 401:
         print(f"add_scheduled_job update: failed status_code: {response.status_code}. It could be because you aren't using a valid api_key.")
     else:
             # print(r.text)
         print(f"add_scheduled_job update: failed status_code: {response.status_code}.")
-        print(response.json())
+        try:
+            print(response.json())
+        except JSONDecodeError:
+            print(response.text)
 
     return response
 
@@ -2166,10 +2181,16 @@ def create__cluster(args: argparse.Namespace):
     r  = http_post(args, req_url, json=json_blob)
     r.raise_for_status()
 
-    if args.raw:
-        return r.json()
+    try:
+        rj = r.json()
+    except JSONDecodeError:
+        print("Error: API returned invalid JSON response", file=sys.stderr)
+        return
 
-    print(r.json()["msg"])
+    if args.raw:
+        return rj
+
+    print(rj["msg"])
 
 @parser.command(
     argument("name", help="Environment variable name", type=str),
@@ -3188,7 +3209,10 @@ def detach__ssh(args):
     url = apiurl(args, "/instances/{id}/ssh/{ssh_key_id}/".format(id=args.instance_id, ssh_key_id=args.ssh_key_id))
     r = http_del(args, url, headers=headers)
     r.raise_for_status()
-    print(r.json())
+    try:
+        print(r.json())
+    except JSONDecodeError:
+        print(r.text)
 
 @parser.command(
     argument("id", help="id of instance to execute on", type=int),
@@ -3852,7 +3876,10 @@ def reset__api_key(args):
         print(json_blob)
     r = http_put(args, url,  headers=headers,json=json_blob)
     r.raise_for_status()
-    print("api-key reset ".format(r.json()))
+    try:
+        print("api-key reset ".format(r.json()))
+    except JSONDecodeError:
+        print("api-key reset (no JSON response)")
 
 
 def exec_with_threads(f, args, nt=16, max_retries=5):
@@ -4826,7 +4853,10 @@ def set__user(args):
     url = apiurl(args, "/users/")
     r = http_put(args, url, headers=headers, json=params)
     r.raise_for_status()
-    print(f"{r.json()}")
+    try:
+        print(f"{r.json()}")
+    except JSONDecodeError:
+        print(r.text)
 
 
 
@@ -4880,7 +4910,12 @@ def _ssh_url(args, protocol):
         req_url = apiurl(args, "/instances", {"owner": "me"})
         r = http_get(args, req_url)
         r.raise_for_status()
-        rows = r.json()["instances"]
+        try:
+            rj = r.json()
+        except JSONDecodeError:
+            print("Error: API returned invalid JSON response", file=sys.stderr)
+            return 1
+        rows = rj["instances"]
 
         if args.id:
             matches = [r for r in rows if r['id'] == args.id]
@@ -5238,7 +5273,12 @@ def show__invoices(args):
 
     r = http_get(args, req_url)
     r.raise_for_status()
-    rows = r.json()["invoices"]
+    try:
+        rj = r.json()
+    except JSONDecodeError:
+        print("Error: API returned invalid JSON response", file=sys.stderr)
+        return
+    rows = rj["invoices"]
     # print("Timestamp for first row: ", rows[0]["timestamp"])
     invoice_filter_data = filter_invoice_items(args, rows)
     rows = invoice_filter_data["rows"]
@@ -5277,7 +5317,7 @@ def show__invoices(args):
                 rows2.append(row)
         rows = rows2
 
-    current_charges = r.json()["current"]
+    current_charges = rj["current"]
     if args.quiet:
         for row in rows:
             id = row.get("id", None)
@@ -5643,7 +5683,12 @@ def show__instances(args = {}, extra = {}):
     #r = http_get(req_url)
     r = http_get(args, req_url)
     r.raise_for_status()
-    rows = r.json()["instances"]
+    try:
+        rj = r.json()
+    except JSONDecodeError:
+        print("Error: API returned invalid JSON response", file=sys.stderr)
+        return
+    rows = rj["instances"]
     new_rows = []
     for row in rows:
         row = {k: strip_strings(v) for k, v in row.items()}
@@ -6387,10 +6432,16 @@ def add__network_disk(args):
     r = http_post(args, url, headers=headers, json=json_blob)
     r.raise_for_status()
 
-    if args.raw:
-        return r.json()
+    try:
+        rj = r.json()
+    except JSONDecodeError:
+        print("Error: API returned invalid JSON response", file=sys.stderr)
+        return
 
-    print("Attached network disk to machines. Disk id: " + str(r.json()["disk_id"]))
+    if args.raw:
+        return rj
+
+    print("Attached network disk to machines. Disk id: " + str(rj["disk_id"]))
 
 
 
@@ -7299,7 +7350,11 @@ def show__network_disks(args: argparse.Namespace):
     req_url = apiurl(args, "/network_disk/")
     r = http_get(args, req_url)
     r.raise_for_status()
-    response_data = r.json()
+    try:
+        response_data = r.json()
+    except JSONDecodeError:
+        print("Error: API returned invalid JSON response", file=sys.stderr)
+        return
 
     if args.raw:
         return response_data
