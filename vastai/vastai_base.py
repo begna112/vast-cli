@@ -78,6 +78,7 @@ class VastAIBase(ABC):
         max_workers: int = 20,
         endpoint_name: Optional[str] = None,
     ) -> str:
+        """Create a new serverless endpoint."""
         pass
 
     def create_instance(
@@ -115,6 +116,7 @@ class VastAIBase(ABC):
         password: Optional[str] = None,
         type: Optional[str] = None,
     ) -> str:
+        """Create a new subaccount."""
         pass
 
     def create_team(self, team_name: Optional[str] = None) -> str:
@@ -147,9 +149,11 @@ class VastAIBase(ABC):
         pass
 
     def delete_api_key(self, id: int) -> str:
+        """Delete an API key."""
         pass
 
     def delete_ssh_key(self, id: int) -> str:
+        """Delete an SSH key."""
         pass
 
     def delete_workergroup(self, id: int) -> str:
@@ -160,18 +164,23 @@ class VastAIBase(ABC):
     delete_autoscaler = delete_workergroup
 
     def delete_endpoint(self, id: int) -> str:
+        """Delete a serverless endpoint."""
         pass
 
     def destroy_instance(self, id: int) -> str:
+        """Destroy an instance."""
         pass
 
     def destroy_instances(self, ids: List[int]) -> str:
+        """Destroy multiple instances."""
         pass
 
     def destroy_team(self) -> str:
+        """Destroy the current team."""
         pass
 
     def detach_ssh(self, instance_id: int, ssh_key_id: str) -> str:
+        """Detach an SSH key from an instance."""
         pass
 
     def execute(self, id: int, COMMAND: str) -> str:
@@ -435,6 +444,7 @@ class VastAIBase(ABC):
         max_workers: Optional[int] = None,
         endpoint_name: Optional[str] = None,
     ) -> str:
+        """Update a serverless endpoint configuration."""
         pass
 
     def update_team_role(
