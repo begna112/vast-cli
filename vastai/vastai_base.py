@@ -1,68 +1,68 @@
 from abc import ABC
-from typing import Optional, List
+from typing import Any
 
 
 class VastAIBase(ABC):
     """VastAI SDK base class that defines the methods to be implemented by the VastAI class."""
 
-    def attach_ssh(self, instance_id: int, ssh_key: str) -> str:
+    def attach_ssh(self, instance_id: int, ssh_key: str) -> dict[str, Any]:
         """Attach an SSH key to an instance."""
         pass
 
-    def cancel_copy(self, dst: str) -> str:
+    def cancel_copy(self, dst: str) -> dict[str, Any]:
         """Cancel a file copy operation."""
         pass
 
-    def cancel_sync(self, dst: str) -> str:
+    def cancel_sync(self, dst: str) -> dict[str, Any]:
         """Cancel a file sync operation."""
         pass
 
-    def change_bid(self, id: int, price: Optional[float] = None) -> str:
+    def change_bid(self, id: int, price: float | None = None) -> dict[str, Any]:
         """Change the bid price for a machine."""
         pass
 
-    def copy(self, src: str, dst: str, identity: Optional[str] = None) -> str:
+    def copy(self, src: str, dst: str, identity: str | None = None) -> dict[str, Any]:
         """Copy files between instances."""
         pass
 
     def cloud_copy(
         self,
-        src: Optional[str] = None,
-        dst: Optional[str] = "/workspace",
-        instance: Optional[str] = None,
-        connection: Optional[str] = None,
+        src: str | None = None,
+        dst: str | None = "/workspace",
+        instance: str | None = None,
+        connection: str | None = None,
         transfer: str = "Instance to Cloud",
-    ) -> str:
+    ) -> dict[str, Any]:
         """Copy files between cloud and instance."""
         pass
 
     def create_api_key(
         self,
-        name: Optional[str] = None,
-        permission_file: Optional[str] = None,
-        key_params: Optional[str] = None,
-    ) -> str:
+        name: str | None = None,
+        permission_file: str | None = None,
+        key_params: str | None = None,
+    ) -> dict[str, Any]:
         """Create a new API key."""
         pass
 
-    def create_ssh_key(self, ssh_key: str) -> str:
+    def create_ssh_key(self, ssh_key: str) -> dict[str, Any]:
         """Create a new SSH key."""
         pass
 
     def create_workergroup(
         self,
         test_workers: int = 3,
-        gpu_ram: Optional[float] = None,
-        template_hash: Optional[str] = None,
-        template_id: Optional[int] = None,
-        search_params: Optional[str] = None,
-        launch_args: Optional[str] = None,
-        endpoint_name: Optional[str] = None,
-        endpoint_id: Optional[int] = None,
-        min_load: Optional[float] = None,
-        target_util: Optional[float] = None,
-        cold_mult: Optional[float] = None,
-    ) -> str:
+        gpu_ram: float | None = None,
+        template_hash: str | None = None,
+        template_id: int | None = None,
+        search_params: str | None = None,
+        launch_args: str | None = None,
+        endpoint_name: str | None = None,
+        endpoint_id: int | None = None,
+        min_load: float | None = None,
+        target_util: float | None = None,
+        cold_mult: float | None = None,
+    ) -> dict[str, Any]:
         """Create a new workergroup (autoscaler)."""
         pass
 
@@ -76,124 +76,124 @@ class VastAIBase(ABC):
         cold_mult: float = 2.5,
         cold_workers: int = 5,
         max_workers: int = 20,
-        endpoint_name: Optional[str] = None,
-    ) -> str:
+        endpoint_name: str | None = None,
+    ) -> dict[str, Any]:
         """Create a new serverless endpoint."""
         pass
 
     def create_instance(
         self,
         id: int,
-        price: Optional[float] = None,
-        disk: Optional[float] = 10,
-        image: Optional[str] = None,
-        login: Optional[str] = None,
-        label: Optional[str] = None,
-        onstart: Optional[str] = None,
-        onstart_cmd: Optional[str] = None,
-        entrypoint: Optional[str] = None,
+        price: float | None = None,
+        disk: float | None = 10,
+        image: str | None = None,
+        login: str | None = None,
+        label: str | None = None,
+        onstart: str | None = None,
+        onstart_cmd: str | None = None,
+        entrypoint: str | None = None,
         ssh: bool = False,
         jupyter: bool = False,
         direct: bool = False,
-        jupyter_dir: Optional[str] = None,
+        jupyter_dir: str | None = None,
         jupyter_lab: bool = False,
         lang_utf8: bool = False,
         python_utf8: bool = False,
-        extra: Optional[str] = None,
-        env: Optional[str] = None,
-        args: Optional[List[str]] = None,
+        extra: str | None = None,
+        env: str | None = None,
+        args: list[str] | None = None,
         force: bool = False,
         cancel_unavail: bool = False,
-        template_hash: Optional[str] = None,
-    ) -> str:
+        template_hash: str | None = None,
+    ) -> dict[str, Any]:
         """Create a new instance from a contract offer ID."""
         pass
 
     def create_subaccount(
         self,
-        email: Optional[str] = None,
-        username: Optional[str] = None,
-        password: Optional[str] = None,
-        type: Optional[str] = None,
-    ) -> str:
+        email: str | None = None,
+        username: str | None = None,
+        password: str | None = None,
+        type: str | None = None,
+    ) -> dict[str, Any]:
         """Create a new subaccount."""
         pass
 
-    def create_team(self, team_name: Optional[str] = None) -> str:
+    def create_team(self, team_name: str | None = None) -> dict[str, Any]:
         """Create a new team."""
         pass
 
     def create_team_role(
-        self, name: Optional[str] = None, permissions: Optional[str] = None
-    ) -> str:
+        self, name: str | None = None, permissions: str | None = None
+    ) -> dict[str, Any]:
         """Create a new team role."""
         pass
 
     def create_template(
         self,
-        name: Optional[str] = None,
-        image: Optional[str] = None,
-        image_tag: Optional[str] = None,
-        login: Optional[str] = None,
-        env: Optional[str] = None,
+        name: str | None = None,
+        image: str | None = None,
+        image_tag: str | None = None,
+        login: str | None = None,
+        env: str | None = None,
         ssh: bool = False,
         jupyter: bool = False,
         direct: bool = False,
-        jupyter_dir: Optional[str] = None,
+        jupyter_dir: str | None = None,
         jupyter_lab: bool = False,
-        onstart_cmd: Optional[str] = None,
-        search_params: Optional[str] = None,
-        disk_space: Optional[str] = None,
-    ) -> str:
+        onstart_cmd: str | None = None,
+        search_params: str | None = None,
+        disk_space: str | None = None,
+    ) -> dict[str, Any]:
         """Create a new template."""
         pass
 
-    def delete_api_key(self, id: int) -> str:
+    def delete_api_key(self, id: int) -> dict[str, Any]:
         """Delete an API key."""
         pass
 
-    def delete_ssh_key(self, id: int) -> str:
+    def delete_ssh_key(self, id: int) -> dict[str, Any]:
         """Delete an SSH key."""
         pass
 
-    def delete_workergroup(self, id: int) -> str:
+    def delete_workergroup(self, id: int) -> dict[str, Any]:
         """Delete a workergroup."""
         pass
 
     # Backwards compatibility alias (deprecated: use delete_workergroup)
     delete_autoscaler = delete_workergroup
 
-    def delete_endpoint(self, id: int) -> str:
+    def delete_endpoint(self, id: int) -> dict[str, Any]:
         """Delete a serverless endpoint."""
         pass
 
-    def destroy_instance(self, id: int) -> str:
+    def destroy_instance(self, id: int) -> dict[str, Any]:
         """Destroy an instance."""
         pass
 
-    def destroy_instances(self, ids: List[int]) -> str:
+    def destroy_instances(self, ids: list[int]) -> dict[str, Any]:
         """Destroy multiple instances."""
         pass
 
-    def destroy_team(self) -> str:
+    def destroy_team(self) -> dict[str, Any]:
         """Destroy the current team."""
         pass
 
-    def detach_ssh(self, instance_id: int, ssh_key_id: str) -> str:
+    def detach_ssh(self, instance_id: int, ssh_key_id: str) -> dict[str, Any]:
         """Detach an SSH key from an instance."""
         pass
 
-    def execute(self, id: int, COMMAND: str) -> str:
+    def execute(self, id: int, COMMAND: str) -> dict[str, Any]:
         """Execute a command on an instance."""
         pass
 
     def invite_team_member(
-        self, email: Optional[str] = None, role: Optional[str] = None
-    ) -> str:
+        self, email: str | None = None, role: str | None = None
+    ) -> dict[str, Any]:
         """Invite a new member to the team."""
         pass
 
-    def label_instance(self, id: int, label: str) -> str:
+    def label_instance(self, id: int, label: str) -> dict[str, Any]:
         """Label an instance."""
         pass
 
@@ -219,13 +219,13 @@ class VastAIBase(ABC):
         python_utf8: bool = False,
         extra: str = None,
         env: str = None,
-        args: list = None,
+        args: list[str] | None = None,
         force: bool = False,
         cancel_unavail: bool = False,
         template_hash: str = None,
         explain: bool = False,
         raw: bool = False,
-    ) -> str:
+    ) -> dict[str, Any]:
         """
         Launches the top instance from the search offers based on the given parameters.
 
@@ -234,200 +234,200 @@ class VastAIBase(ABC):
         """
         pass
 
-    def logs(self, INSTANCE_ID: int, tail: Optional[str] = None) -> str:
+    def logs(self, INSTANCE_ID: int, tail: str | None = None) -> dict[str, Any]:
         """Retrieve logs for an instance."""
         pass
 
-    def prepay_instance(self, id: int, amount: float) -> str:
+    def prepay_instance(self, id: int, amount: float) -> dict[str, Any]:
         """Prepay for an instance."""
         pass
 
-    def reboot_instance(self, id: int) -> str:
+    def reboot_instance(self, id: int) -> dict[str, Any]:
         """Reboot an instance."""
         pass
 
-    def recycle_instance(self, id: int) -> str:
+    def recycle_instance(self, id: int) -> dict[str, Any]:
         """Recycle an instance."""
         pass
 
-    def remove_team_member(self, id: int) -> str:
+    def remove_team_member(self, id: int) -> dict[str, Any]:
         """Remove a member from the team."""
         pass
 
-    def remove_team_role(self, NAME: str) -> str:
+    def remove_team_role(self, NAME: str) -> dict[str, Any]:
         """Remove a role from the team."""
         pass
 
-    def reports(self, id: int) -> str:
+    def reports(self, id: int) -> dict[str, Any]:
         """Generate reports for a machine."""
         pass
 
-    def reset_api_key(self) -> str:
+    def reset_api_key(self) -> dict[str, Any]:
         """Reset the API key."""
         pass
 
-    def start_instance(self, id: int) -> str:
+    def start_instance(self, id: int) -> dict[str, Any]:
         """Start an instance."""
         pass
 
-    def start_instances(self, ids: List[int]) -> str:
+    def start_instances(self, ids: list[int]) -> dict[str, Any]:
         """Start multiple instances."""
         pass
 
-    def stop_instance(self, id: int) -> str:
+    def stop_instance(self, id: int) -> dict[str, Any]:
         """Stop an instance."""
         pass
 
-    def stop_instances(self, ids: List[int]) -> str:
+    def stop_instances(self, ids: list[int]) -> dict[str, Any]:
         """Stop multiple instances."""
         pass
 
-    def search_benchmarks(self, query: Optional[str] = None) -> str:
+    def search_benchmarks(self, query: str | None = None) -> list[dict[str, Any]]:
         """Search for benchmarks based on a query."""
         pass
 
-    def search_invoices(self, query: Optional[str] = None) -> str:
+    def search_invoices(self, query: str | None = None) -> list[dict[str, Any]]:
         """Search for invoices based on a query."""
         pass
 
     def search_offers(
         self,
-        type: Optional[str] = None,
+        type: str | None = None,
         no_default: bool = False,
         new: bool = False,
-        limit: Optional[int] = None,
+        limit: int | None = None,
         disable_bundling: bool = False,
-        storage: Optional[float] = None,
-        order: Optional[str] = None,
-        query: Optional[str] = None,
-    ) -> str:
+        storage: float | None = None,
+        order: str | None = None,
+        query: str | None = None,
+    ) -> list[dict[str, Any]]:
         """Search for offers based on various criteria."""
         pass
 
-    def search_templates(self, query: Optional[str] = None) -> str:
+    def search_templates(self, query: str | None = None) -> list[dict[str, Any]]:
         """Search for templates based on a query."""
         pass
 
-    def set_api_key(self, new_api_key: str) -> str:
+    def set_api_key(self, new_api_key: str) -> dict[str, Any]:
         """Set a new API key."""
         pass
 
-    def set_user(self, file: Optional[str] = None) -> str:
+    def set_user(self, file: str | None = None) -> dict[str, Any]:
         """Set user parameters from a file."""
         pass
 
-    def ssh_url(self, id: int) -> str:
+    def ssh_url(self, id: int) -> dict[str, Any]:
         """Get the SSH URL for an instance."""
         pass
 
-    def scp_url(self, id: int) -> str:
+    def scp_url(self, id: int) -> dict[str, Any]:
         """Get the SCP URL for transferring files to/from an instance."""
         pass
 
-    def show_api_key(self, id: int) -> str:
+    def show_api_key(self, id: int) -> dict[str, Any]:
         """Show details of an API key."""
         pass
 
-    def show_api_keys(self) -> str:
+    def show_api_keys(self) -> list[dict[str, Any]]:
         """Show all API keys."""
         pass
 
-    def show_ssh_keys(self) -> str:
+    def show_ssh_keys(self) -> list[dict[str, Any]]:
         """Show all SSH keys."""
         pass
 
-    def show_workergroups(self) -> str:
+    def show_workergroups(self) -> list[dict[str, Any]]:
         """Show all workergroups (autoscalers)."""
         pass
 
     # Backwards compatibility alias (deprecated: use show_workergroups)
     show_autoscalers = show_workergroups
 
-    def show_endpoints(self) -> str:
+    def show_endpoints(self) -> list[dict[str, Any]]:
         """Show all endpoints."""
         pass
 
-    def show_connections(self) -> str:
+    def show_connections(self) -> list[dict[str, Any]]:
         """Show all connections."""
         pass
 
-    def show_deposit(self, Id: int) -> str:
+    def show_deposit(self, Id: int) -> dict[str, Any]:
         """Show deposit details for an instance."""
         pass
 
     def show_earnings(
         self,
         quiet: bool = False,
-        start_date: Optional[str] = None,
-        end_date: Optional[str] = None,
-        machine_id: Optional[int] = None,
-    ) -> str:
+        start_date: str | None = None,
+        end_date: str | None = None,
+        machine_id: int | None = None,
+    ) -> list[dict[str, Any]]:
         """Show earnings information."""
         pass
 
     def show_invoices(
         self,
         quiet: bool = False,
-        start_date: Optional[str] = None,
-        end_date: Optional[str] = None,
+        start_date: str | None = None,
+        end_date: str | None = None,
         only_charges: bool = False,
         only_credits: bool = False,
-        instance_label: Optional[str] = None,
-    ) -> str:
+        instance_label: str | None = None,
+    ) -> list[dict[str, Any]]:
         """Show invoice details."""
         pass
 
-    def show_instance(self, id: int) -> str:
+    def show_instance(self, id: int) -> dict[str, Any]:
         """Show details of an instance."""
         pass
 
-    def show_instances(self, quiet: bool = False) -> str:
+    def show_instances(self, quiet: bool = False) -> list[dict[str, Any]]:
         """Show all instances."""
         pass
 
-    def show_ipaddrs(self) -> str:
+    def show_ipaddrs(self) -> list[dict[str, Any]]:
         """Show IP addresses."""
         pass
 
-    def show_user(self, quiet: bool = False) -> str:
+    def show_user(self, quiet: bool = False) -> dict[str, Any]:
         """Show user details."""
         pass
 
-    def show_subaccounts(self, quiet: bool = False) -> str:
+    def show_subaccounts(self, quiet: bool = False) -> list[dict[str, Any]]:
         """Show all subaccounts of the current user."""
         pass
 
-    def show_team_members(self) -> str:
+    def show_team_members(self) -> list[dict[str, Any]]:
         """Show all team members."""
         pass
 
-    def show_team_role(self, NAME: str) -> str:
+    def show_team_role(self, NAME: str) -> dict[str, Any]:
         """Show details of a specific team role."""
         pass
 
-    def show_team_roles(self) -> str:
+    def show_team_roles(self) -> list[dict[str, Any]]:
         """Show all team roles."""
         pass
 
-    def transfer_credit(self, recipient: str, amount: float) -> str:
+    def transfer_credit(self, recipient: str, amount: float) -> dict[str, Any]:
         """Transfer credit to another account."""
         pass
 
     def update_workergroup(
         self,
         id: int,
-        min_load: Optional[float] = None,
-        target_util: Optional[float] = None,
-        cold_mult: Optional[float] = None,
-        test_workers: Optional[int] = None,
-        gpu_ram: Optional[float] = None,
-        template_hash: Optional[str] = None,
-        template_id: Optional[int] = None,
-        search_params: Optional[str] = None,
-        launch_args: Optional[str] = None,
-        endpoint_name: Optional[str] = None,
-        endpoint_id: Optional[int] = None,
-    ) -> str:
+        min_load: float | None = None,
+        target_util: float | None = None,
+        cold_mult: float | None = None,
+        test_workers: int | None = None,
+        gpu_ram: float | None = None,
+        template_hash: str | None = None,
+        template_id: int | None = None,
+        search_params: str | None = None,
+        launch_args: str | None = None,
+        endpoint_name: str | None = None,
+        endpoint_id: int | None = None,
+    ) -> dict[str, Any]:
         """Update a workergroup (autoscaler)."""
         pass
 
@@ -437,104 +437,104 @@ class VastAIBase(ABC):
     def update_endpoint(
         self,
         id: int,
-        min_load: Optional[float] = None,
-        target_util: Optional[float] = None,
-        cold_mult: Optional[float] = None,
-        cold_workers: Optional[int] = None,
-        max_workers: Optional[int] = None,
-        endpoint_name: Optional[str] = None,
-    ) -> str:
+        min_load: float | None = None,
+        target_util: float | None = None,
+        cold_mult: float | None = None,
+        cold_workers: int | None = None,
+        max_workers: int | None = None,
+        endpoint_name: str | None = None,
+    ) -> dict[str, Any]:
         """Update a serverless endpoint configuration."""
         pass
 
     def update_team_role(
-        self, id: int, name: Optional[str] = None, permissions: Optional[str] = None
-    ) -> str:
+        self, id: int, name: str | None = None, permissions: str | None = None
+    ) -> dict[str, Any]:
         """Update details of a team role."""
         pass
 
-    def update_ssh_key(self, id: int, ssh_key: str) -> str:
+    def update_ssh_key(self, id: int, ssh_key: str) -> dict[str, Any]:
         """Update an SSH key."""
         pass
 
     def generate_pdf_invoices(
         self,
         quiet: bool = False,
-        start_date: Optional[str] = None,
-        end_date: Optional[str] = None,
+        start_date: str | None = None,
+        end_date: str | None = None,
         only_charges: bool = False,
         only_credits: bool = False,
-    ) -> str:
+    ) -> dict[str, Any]:
         """Generate PDF invoices based on filters."""
         pass
 
-    def cleanup_machine(self, id: int) -> str:
+    def cleanup_machine(self, id: int) -> dict[str, Any]:
         """Clean up a machine's configuration and resources."""
         pass
 
     def list_machine(
         self,
         id: int,
-        price_gpu: Optional[float] = None,
-        price_disk: Optional[float] = None,
-        price_inetu: Optional[float] = None,
-        price_inetd: Optional[float] = None,
-        discount_rate: Optional[float] = None,
-        min_chunk: Optional[int] = None,
-        end_date: Optional[str] = None,
-    ) -> str:
+        price_gpu: float | None = None,
+        price_disk: float | None = None,
+        price_inetu: float | None = None,
+        price_inetd: float | None = None,
+        discount_rate: float | None = None,
+        min_chunk: int | None = None,
+        end_date: str | None = None,
+    ) -> dict[str, Any]:
         """List details of a single machine with optional pricing and configuration parameters."""
         pass
 
     def list_machines(
         self,
-        ids: List[int],
-        price_gpu: Optional[float] = None,
-        price_disk: Optional[float] = None,
-        price_inetu: Optional[float] = None,
-        price_inetd: Optional[float] = None,
-        discount_rate: Optional[float] = None,
-        min_chunk: Optional[int] = None,
-        end_date: Optional[str] = None,
-    ) -> str:
+        ids: list[int],
+        price_gpu: float | None = None,
+        price_disk: float | None = None,
+        price_inetu: float | None = None,
+        price_inetd: float | None = None,
+        discount_rate: float | None = None,
+        min_chunk: int | None = None,
+        end_date: str | None = None,
+    ) -> dict[str, Any]:
         """List details of multiple machines with optional pricing and configuration parameters."""
         pass
 
-    def remove_defjob(self, id: int) -> str:
+    def remove_defjob(self, id: int) -> dict[str, Any]:
         """Remove the default job from a machine."""
         pass
 
     def set_defjob(
         self,
         id: int,
-        price_gpu: Optional[float] = None,
-        price_inetu: Optional[float] = None,
-        price_inetd: Optional[float] = None,
-        image: Optional[str] = None,
-        args: Optional[List[str]] = None,
-    ) -> str:
+        price_gpu: float | None = None,
+        price_inetu: float | None = None,
+        price_inetd: float | None = None,
+        image: str | None = None,
+        args: list[str] | None = None,
+    ) -> dict[str, Any]:
         """Set a default job on a machine with specified parameters."""
         pass
 
-    def set_min_bid(self, id: int, price: Optional[float] = None) -> str:
+    def set_min_bid(self, id: int, price: float | None = None) -> dict[str, Any]:
         """Set the minimum bid price for a machine."""
         pass
 
     def schedule_maint(
-        self, id: int, sdate: Optional[float] = None, duration: Optional[float] = None
-    ) -> str:
+        self, id: int, sdate: float | None = None, duration: float | None = None
+    ) -> dict[str, Any]:
         """Schedule maintenance for a machine."""
         pass
 
-    def cancel_maint(self, id: int) -> str:
+    def cancel_maint(self, id: int) -> dict[str, Any]:
         """Cancel scheduled maintenance for a machine."""
         pass
 
-    def unlist_machine(self, id: int) -> str:
+    def unlist_machine(self, id: int) -> dict[str, Any]:
         """Unlist a machine from being available for new jobs."""
         pass
 
-    def show_machines(self, quiet: bool = False, filter: Optional[str] = None) -> str:
+    def show_machines(self, quiet: bool = False, filter: str | None = None) -> list[dict[str, Any]]:
         """
         Retrieve and display a list of machines based on specified criteria.
 
@@ -543,7 +543,7 @@ class VastAIBase(ABC):
         - filter (str, optional): A string used to filter the machines based on specific criteria.
 
         Returns:
-        - str: A string representation of the machines information, possibly formatted as JSON or a human-readable list.
+        - list[dict[str, Any]]: A list of machine information dictionaries.
         """
         pass
 
@@ -553,9 +553,9 @@ class VastAIBase(ABC):
         self,
         source: int,
         dest: int,
-        size: Optional[float] = None,
+        size: float | None = None,
         disable_compression: bool = False,
-    ) -> str:
+    ) -> dict[str, Any]:
         """Clone an existing volume to a new location.
 
         Args:
@@ -573,8 +573,8 @@ class VastAIBase(ABC):
         self,
         id: int,
         size: float = 15,
-        name: Optional[str] = None,
-    ) -> str:
+        name: str | None = None,
+    ) -> dict[str, Any]:
         """Create a new volume from an offer ID.
 
         Args:
@@ -587,7 +587,7 @@ class VastAIBase(ABC):
         """
         pass
 
-    def delete_volume(self, id: int) -> str:
+    def delete_volume(self, id: int) -> dict[str, Any]:
         """Delete a volume.
 
         Args:
@@ -603,8 +603,8 @@ class VastAIBase(ABC):
         id: int,
         price_disk: float = 0.10,
         size: int = 15,
-        end_date: Optional[str] = None,
-    ) -> str:
+        end_date: str | None = None,
+    ) -> dict[str, Any]:
         """List disk space for rent as a volume on a machine.
 
         Args:
@@ -620,11 +620,11 @@ class VastAIBase(ABC):
 
     def list_volumes(
         self,
-        ids: List[int],
+        ids: list[int],
         price_disk: float = 0.10,
         size: int = 15,
-        end_date: Optional[str] = None,
-    ) -> str:
+        end_date: str | None = None,
+    ) -> dict[str, Any]:
         """List disk space for rent as volumes on multiple machines.
 
         Args:
@@ -640,12 +640,12 @@ class VastAIBase(ABC):
 
     def search_volumes(
         self,
-        query: Optional[str] = None,
+        query: str | None = None,
         no_default: bool = False,
-        limit: Optional[int] = None,
+        limit: int | None = None,
         storage: float = 1.0,
         order: str = "score-",
-    ) -> str:
+    ) -> list[dict[str, Any]]:
         """Search for volume offers using custom query.
 
         Args:
@@ -660,7 +660,7 @@ class VastAIBase(ABC):
         """
         pass
 
-    def show_volumes(self, type: str = "all") -> str:
+    def show_volumes(self, type: str = "all") -> list[dict[str, Any]]:
         """Show stats on owned volumes.
 
         Args:
@@ -671,7 +671,7 @@ class VastAIBase(ABC):
         """
         pass
 
-    def unlist_volume(self, id: int) -> str:
+    def unlist_volume(self, id: int) -> dict[str, Any]:
         """Unlist a volume offer.
 
         Args:
@@ -688,8 +688,8 @@ class VastAIBase(ABC):
         self,
         id: int,
         size: float = 15,
-        name: Optional[str] = None,
-    ) -> str:
+        name: str | None = None,
+    ) -> dict[str, Any]:
         """Create a new network volume from an offer ID.
 
         Args:
@@ -707,8 +707,8 @@ class VastAIBase(ABC):
         disk_id: int,
         price_disk: float = 0.15,
         size: int = 15,
-        end_date: Optional[str] = None,
-    ) -> str:
+        end_date: str | None = None,
+    ) -> dict[str, Any]:
         """List disk space for rent as a network volume.
 
         Args:
@@ -724,12 +724,12 @@ class VastAIBase(ABC):
 
     def search_network_volumes(
         self,
-        query: Optional[str] = None,
+        query: str | None = None,
         no_default: bool = False,
-        limit: Optional[int] = None,
+        limit: int | None = None,
         storage: float = 1.0,
         order: str = "score-",
-    ) -> str:
+    ) -> list[dict[str, Any]]:
         """Search for network volume offers using custom query.
 
         Args:
@@ -744,7 +744,7 @@ class VastAIBase(ABC):
         """
         pass
 
-    def unlist_network_volume(self, id: int) -> str:
+    def unlist_network_volume(self, id: int) -> dict[str, Any]:
         """Unlist a network volume offer.
 
         Args:
@@ -761,7 +761,7 @@ class VastAIBase(ABC):
         self,
         subnet: str,
         manager_id: int,
-    ) -> str:
+    ) -> dict[str, Any]:
         """Create a new Vast cluster.
 
         Args:
@@ -773,7 +773,7 @@ class VastAIBase(ABC):
         """
         pass
 
-    def delete_cluster(self, cluster_id: int) -> str:
+    def delete_cluster(self, cluster_id: int) -> dict[str, Any]:
         """Delete a cluster.
 
         Args:
@@ -787,8 +787,8 @@ class VastAIBase(ABC):
     def join_cluster(
         self,
         cluster_id: int,
-        machine_ids: List[int],
-    ) -> str:
+        machine_ids: list[int],
+    ) -> dict[str, Any]:
         """Join machines to a cluster.
 
         Args:
@@ -800,7 +800,7 @@ class VastAIBase(ABC):
         """
         pass
 
-    def show_clusters(self) -> str:
+    def show_clusters(self) -> list[dict[str, Any]]:
         """Show clusters associated with your account.
 
         Returns:
@@ -814,7 +814,7 @@ class VastAIBase(ABC):
         self,
         cluster_id: int,
         name: str,
-    ) -> str:
+    ) -> dict[str, Any]:
         """Create an overlay network on top of a physical cluster.
 
         Args:
@@ -826,7 +826,7 @@ class VastAIBase(ABC):
         """
         pass
 
-    def delete_overlay(self, overlay_identifier: str) -> str:
+    def delete_overlay(self, overlay_identifier: str) -> dict[str, Any]:
         """Delete an overlay network.
 
         Args:
@@ -841,7 +841,7 @@ class VastAIBase(ABC):
         self,
         name: str,
         instance_id: int,
-    ) -> str:
+    ) -> dict[str, Any]:
         """Add an instance to an overlay network.
 
         Args:
@@ -853,7 +853,7 @@ class VastAIBase(ABC):
         """
         pass
 
-    def show_overlays(self) -> str:
+    def show_overlays(self) -> list[dict[str, Any]]:
         """Show overlay networks associated with your account.
 
         Returns:
@@ -867,7 +867,7 @@ class VastAIBase(ABC):
         self,
         name: str,
         value: str,
-    ) -> str:
+    ) -> dict[str, Any]:
         """Create a new user environment variable.
 
         Args:
@@ -879,7 +879,7 @@ class VastAIBase(ABC):
         """
         pass
 
-    def delete_env_var(self, name: str) -> str:
+    def delete_env_var(self, name: str) -> dict[str, Any]:
         """Delete an environment variable.
 
         Args:
@@ -894,7 +894,7 @@ class VastAIBase(ABC):
         self,
         name: str,
         value: str,
-    ) -> str:
+    ) -> dict[str, Any]:
         """Update an existing environment variable.
 
         Args:
@@ -906,7 +906,7 @@ class VastAIBase(ABC):
         """
         pass
 
-    def show_env_vars(self, show_values: bool = False) -> str:
+    def show_env_vars(self, show_values: bool = False) -> list[dict[str, Any]]:
         """Show user environment variables.
 
         Args:
@@ -924,7 +924,7 @@ class VastAIBase(ABC):
         email: str,
         username: str,
         password: str,
-    ) -> str:
+    ) -> dict[str, Any]:
         """Create a new account.
 
         Note: This command is deprecated. Use the web interface instead.
@@ -944,7 +944,7 @@ class VastAIBase(ABC):
         instance_id: int,
         volume_id: int,
         mount_path: str = "/mnt/network",
-    ) -> str:
+    ) -> dict[str, Any]:
         """Add a network disk (volume) to an instance.
 
         Args:
@@ -959,7 +959,7 @@ class VastAIBase(ABC):
 
     # Machine Management Methods
 
-    def defrag_machines(self, ids: List[int]) -> str:
+    def defrag_machines(self, ids: list[int]) -> dict[str, Any]:
         """Defragment machines to optimize GPU assignments.
 
         Rearranges GPU assignments to make more multi-GPU offers available.
@@ -972,7 +972,7 @@ class VastAIBase(ABC):
         """
         pass
 
-    def delete_machine(self, id: int) -> str:
+    def delete_machine(self, id: int) -> dict[str, Any]:
         """Delete a machine if not in use by clients.
 
         Force deletes a machine, disregarding host jobs on own machines.
@@ -990,7 +990,7 @@ class VastAIBase(ABC):
         machine_id: int,
         debugging: bool = False,
         ignore_requirements: bool = False,
-    ) -> str:
+    ) -> dict[str, Any]:
         """Perform a self-test on a machine.
 
         Verifies machine compliance with required specifications and functionality.
@@ -1005,7 +1005,7 @@ class VastAIBase(ABC):
         """
         pass
 
-    def show_machine(self, id: int, quiet: bool = False) -> str:
+    def show_machine(self, id: int, quiet: bool = False) -> dict[str, Any]:
         """Show details of a single machine.
 
         Args:
@@ -1021,9 +1021,9 @@ class VastAIBase(ABC):
 
     def delete_template(
         self,
-        template_id: Optional[int] = None,
-        hash_id: Optional[str] = None,
-    ) -> str:
+        template_id: int | None = None,
+        hash_id: str | None = None,
+    ) -> dict[str, Any]:
         """Delete a template by ID or hash.
 
         Note: Deleting a template only removes the user's relationship to a template.
@@ -1040,21 +1040,21 @@ class VastAIBase(ABC):
     def update_template(
         self,
         hash_id: str,
-        name: Optional[str] = None,
-        image: Optional[str] = None,
-        image_tag: Optional[str] = None,
-        login: Optional[str] = None,
-        env: Optional[str] = None,
+        name: str | None = None,
+        image: str | None = None,
+        image_tag: str | None = None,
+        login: str | None = None,
+        env: str | None = None,
         ssh: bool = False,
         jupyter: bool = False,
         direct: bool = False,
-        jupyter_dir: Optional[str] = None,
+        jupyter_dir: str | None = None,
         jupyter_lab: bool = False,
-        onstart_cmd: Optional[str] = None,
-        search_params: Optional[str] = None,
-        disk_space: Optional[str] = None,
+        onstart_cmd: str | None = None,
+        search_params: str | None = None,
+        disk_space: str | None = None,
         no_default: bool = False,
-    ) -> str:
+    ) -> dict[str, Any]:
         """Update an existing template.
 
         Args:
@@ -1084,12 +1084,12 @@ class VastAIBase(ABC):
     def take_snapshot(
         self,
         instance_id: int,
-        repo: Optional[str] = None,
+        repo: str | None = None,
         container_registry: str = "docker.io",
-        docker_login_user: Optional[str] = None,
-        docker_login_pass: Optional[str] = None,
+        docker_login_user: str | None = None,
+        docker_login_pass: str | None = None,
         pause: str = "true",
-    ) -> str:
+    ) -> dict[str, Any]:
         """Take a container snapshot and push to registry.
 
         Args:
@@ -1110,13 +1110,13 @@ class VastAIBase(ABC):
     def update_instance(
         self,
         id: int,
-        template_id: Optional[int] = None,
-        template_hash_id: Optional[str] = None,
-        image: Optional[str] = None,
-        args: Optional[str] = None,
-        env: Optional[str] = None,
-        onstart: Optional[str] = None,
-    ) -> str:
+        template_id: int | None = None,
+        template_hash_id: str | None = None,
+        image: str | None = None,
+        args: str | None = None,
+        env: str | None = None,
+        onstart: str | None = None,
+    ) -> dict[str, Any]:
         """Update instance configuration from a new/updated template.
 
         Args:
@@ -1135,7 +1135,7 @@ class VastAIBase(ABC):
 
     # VM Copy Methods
 
-    def vm_copy(self, src: int, dst: int) -> str:
+    def vm_copy(self, src: int, dst: int) -> dict[str, Any]:
         """Copy VM image from one instance to another.
 
         Note: Destination VM must be stopped during copy. Source VM does not need
@@ -1155,8 +1155,8 @@ class VastAIBase(ABC):
     def invite_member(
         self,
         email: str,
-        role: Optional[str] = None,
-    ) -> str:
+        role: str | None = None,
+    ) -> dict[str, Any]:
         """Invite a member to the team.
 
         Args:
@@ -1168,7 +1168,7 @@ class VastAIBase(ABC):
         """
         pass
 
-    def remove_member(self, id: int) -> str:
+    def remove_member(self, id: int) -> dict[str, Any]:
         """Remove a member from the team.
 
         Args:
@@ -1179,7 +1179,7 @@ class VastAIBase(ABC):
         """
         pass
 
-    def show_members(self) -> str:
+    def show_members(self) -> list[dict[str, Any]]:
         """Show team members.
 
         Returns:
@@ -1193,8 +1193,8 @@ class VastAIBase(ABC):
         self,
         id: int,
         level: int = 1,
-        tail: Optional[int] = None,
-    ) -> str:
+        tail: int | None = None,
+    ) -> dict[str, Any]:
         """Get logs for a serverless endpoint.
 
         Args:
@@ -1211,8 +1211,8 @@ class VastAIBase(ABC):
         self,
         id: int,
         level: int = 1,
-        tail: Optional[int] = None,
-    ) -> str:
+        tail: int | None = None,
+    ) -> dict[str, Any]:
         """Get logs for a serverless worker group.
 
         Args:
@@ -1225,7 +1225,7 @@ class VastAIBase(ABC):
         """
         pass
 
-    def show_audit_logs(self) -> str:
+    def show_audit_logs(self) -> list[dict[str, Any]]:
         """Show account audit logs.
 
         Displays history of important actions and IP address accesses.
@@ -1237,7 +1237,7 @@ class VastAIBase(ABC):
 
     # Scheduled Job Methods
 
-    def delete_scheduled_job(self, id: int) -> str:
+    def delete_scheduled_job(self, id: int) -> dict[str, Any]:
         """Delete a scheduled job.
 
         Args:
@@ -1248,7 +1248,7 @@ class VastAIBase(ABC):
         """
         pass
 
-    def show_scheduled_jobs(self) -> str:
+    def show_scheduled_jobs(self) -> list[dict[str, Any]]:
         """Show scheduled jobs.
 
         Returns:
@@ -1258,7 +1258,7 @@ class VastAIBase(ABC):
 
     # Maintenance Methods
 
-    def show_maints(self, ids: str, quiet: bool = False) -> str:
+    def show_maints(self, ids: str, quiet: bool = False) -> list[dict[str, Any]]:
         """Show maintenance information for host machines.
 
         Args:
@@ -1272,7 +1272,7 @@ class VastAIBase(ABC):
 
     # Network Disk Methods
 
-    def show_network_disks(self) -> str:
+    def show_network_disks(self) -> list[dict[str, Any]]:
         """Show network disks associated with your account.
 
         Returns:
@@ -1286,16 +1286,16 @@ class VastAIBase(ABC):
         self,
         invoices: bool = False,
         charges: bool = False,
-        invoice_type: Optional[List[str]] = None,
-        charge_type: Optional[List[str]] = None,
-        start_date: Optional[str] = None,
-        end_date: Optional[str] = None,
+        invoice_type: list[str] | None = None,
+        charge_type: list[str] | None = None,
+        start_date: str | None = None,
+        end_date: str | None = None,
         limit: int = 20,
-        next_token: Optional[str] = None,
+        next_token: str | None = None,
         format: str = "table",
         verbose: bool = False,
         latest_first: bool = False,
-    ) -> str:
+    ) -> dict[str, Any]:
         """Show invoices or charges with advanced filtering (v1 API).
 
         Args:
