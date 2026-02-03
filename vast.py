@@ -3000,8 +3000,8 @@ def delete__cluster(args: argparse.Namespace):
     """),
 )
 def delete__workergroup(args):
-    id  = args.id
-    url = apiurl(args, f"/autojobs/{id}/" )
+    workergroup_id = args.id
+    url = apiurl(args, f"/autojobs/{workergroup_id}/")
     json_blob = {"client_id": "me", "autojob_id": args.id}
     if (args.explain):
         print("request json: ")
@@ -3031,8 +3031,8 @@ def delete__workergroup(args):
     """),
 )
 def delete__endpoint(args):
-    id  = args.id
-    url = apiurl(args, f"/endptjobs/{id}/" )
+    endpoint_id = args.id
+    url = apiurl(args, f"/endptjobs/{endpoint_id}/")
     json_blob = {"client_id": "me", "endptjob_id": args.id}
     if (args.explain):
         print("request json: ")
@@ -5328,17 +5328,17 @@ def show__invoices(args):
 
         rows2 = []
         for row in rows:
-            id = row.get("instance_id", None)
-            if id in contract_ids:
+            instance_id = row.get("instance_id", None)
+            if instance_id in contract_ids:
                 rows2.append(row)
         rows = rows2
 
     current_charges = rj.get("current")
     if args.quiet:
         for row in rows:
-            id = row.get("id", None)
-            if id is not None:
-                print(id)
+            row_id = row.get("id", None)
+            if row_id is not None:
+                print(row_id)
     elif args.raw:
         # sort keys
         return rows
@@ -5719,9 +5719,9 @@ def show__instances(args = {}, extra = {}):
         return [str(row[extra['field']]) for row in rows]
     elif args.quiet:
         for row in rows:
-            id = row.get("id", None)
-            if id is not None:
-                print(id)
+            row_id = row.get("id", None)
+            if row_id is not None:
+                print(row_id)
     elif args.raw:
         return rows
     else:
@@ -5991,8 +5991,8 @@ def transfer__credit(args: argparse.Namespace):
     """),
 )
 def update__workergroup(args):
-    id  = args.id
-    url = apiurl(args, f"/autojobs/{id}/" )
+    workergroup_id = args.id
+    url = apiurl(args, f"/autojobs/{workergroup_id}/")
     if args.no_default:
         query = ""
     else:
@@ -6037,8 +6037,8 @@ def update__workergroup(args):
     """),
 )
 def update__endpoint(args):
-    id  = args.id
-    url = apiurl(args, f"/endptjobs/{id}/" )
+    endpoint_id = args.id
+    url = apiurl(args, f"/endptjobs/{endpoint_id}/")
     json_blob = {"client_id": "me", "endptjob_id": args.id, "min_load": args.min_load, "min_cold_load":args.min_cold_load,"target_util": args.target_util, "cold_mult": args.cold_mult, "cold_workers": args.cold_workers, "max_workers" : args.max_workers, "endpoint_name": args.endpoint_name, "endpoint_state": args.endpoint_state, "autoscaler_instance":args.auto_instance}
     if (args.explain):
         print("request json: ")
@@ -7478,10 +7478,10 @@ def unlist__network_volume(args):
     help="[Host] unlist volume offer"
 )
 def unlist__volume(args):
-    id = args.id
+    volume_id = args.id
 
     json_blob = {
-        "id": id
+        "id": volume_id
     }
 
     url = apiurl(args, "/volumes/unlist")
