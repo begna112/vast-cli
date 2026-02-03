@@ -53,10 +53,36 @@ all = [
 ]
 dev = [
   "pytest>=8.0",
+  "pytest-cov>=4.0",
 ]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+addopts = [
+  "--cov=vastai",
+  "--cov-report=term-missing",
+  "--cov-report=html:coverage_html",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["vastai"]
+omit = [
+  "*/tests/*",
+  "*/.venv/*",
+  "*/site-packages/*",
+]
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
+fail_under = 60
+exclude_lines = [
+  "pragma: no cover",
+  "if __name__ == .__main__.:",
+  "raise NotImplementedError",
+  "if TYPE_CHECKING:",
+]
 
 [tool.poetry]
 packages = [
