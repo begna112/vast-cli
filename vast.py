@@ -1627,7 +1627,7 @@ def clone__volume(args: argparse.Namespace):
     r = http_post(args, url,  headers=headers,json=json_blob)
     r.raise_for_status()
     if args.raw:
-        return r
+        return r.json()
     else:
         print("Created. {}".format(r.json()))
 
@@ -2124,7 +2124,7 @@ def create__cluster(args: argparse.Namespace):
     r.raise_for_status()
 
     if args.raw:
-        return r
+        return r.json()
 
     print(r.json()["msg"])
 
@@ -2573,7 +2573,7 @@ def create__instance(args: argparse.Namespace):
     r = http_put(args, url,  headers=headers,json=json_blob)
     r.raise_for_status()
     if args.raw:
-        return r
+        return r.json()
     else:
         print("Started. {}".format(r.json()))
 
@@ -2784,7 +2784,7 @@ def create__template(args):
     """)
 )
 def create__volume(args: argparse.Namespace):
-    
+
     json_blob ={
         "size": int(args.size),
         "id": int(args.id)
@@ -2800,7 +2800,7 @@ def create__volume(args: argparse.Namespace):
     r = http_put(args, url,  headers=headers,json=json_blob)
     r.raise_for_status()
     if args.raw:
-        return r
+        return r.json()
     else:
         print("Created. {}".format(r.json()))
 
@@ -2834,7 +2834,7 @@ def create__network_volume(args: argparse.Namespace):
     r = http_put(args, url,  headers=headers,json=json_blob)
     r.raise_for_status()
     if args.raw:
-        return r
+        return r.json()
     else:
         print("Created. {}".format(r.json()))
 
@@ -2860,7 +2860,7 @@ def create__overlay(args: argparse.Namespace):
     r.raise_for_status()
 
     if args.raw:
-        return r
+        return r.json()
 
     print(r.json()["msg"])
 
@@ -3081,7 +3081,7 @@ def destroy_instance(id,args):
     r = http_del(args, url, headers=headers,json={})
     r.raise_for_status()
     if args.raw:
-        return r
+        return r.json()
     elif (r.status_code == 200):
         rj = r.json();
         if (rj["success"]):
@@ -3332,7 +3332,7 @@ def join__cluster(args: argparse.Namespace):
     r.raise_for_status()
 
     if args.raw:
-        return r
+        return r.json()
 
     print(r.json()["msg"])
 
@@ -3359,7 +3359,7 @@ def join__overlay(args: argparse.Namespace):
     r.raise_for_status()
 
     if args.raw:
-        return r
+        return r.json()
 
     print(r.json()["msg"])
 
@@ -3600,7 +3600,7 @@ def launch__instance(args):
         r.raise_for_status()  # This will raise an exception for HTTP error codes
         response_data = r.json()
         if args.raw:
-            return r
+            return r.json()
         else:
             print("Started. {}".format(r.json()))
         if response_data.get('success'):
@@ -4879,7 +4879,7 @@ def show__api_keys(args):
     r = http_get(args, url, headers=headers)
     r.raise_for_status()
     if args.raw:
-        return r
+        return r.json()
     else:
         print(r.json())
 
@@ -4958,7 +4958,7 @@ def show__ssh_keys(args):
     r = http_get(args, url, headers=headers)
     r.raise_for_status()
     if args.raw:
-        return r
+        return r.json()
     else:
         print(r.json())
 
@@ -5792,7 +5792,7 @@ def remove_machine_from_cluster(args: argparse.Namespace):
     r.raise_for_status()
 
     if args.raw:
-        return r
+        return r.json()
 
     print(r.json()["msg"])
 
@@ -6323,9 +6323,9 @@ def add__network_disk(args):
         print(json_blob)
     r = http_post(args, url, headers=headers, json=json_blob)
     r.raise_for_status()
- 
+
     if args.raw:
-        return r
+        return r.json()
 
     print("Attached network disk to machines. Disk id: " + str(r.json()["disk_id"]))
 
@@ -6375,7 +6375,7 @@ def cleanup_machine(args, machine_id):
             print(json.dumps(r.json(), indent=1))
         else:
             if args.raw:
-                return r
+                return r.json()
             else:
                 print(rj["msg"])
     else:
@@ -6483,7 +6483,7 @@ def list_machine(args, id):
             discount_rate_ = str(args.discount_rate)
             duration_ = str(args.duration)
             if args.raw:
-                return r
+                return r.json()
             else:
                 print("offers created/updated for machine {id},  @ ${price_gpu_}/gpu/hr, ${price_inetu_}/GB up, ${price_inetd_}/GB down, {min_chunk_}/min gpus, max discount_rate {discount_rate_}, till {end_date_}, duration {duration_}".format(**locals()))
                 num_extended = rj.get("extended", 0)
@@ -6493,7 +6493,7 @@ def list_machine(args, id):
 
         else:
             if args.raw:
-                return r
+                return r.json()
             else:
                 print(rj["msg"])
     else:
@@ -6592,7 +6592,7 @@ def list__network_volume(args):
     r = http_post(args, url, headers=headers, json=json_blob)
     r.raise_for_status()
     if args.raw:
-        return r
+        return r.json()
 
     print(r.json()["msg"])
 
@@ -6610,7 +6610,7 @@ def list__network_volume(args):
         Allocates a section of disk on a machine to be used for volumes.  
     """)
 )
-def list__volume(args):        
+def list__volume(args):
     json_blob ={
         "size": int(args.size),
         "machine": int(args.id),
@@ -6628,7 +6628,7 @@ def list__volume(args):
     r = http_post(args, url,  headers=headers,json=json_blob)
     r.raise_for_status()
     if args.raw:
-        return r
+        return r.json()
     else:
         print("Created. {}".format(r.json()))
 
@@ -6663,7 +6663,7 @@ def list__volumes(args):
     r = http_post(args, url,  headers=headers,json=json_blob)
     r.raise_for_status()
     if args.raw:
-        return r
+        return r.json()
     else:
         print("Created. {}".format(r.json()))
 
@@ -7302,8 +7302,8 @@ def unlist__network_volume(args):
     r = http_post(args, url, headers=headers, json=json_blob)
     r.raise_for_status()
     if args.raw:
-        return r
- 
+        return r.json()
+
     print(r.json()["msg"])
 
 @parser.command(
@@ -7326,7 +7326,7 @@ def unlist__volume(args):
     r = http_post(args, url, headers, json_blob)
     r.raise_for_status()
     if args.raw:
-        return r
+        return r.json()
     else:
         print(r.json()["msg"])
 
@@ -7970,11 +7970,7 @@ def main():
     try:
         res = args.func(args)
         if args.raw and res is not None:
-            # There's two types of responses right now
-            try:
-                print(json.dumps(res, indent=1, sort_keys=True))
-            except:
-                print(json.dumps(res.json(), indent=1, sort_keys=True))
+            print(json.dumps(res, indent=1, sort_keys=True))
             sys.exit(0)
         sys.exit(res)
     except requests.exceptions.HTTPError as e:
