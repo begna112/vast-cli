@@ -1560,8 +1560,6 @@ def change__bid(args: argparse.Namespace):
     :param argparse.Namespace args: should supply all the command-line options
     :rtype int:
     """
-    url = apiurl(args, "/instances/bid_price/{id}/".format(id=args.id))
-
     json_blob = {"client_id": "me", "price": args.price,}
     if (args.explain):
         print("request json: ")
@@ -1572,12 +1570,11 @@ def change__bid(args: argparse.Namespace):
         cli_command = "change bid"
         api_endpoint = "/api/v0/instances/bid_price/{id}/".format(id=args.id)
         json_blob["instance_id"] = args.id
-        add_scheduled_job(args, json_blob, cli_command, api_endpoint, "PUT", instance_id=args.id)     
+        add_scheduled_job(args, json_blob, cli_command, api_endpoint, "PUT", instance_id=args.id)
         return
-    
-    r = http_put(args, url, headers=headers, json=json_blob)
-    r.raise_for_status()
-    print("Per gpu bid price changed".format(r.json()))
+
+    result = api_call(args, "PUT", "/instances/bid_price/{id}/".format(id=args.id), json_body=json_blob)
+    print("Per gpu bid price changed".format(result))
 
 
 
@@ -2121,12 +2118,9 @@ def create__cluster(args: argparse.Namespace):
 )
 def create__env_var(args):
     """Create a new environment variable for the current user."""
-    url = apiurl(args, "/secrets/")
     data = {"key": args.name, "value": args.value}
-    r = http_post(args, url, headers=headers, json=data)
-    r.raise_for_status()
+    result = api_call(args, "POST", "/secrets/", json_body=data)
 
-    result = r.json()
     if result.get("success"):
         print(result.get("msg", "Environment variable created successfully."))
     else:
@@ -2157,20 +2151,18 @@ def create__env_var(args):
 
 def create__ssh_key(args):
     ssh_key_content = args.ssh_key
-    
+
     # If no SSH key provided, generate one
     if not ssh_key_content:
         ssh_key_content = generate_ssh_key(args.yes)
     else:
         print("Adding provided SSH public key to account...")
-    
+
     # Send the SSH key to the API
-    url = apiurl(args, "/ssh/")
-    r = http_post(args, url, headers=headers, json={"ssh_key": ssh_key_content})
-    r.raise_for_status()
-    
+    result = api_call(args, "POST", "/ssh/", json_body={"ssh_key": ssh_key_content})
+
     # Print json response
-    print("ssh-key created {}\nNote: You may need to add the new public key to any pre-existing instances".format(r.json()))
+    print("ssh-key created {}\nNote: You may need to add the new public key to any pre-existing instances".format(result))
 
 
 def generate_ssh_key(auto_yes=False):
@@ -2648,10 +2640,8 @@ def create__subaccount(args):
 )
 
 def create__team(args):
-    url = apiurl(args, "/team/")
-    r = http_post(args, url, headers=headers, json={"team_name": args.team_name})
-    r.raise_for_status()
-    print(r.json())
+    result = api_call(args, "POST", "/team/", json_body={"team_name": args.team_name})
+    print(result)
 
 @parser.command(
     argument("--name", help="name of the role", type=str),
@@ -2664,11 +2654,9 @@ def create__team(args):
     """)
 )
 def create__team_role(args):
-    url = apiurl(args, "/team/roles/")
     permissions = load_permissions_from_file(args.permissions)
-    r = http_post(args, url, headers=headers, json={"name": args.name, "permissions": permissions})
-    r.raise_for_status()
-    print(r.json())
+    result = api_call(args, "POST", "/team/roles/", json_body={"name": args.name, "permissions": permissions})
+    print(result)
 
 def get_template_arguments():
     return [
@@ -2902,14 +2890,12 @@ def delete__cluster(args: argparse.Namespace):
     if args.explain:
         print("request json:", json_blob)
 
-    req_url = apiurl(args, "/cluster/")
-    r = http_del(args, req_url, json=json_blob)
-    r.raise_for_status()
+    result = api_call(args, "DELETE", "/cluster/", json_body=json_blob)
 
     if args.raw:
-        return r
+        return result
 
-    print(r.json()["msg"])
+    print(result["msg"])
 
 
 @parser.command(
@@ -3007,14 +2993,12 @@ def delete__overlay(args: argparse.Namespace):
     if args.explain:
         print("request json:", json_blob)
 
-    req_url = apiurl(args, "/overlay/")
-    r = http_del(args, req_url, json=json_blob)
-    r.raise_for_status()
+    result = api_call(args, "DELETE", "/overlay/", json_body=json_blob)
 
     if args.raw:
-        return r
+        return result
 
-    print(r.json()["msg"])
+    print(result["msg"])
 
 @parser.command(
     argument("--template-id", help="Template ID of Template to Delete", type=int),
@@ -3067,13 +3051,11 @@ def delete__template(args):
     """)
 )
 def delete__volume(args: argparse.Namespace):
-    url = apiurl(args, "/volumes/", query_args={"id": args.id})
-    r = http_del(args, url, headers=headers)
-    r.raise_for_status()
+    result = api_call(args, "DELETE", "/volumes/", query_args={"id": args.id})
     if args.raw:
-        return r
+        return result
     else:
-        print("Deleted. {}".format(r.json()))
+        print("Deleted. {}".format(result))
 
 
 def destroy_instance(id,args):
@@ -3125,10 +3107,8 @@ def destroy__instances(args):
     help="Destroy your team",
 )
 def destroy__team(args):
-    url = apiurl(args, "/team/")
-    r = http_del(args, url, headers=headers)
-    r.raise_for_status()
-    print(r.json())
+    result = api_call(args, "DELETE", "/team/")
+    print(result)
 
 @parser.command(
     argument("instance_id", help="id of the instance", type=int),
@@ -3379,19 +3359,16 @@ def label__instance(args):
     :param argparse.Namespace args: should supply all the command-line options
     :rtype:
     """
-    url       = apiurl(args, "/instances/{id}/".format(id=args.id))
     json_blob = { "label": args.label }
     if (args.explain):
         print("request json: ")
         print(json_blob)
-    r = http_put(args, url,  headers=headers,json=json_blob)
-    r.raise_for_status()
+    result = api_call(args, "PUT", "/instances/{id}/".format(id=args.id), json_body=json_blob)
 
-    rj = r.json();
-    if rj["success"]:
+    if result["success"]:
         print("label for {args.id} set to {args.label}.".format(**(locals())));
     else:
-        print(rj["msg"]);
+        print(result["msg"]);
 
 
 def fetch_url_content(url):
@@ -3712,9 +3689,7 @@ def reboot__instance(args):
     :param argparse.Namespace args: should supply all the command-line options
     :rtype:
     """
-    url = apiurl(args, "/instances/reboot/{id}/".format(id=args.id))
-    r = http_put(args, url,  headers=headers,json={})
-    r.raise_for_status()
+    result = api_call(args, "PUT", "/instances/reboot/{id}/".format(id=args.id))
 
     if (args.schedule):
         validate_frequency_values(args.day, args.hour, args.schedule)
@@ -3724,15 +3699,10 @@ def reboot__instance(args):
         add_scheduled_job(args, json_blob, cli_command, api_endpoint, "PUT", instance_id=args.id)
         return
 
-    if (r.status_code == 200):
-        rj = r.json();
-        if (rj["success"]):
-            print("Rebooting instance {args.id}.".format(**(locals())));
-        else:
-            print(rj["msg"]);
+    if result and result.get("success"):
+        print("Rebooting instance {args.id}.".format(**(locals())));
     else:
-        print(r.text);
-        print("failed with error {r.status_code}".format(**locals()));
+        print(result.get("msg", "") if result else "");
 
 
 @parser.command(
@@ -3748,19 +3718,12 @@ def recycle__instance(args):
     :param argparse.Namespace args: should supply all the command-line options
     :rtype:
     """
-    url = apiurl(args, "/instances/recycle/{id}/".format(id=args.id))
-    r = http_put(args, url,  headers=headers,json={})
-    r.raise_for_status()
+    result = api_call(args, "PUT", "/instances/recycle/{id}/".format(id=args.id))
 
-    if (r.status_code == 200):
-        rj = r.json()
-        if (rj["success"]):
-            print("Recycling instance {args.id}.".format(**(locals())));
-        else:
-            print(rj["msg"]);
+    if result and result.get("success"):
+        print("Recycling instance {args.id}.".format(**(locals())));
     else:
-        print(r.text)
-        print("failed with error {r.status_code}".format(**locals()));
+        print(result.get("msg", "") if result else "");
 
 @parser.command(
     argument("id", help="id of user to remove", type=int),
@@ -6025,14 +5988,12 @@ def update__instance(args):
     help="Update an existing team role",
 )
 def update__team_role(args):
-    url = apiurl(args, "/team/roles/{id}/".format(id=args.id))
     permissions = load_permissions_from_file(args.permissions)
-    r = http_put(args, url,  headers=headers, json={"name": args.name, "permissions": permissions})
-    r.raise_for_status()
+    result = api_call(args, "PUT", "/team/roles/{id}/".format(id=args.id), json_body={"name": args.name, "permissions": permissions})
     if args.raw:
-        return r
+        return result
     else:
-        print(json.dumps(r.json(), indent=1))
+        print(json.dumps(result, indent=1))
 
 
 
@@ -6119,16 +6080,14 @@ def update__template(args):
 def update__ssh_key(args):
     """Updates an existing SSH key for the authenticated user."""
     ssh_key = get_ssh_key(args.ssh_key)
-    url = apiurl(args, f"/ssh/{args.id}/")
 
     payload = {
         "id": args.id,
         "ssh_key": ssh_key,
     }
 
-    r = http_put(args, url, json=payload)
-    r.raise_for_status()
-    print(r.json())
+    result = api_call(args, "PUT", f"/ssh/{args.id}/", json_body=payload)
+    print(result)
 
 def convert_dates_to_timestamps(args):
     selector_flag = ""
