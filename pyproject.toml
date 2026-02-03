@@ -40,17 +40,12 @@ dependencies = [
 [project.optional-dependencies]
 # Serverless client + server dependencies
 serverless = [
-  "fastapi>=0.110,<1.0",
-  "uvicorn[standard]>=0.24,<0.32",
   "aiohttp>=3.10,<4.0",
   "aiodns>=3.2.0",
   "pycares>=4.4.0",
   "anyio>=4.4,<5.0",
-  "nltk>=3.9,<4.0",
   "psutil>=6.0,<7.0",
   "pycryptodome>=3.20,<4.0",
-  "transformers>=4.40,<5.0",
-  "hf_transfer>=0.1.9",
 ]
 # Everything: SDK + serverless
 all = [
