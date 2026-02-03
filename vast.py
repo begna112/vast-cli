@@ -3314,7 +3314,7 @@ def get__endpt_logs(args):
     if args.url == server_url_default:
         args.url = None
     url = (args.url or "https://run.vast.ai") + "/get_endpoint_logs/"
-    json_blob = {"id": args.id, "api_key": args.api_key}
+    json_blob = {"id": args.id}
     if args.tail: json_blob["tail"] = args.tail
     if (args.explain):
         print(f"{url} with request json: ")
@@ -3353,7 +3353,7 @@ def get__wrkgrp_logs(args):
     if args.url == server_url_default:
         args.url = None
     url = (args.url or "https://run.vast.ai") + "/get_autogroup_logs/"
-    json_blob = {"id": args.id, "api_key": args.api_key}
+    json_blob = {"id": args.id}
     if args.tail: json_blob["tail"] = args.tail
     if (args.explain):
         print(f"{url} with request json: ")
@@ -5083,7 +5083,7 @@ def show__ssh_keys(args):
 )
 def show__workergroups(args):
     url = apiurl(args, "/autojobs/" )
-    json_blob = {"client_id": "me", "api_key": args.api_key}
+    json_blob = {"client_id": "me"}
     if (args.explain):
         print("request json: ")
         print(json_blob)
@@ -5111,7 +5111,7 @@ def show__workergroups(args):
 )
 def show__endpoints(args):
     url = apiurl(args, "/endptjobs/" )
-    json_blob = {"client_id": "me", "api_key": args.api_key}
+    json_blob = {"client_id": "me"}
     if (args.explain):
         print("request json: ")
         print(json_blob)
