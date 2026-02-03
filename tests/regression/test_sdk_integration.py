@@ -164,3 +164,55 @@ class TestSDKFeatureCompleteness:
             "delete_autoscaler alias should exist (SDK-06)"
         assert hasattr(sdk, 'update_autoscaler'), \
             "update_autoscaler alias should exist (SDK-06)"
+
+
+class TestSDKMethodCoverage:
+    """Verify SDK method coverage against CLI commands."""
+
+    def test_method_count_matches_cli_commands(self):
+        """SDK should have methods for most CLI commands."""
+        from vastai import VastAI
+        import vast
+
+        sdk = VastAI(api_key="test_key")
+
+        # Count CLI commands (functions with double underscore)
+        cli_commands = [
+            name for name in dir(vast)
+            if callable(getattr(vast, name))
+            and '__' in name
+            and not name.startswith('_')
+        ]
+
+        # SDK should have at least 80% coverage
+        # (some commands like 'help' are excluded)
+        min_expected = int(len(cli_commands) * 0.80)
+        actual_count = len(sdk.imported_methods)
+
+        assert actual_count >= min_expected, \
+            f"SDK has {actual_count} methods but CLI has {len(cli_commands)} commands. " \
+            f"Expected at least {min_expected} methods."
+
+    def test_all_critical_methods_exist(self):
+        """SDK must have all commonly-used methods."""
+        from vastai import VastAI
+
+        sdk = VastAI(api_key="test_key")
+
+        critical_methods = [
+            'search_offers',
+            'create_instance',
+            'destroy_instance',
+            'show_instances',
+            'start_instance',
+            'stop_instance',
+            'show_machines',
+            'logs',
+            'execute',
+            'copy',
+            'show_user',
+        ]
+
+        for method in critical_methods:
+            assert hasattr(sdk, method) or method in sdk.imported_methods, \
+                f"Critical method '{method}' missing from SDK"
