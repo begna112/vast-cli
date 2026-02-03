@@ -9,6 +9,7 @@ import sys
 import argparse
 import os
 import time
+import calendar
 from typing import Dict, List, Tuple, Optional
 from datetime import date, datetime, timedelta, timezone
 import hashlib
@@ -281,7 +282,7 @@ def string_to_unix_epoch(date_string):
     except ValueError:
         # If not, parse it as a date string
         date_object = datetime.strptime(date_string, "%m/%d/%Y")
-        return time.mktime(date_object.timetuple())
+        return calendar.timegm(date_object.timetuple())
 
 def unix_to_readable(ts):
     # ts: integer or float, Unix timestamp
@@ -5577,10 +5578,13 @@ def show__instances(args = {}, extra = {}):
     r = http_get(args, req_url)
     r.raise_for_status()
     rows = r.json()["instances"]
+    new_rows = []
     for row in rows:
-        row = {k: strip_strings(v) for k, v in row.items()} 
+        row = {k: strip_strings(v) for k, v in row.items()}
         row['duration'] = time.time() - row['start_date']
         row['extra_env'] = {env_var[0]: env_var[1] for env_var in row['extra_env']}
+        new_rows.append(row)
+    rows = new_rows
     if 'internal' in extra:
         return [str(row[extra['field']]) for row in rows]
     elif args.quiet:
@@ -6117,7 +6121,7 @@ def convert_dates_to_timestamps(args):
         try:
             end_date = dateutil.parser.parse(str(args.end_date))
             end_date_txt = end_date.isoformat()
-            end_timestamp = time.mktime(end_date.timetuple())
+            end_timestamp = calendar.timegm(end_date.timetuple())
         except ValueError as e:
             print(f"Warning: Invalid end date format! Ignoring end date! \n {str(e)}")
     
@@ -6125,7 +6129,7 @@ def convert_dates_to_timestamps(args):
         try:
             start_date = dateutil.parser.parse(str(args.start_date))
             start_date_txt = start_date.isoformat()
-            start_timestamp = time.mktime(start_date.timetuple())
+            start_timestamp = calendar.timegm(start_date.timetuple())
         except ValueError as e:
             print(f"Warning: Invalid start date format! Ignoring end date! \n {str(e)}")
 
@@ -6172,14 +6176,14 @@ def filter_invoice_items(args: argparse.Namespace, rows: List) -> Dict:
         try:
             end_date = dateutil.parser.parse(str(args.end_date))
             end_date_txt = end_date.isoformat()
-            end_timestamp = time.mktime(end_date.timetuple())
+            end_timestamp = calendar.timegm(end_date.timetuple())
         except ValueError:
             print("Warning: Invalid end date format! Ignoring end date!")
     if args.start_date:
         try:
             start_date = dateutil.parser.parse(str(args.start_date))
             start_date_txt = start_date.isoformat()
-            start_timestamp = time.mktime(start_date.timetuple())
+            start_timestamp = calendar.timegm(start_date.timetuple())
         except ValueError:
             print("Warning: Invalid start date format! Ignoring start date!")
 
