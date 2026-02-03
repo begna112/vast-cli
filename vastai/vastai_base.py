@@ -744,3 +744,205 @@ class VastAIBase(ABC):
             Confirmation message of unlisting.
         """
         pass
+
+    # Cluster Methods
+
+    def create_cluster(
+        self,
+        subnet: str,
+        manager_id: int,
+    ) -> str:
+        """Create a new Vast cluster.
+
+        Args:
+            subnet: Local subnet for cluster (e.g., '0.0.0.0/24').
+            manager_id: Machine ID of manager node in cluster. Must exist already.
+
+        Returns:
+            Confirmation message with cluster creation details.
+        """
+        pass
+
+    def delete_cluster(self, cluster_id: int) -> str:
+        """Delete a cluster.
+
+        Args:
+            cluster_id: ID of the cluster to delete.
+
+        Returns:
+            Confirmation message of deletion.
+        """
+        pass
+
+    def join_cluster(
+        self,
+        cluster_id: int,
+        machine_ids: List[int],
+    ) -> str:
+        """Join machines to a cluster.
+
+        Args:
+            cluster_id: ID of the cluster to add machines to.
+            machine_ids: List of machine IDs to join to the cluster.
+
+        Returns:
+            Confirmation message of machines joining cluster.
+        """
+        pass
+
+    def show_clusters(self) -> str:
+        """Show clusters associated with your account.
+
+        Returns:
+            List of clusters with their details (id, subnet, node count, etc.).
+        """
+        pass
+
+    # Overlay Methods
+
+    def create_overlay(
+        self,
+        cluster_id: int,
+        name: str,
+    ) -> str:
+        """Create an overlay network on top of a physical cluster.
+
+        Args:
+            cluster_id: ID of the cluster to create overlay on.
+            name: Overlay network name.
+
+        Returns:
+            Confirmation message with overlay creation details.
+        """
+        pass
+
+    def delete_overlay(self, overlay_identifier: str) -> str:
+        """Delete an overlay network.
+
+        Args:
+            overlay_identifier: ID (int) or name (str) of the overlay to delete.
+
+        Returns:
+            Confirmation message of deletion.
+        """
+        pass
+
+    def join_overlay(
+        self,
+        name: str,
+        instance_id: int,
+    ) -> str:
+        """Add an instance to an overlay network.
+
+        Args:
+            name: Overlay network name to join instance to.
+            instance_id: Instance ID to add to overlay.
+
+        Returns:
+            Confirmation message of instance joining overlay.
+        """
+        pass
+
+    def show_overlays(self) -> str:
+        """Show overlay networks associated with your account.
+
+        Returns:
+            List of overlays with their details (id, name, subnet, cluster_id, instances).
+        """
+        pass
+
+    # Environment Variable Methods
+
+    def create_env_var(
+        self,
+        name: str,
+        value: str,
+    ) -> str:
+        """Create a new user environment variable.
+
+        Args:
+            name: Environment variable name.
+            value: Environment variable value.
+
+        Returns:
+            Confirmation message with creation details.
+        """
+        pass
+
+    def delete_env_var(self, name: str) -> str:
+        """Delete an environment variable.
+
+        Args:
+            name: Name of the environment variable to delete.
+
+        Returns:
+            Confirmation message of deletion.
+        """
+        pass
+
+    def update_env_var(
+        self,
+        name: str,
+        value: str,
+    ) -> str:
+        """Update an existing environment variable.
+
+        Args:
+            name: Environment variable name to update.
+            value: New value for the environment variable.
+
+        Returns:
+            Confirmation message with update details.
+        """
+        pass
+
+    def show_env_vars(self, show_values: bool = False) -> str:
+        """Show user environment variables.
+
+        Args:
+            show_values: If True, display actual values. Default is False (masked).
+
+        Returns:
+            List of environment variables (values masked unless show_values=True).
+        """
+        pass
+
+    # Miscellaneous Methods
+
+    def create_account(
+        self,
+        email: str,
+        username: str,
+        password: str,
+    ) -> str:
+        """Create a new account.
+
+        Note: This command is deprecated. Use the web interface instead.
+
+        Args:
+            email: Email address for the new account.
+            username: Username for the new account.
+            password: Password for the new account.
+
+        Returns:
+            Deprecation message.
+        """
+        pass
+
+    def add_network_disk(
+        self,
+        instance_id: int,
+        volume_id: int,
+        mount_path: str = "/mnt/network",
+    ) -> str:
+        """Add a network disk (volume) to an instance.
+
+        Args:
+            instance_id: ID of the instance to add the network disk to.
+            volume_id: ID of the network volume to attach.
+            mount_path: Path where the volume will be mounted. Default is '/mnt/network'.
+
+        Returns:
+            Confirmation message with attachment details.
+        """
+        pass
