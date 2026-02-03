@@ -49,7 +49,7 @@ class VastAIBase(ABC):
         """Create a new SSH key."""
         pass
 
-    def create_autogroup(
+    def create_workergroup(
         self,
         test_workers: int = 3,
         gpu_ram: Optional[float] = None,
@@ -63,8 +63,11 @@ class VastAIBase(ABC):
         target_util: Optional[float] = None,
         cold_mult: Optional[float] = None,
     ) -> str:
-        """Create a new autoscaler."""
+        """Create a new workergroup (autoscaler)."""
         pass
+
+    # Backwards compatibility alias (deprecated: use create_workergroup)
+    create_autogroup = create_workergroup
 
     def create_endpoint(
         self,
@@ -149,8 +152,12 @@ class VastAIBase(ABC):
     def delete_ssh_key(self, id: int) -> str:
         pass
 
-    def delete_autoscaler(self, id: int) -> str:
+    def delete_workergroup(self, id: int) -> str:
+        """Delete a workergroup."""
         pass
+
+    # Backwards compatibility alias (deprecated: use delete_workergroup)
+    delete_autoscaler = delete_workergroup
 
     def delete_endpoint(self, id: int) -> str:
         pass
@@ -320,9 +327,12 @@ class VastAIBase(ABC):
         """Show all SSH keys."""
         pass
 
-    def show_autoscalers(self) -> str:
-        """Show all autoscalers."""
+    def show_workergroups(self) -> str:
+        """Show all workergroups (autoscalers)."""
         pass
+
+    # Backwards compatibility alias (deprecated: use show_workergroups)
+    show_autoscalers = show_workergroups
 
     def show_endpoints(self) -> str:
         """Show all endpoints."""
@@ -394,7 +404,7 @@ class VastAIBase(ABC):
         """Transfer credit to another account."""
         pass
 
-    def update_autoscaler(
+    def update_workergroup(
         self,
         id: int,
         min_load: Optional[float] = None,
@@ -409,7 +419,11 @@ class VastAIBase(ABC):
         endpoint_name: Optional[str] = None,
         endpoint_id: Optional[int] = None,
     ) -> str:
+        """Update a workergroup (autoscaler)."""
         pass
+
+    # Backwards compatibility alias (deprecated: use update_workergroup)
+    update_autoscaler = update_workergroup
 
     def update_endpoint(
         self,
