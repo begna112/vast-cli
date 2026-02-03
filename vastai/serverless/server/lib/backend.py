@@ -2,7 +2,6 @@ import os
 import json
 import time
 import base64
-import subprocess
 import dataclasses
 import logging
 from asyncio import wait, sleep, gather, Semaphore, FIRST_COMPLETED, create_task
@@ -114,19 +113,54 @@ class Backend:
         return handler_fn
 
     #######################################Private#######################################
-    def _fetch_pubkey(self):
+    def _fetch_pubkey(self) -> Optional[RSA.RsaKey]:
+        """Fetch the serverless public key using HTTP.
+
+        Uses requests library instead of subprocess+curl for better error handling
+        and to avoid shell dependency issues.
+        """
         report_addr = self.report_addr.rstrip("/")
-        command = ["curl", "-X", "GET", f"{report_addr}/pubkey/"]
+        url = f"{report_addr}/pubkey/"
         try:
-            result = subprocess.check_output(command, universal_newlines=True)
+            response = requests.get(url, timeout=30)
+            response.raise_for_status()
+            result = response.text
             log.debug("Serverless Public Key:")
             log.debug(result)
             key = RSA.import_key(result)
             if key is not None:
                 return key
-        except (ValueError , subprocess.CalledProcessError) as e:
+        except requests.RequestException as e:
+            log.debug(f"Error downloading key: {e}")
+        except ValueError as e:
+            log.debug(f"Error parsing key: {e}")
+        self.backend_errored("Failed to get Serverless public key")
+        return None
+
+    async def _fetch_pubkey_async(self) -> Optional[RSA.RsaKey]:
+        """Fetch the serverless public key using async HTTP (aiohttp).
+
+        For use in async contexts. Prefer this over _fetch_pubkey when running
+        in an async event loop.
+        """
+        report_addr = self.report_addr.rstrip("/")
+        url = f"{report_addr}/pubkey/"
+        try:
+            async with ClientSession() as session:
+                async with session.get(url, timeout=ClientTimeout(total=30)) as response:
+                    if response.status == 200:
+                        result = await response.text()
+                        log.debug("Serverless Public Key:")
+                        log.debug(result)
+                        key = RSA.import_key(result)
+                        if key is not None:
+                            return key
+                    else:
+                        log.debug(f"Failed to fetch pubkey: HTTP {response.status}")
+        except Exception as e:
             log.debug(f"Error downloading key: {e}")
         self.backend_errored("Failed to get Serverless public key")
+        return None
        
 
     async def __handle_request(

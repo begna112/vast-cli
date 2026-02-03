@@ -298,7 +298,7 @@ class Serverless:
                         "response" : worker_response,
                         "latency" : request.complete_time - request.start_time,
                         "url" : worker_url,
-                        "reuqest_idx" : request_idx
+                        "request_idx" : request_idx
                     }
                     request.set_result(response)
                     return
