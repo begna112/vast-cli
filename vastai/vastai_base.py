@@ -536,3 +536,211 @@ class VastAIBase(ABC):
         - str: A string representation of the machines information, possibly formatted as JSON or a human-readable list.
         """
         pass
+
+    # Volume Methods
+
+    def clone_volume(
+        self,
+        source: int,
+        dest: int,
+        size: Optional[float] = None,
+        disable_compression: bool = False,
+    ) -> str:
+        """Clone an existing volume to a new location.
+
+        Args:
+            source: ID of the volume contract being cloned.
+            dest: ID of the volume offer the volume is being copied to.
+            size: Size of the new volume contract in GB. Must be >= source and <= dest offer.
+            disable_compression: If True, do not compress volume data before copying.
+
+        Returns:
+            Confirmation message or volume creation details.
+        """
+        pass
+
+    def create_volume(
+        self,
+        id: int,
+        size: float = 15,
+        name: Optional[str] = None,
+    ) -> str:
+        """Create a new volume from an offer ID.
+
+        Args:
+            id: ID of the volume offer (from search volumes).
+            size: Size in GB of the volume. Default is 15 GB.
+            name: Optional name for the volume.
+
+        Returns:
+            Confirmation message with volume creation details.
+        """
+        pass
+
+    def delete_volume(self, id: int) -> str:
+        """Delete a volume.
+
+        Args:
+            id: ID of the volume contract to delete.
+
+        Returns:
+            Confirmation message of deletion.
+        """
+        pass
+
+    def list_volume(
+        self,
+        id: int,
+        price_disk: float = 0.10,
+        size: int = 15,
+        end_date: Optional[str] = None,
+    ) -> str:
+        """List disk space for rent as a volume on a machine.
+
+        Args:
+            id: ID of the machine to list volume on.
+            price_disk: Storage price in $/GB/month. Default is $0.10/GB/month.
+            size: Size of disk space allocated to offer in GB. Default is 15 GB.
+            end_date: Contract offer expiration date (unix timestamp or MM/DD/YYYY format).
+
+        Returns:
+            Confirmation message with listing details.
+        """
+        pass
+
+    def list_volumes(
+        self,
+        ids: List[int],
+        price_disk: float = 0.10,
+        size: int = 15,
+        end_date: Optional[str] = None,
+    ) -> str:
+        """List disk space for rent as volumes on multiple machines.
+
+        Args:
+            ids: List of machine IDs to list volumes on.
+            price_disk: Storage price in $/GB/month. Default is $0.10/GB/month.
+            size: Size of disk space allocated to offer in GB. Default is 15 GB.
+            end_date: Contract offer expiration date (unix timestamp or MM/DD/YYYY format).
+
+        Returns:
+            Confirmation message with listing details.
+        """
+        pass
+
+    def search_volumes(
+        self,
+        query: Optional[str] = None,
+        no_default: bool = False,
+        limit: Optional[int] = None,
+        storage: float = 1.0,
+        order: str = "score-",
+    ) -> str:
+        """Search for volume offers using custom query.
+
+        Args:
+            query: Query string for filtering volumes.
+            no_default: If True, disable default query filters.
+            limit: Maximum number of results to return.
+            storage: Amount of storage for pricing in GiB. Default is 1.0 GiB.
+            order: Comma-separated list of fields to sort on. Default is 'score-'.
+
+        Returns:
+            List of matching volume offers.
+        """
+        pass
+
+    def show_volumes(self, type: str = "all") -> str:
+        """Show stats on owned volumes.
+
+        Args:
+            type: Volume type to display. Options: 'local', 'network', 'all'. Default is 'all'.
+
+        Returns:
+            List of owned volumes with their details.
+        """
+        pass
+
+    def unlist_volume(self, id: int) -> str:
+        """Unlist a volume offer.
+
+        Args:
+            id: Volume ID to unlist.
+
+        Returns:
+            Confirmation message of unlisting.
+        """
+        pass
+
+    # Network Volume Methods
+
+    def create_network_volume(
+        self,
+        id: int,
+        size: float = 15,
+        name: Optional[str] = None,
+    ) -> str:
+        """Create a new network volume from an offer ID.
+
+        Args:
+            id: ID of the network volume offer (from search network volumes).
+            size: Size in GB of the network volume. Default is 15 GB.
+            name: Optional name for the network volume.
+
+        Returns:
+            Confirmation message with network volume creation details.
+        """
+        pass
+
+    def list_network_volume(
+        self,
+        disk_id: int,
+        price_disk: float = 0.15,
+        size: int = 15,
+        end_date: Optional[str] = None,
+    ) -> str:
+        """List disk space for rent as a network volume.
+
+        Args:
+            disk_id: ID of the network disk to list.
+            price_disk: Storage price in $/GB/month. Default is $0.15/GB/month.
+            size: Size of disk space allocated to offer in GB. Default is 15 GB.
+            end_date: Contract offer expiration date (unix timestamp or MM/DD/YYYY format).
+
+        Returns:
+            Confirmation message with listing details.
+        """
+        pass
+
+    def search_network_volumes(
+        self,
+        query: Optional[str] = None,
+        no_default: bool = False,
+        limit: Optional[int] = None,
+        storage: float = 1.0,
+        order: str = "score-",
+    ) -> str:
+        """Search for network volume offers using custom query.
+
+        Args:
+            query: Query string for filtering network volumes.
+            no_default: If True, disable default query filters.
+            limit: Maximum number of results to return.
+            storage: Amount of storage for pricing in GiB. Default is 1.0 GiB.
+            order: Comma-separated list of fields to sort on. Default is 'score-'.
+
+        Returns:
+            List of matching network volume offers.
+        """
+        pass
+
+    def unlist_network_volume(self, id: int) -> str:
+        """Unlist a network volume offer.
+
+        Args:
+            id: Network volume offer ID to unlist.
+
+        Returns:
+            Confirmation message of unlisting.
+        """
+        pass
