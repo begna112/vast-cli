@@ -82,6 +82,10 @@ logging.basicConfig(
     format="%(levelname)s - %(message)s"
 )
 
+DEFAULT_TIMEOUT = 30    # seconds -- normal API calls
+LONG_TIMEOUT = 120      # seconds -- file operations, large queries
+RETRYABLE_STATUS_CODES = {429, 502, 503, 504}
+
 def parse_version(version: str) -> tuple[int, ...]:
     parts = version.split(".")
 
@@ -137,7 +141,7 @@ def get_local_version():
 
 def get_project_data(project_name: str) -> dict[str, dict[str, str]]:
     url = PYPI_BASE_PATH + f"/pypi/{project_name}/json"
-    response = requests.get(url, headers={"Accept": "application/json"})
+    response = requests.get(url, headers={"Accept": "application/json"}, timeout=10)
 
     # this will raise for HTTP status 4xx and 5xx
     response.raise_for_status()
@@ -325,7 +329,7 @@ class hidden_aliases(object):
     def append(self, x):
         self.l.append(x)
 
-def http_request(verb, args, req_url, headers: dict[str, str] | None = None, json = None):
+def http_request(verb, args, req_url, headers: dict[str, str] | None = None, json = None, timeout=DEFAULT_TIMEOUT):
     t = 0.15
     r = None
     for i in range(0, args.retry):
@@ -343,38 +347,41 @@ def http_request(verb, args, req_url, headers: dict[str, str] | None = None, jso
             sys.exit(0)
         else:
             try:
-                r = session.send(prep)
-            except requests.exceptions.RequestException as e:
+                r = session.send(prep, timeout=timeout)
+            except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as e:
                 if i < args.retry - 1:
                     time.sleep(t)
                     t *= 1.5
                     continue
                 raise
+            except requests.exceptions.RequestException as e:
+                # Non-retryable request errors (e.g., InvalidURL)
+                raise
 
-        if (r.status_code == 429):
+        if r.status_code in RETRYABLE_STATUS_CODES:
             time.sleep(t)
             t *= 1.5
         else:
             break
     return r
 
-def http_get(args, req_url, headers = None, json = None):
-    return http_request('GET', args, req_url, headers, json)
+def http_get(args, req_url, headers=None, json=None, timeout=DEFAULT_TIMEOUT):
+    return http_request('GET', args, req_url, headers, json, timeout=timeout)
 
-def http_put(args, req_url, headers=None, json=None):
+def http_put(args, req_url, headers=None, json=None, timeout=DEFAULT_TIMEOUT):
     if json is None:
         json = {}
-    return http_request('PUT', args, req_url, headers, json)
+    return http_request('PUT', args, req_url, headers, json, timeout=timeout)
 
-def http_post(args, req_url, headers=None, json=None):
+def http_post(args, req_url, headers=None, json=None, timeout=DEFAULT_TIMEOUT):
     if json is None:
         json = {}
-    return http_request('POST', args, req_url, headers, json)
+    return http_request('POST', args, req_url, headers, json, timeout=timeout)
 
-def http_del(args, req_url, headers=None, json=None):
+def http_del(args, req_url, headers=None, json=None, timeout=DEFAULT_TIMEOUT):
     if json is None:
         json = {}
-    return http_request('DELETE', args, req_url, headers, json)
+    return http_request('DELETE', args, req_url, headers, json, timeout=timeout)
 
 
 def load_permissions_from_file(file_path):
