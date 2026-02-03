@@ -697,6 +697,54 @@ def output_result(args, data, fields=None):
     return None
 
 
+def error_output(args, status_code, message, *, detail=None):
+    """Output an error in the appropriate format for the current mode.
+
+    In raw mode: prints JSON error object to stderr.
+    In non-raw mode: prints human-readable error to stderr.
+
+    Args:
+        args: argparse.Namespace with raw flag.
+        status_code: HTTP status code or error code.
+        message: Error message string.
+        detail: Optional additional detail string.
+    """
+    if getattr(args, 'raw', False):
+        error = {"error": True, "status_code": status_code, "msg": message}
+        if detail:
+            error["detail"] = detail
+        print(json.dumps(error), file=sys.stderr)
+    else:
+        print(f"failed with error {status_code}: {message}", file=sys.stderr)
+
+
+def require_id(args, field="id"):
+    """Extract and validate an ID argument.
+
+    Args:
+        args: argparse.Namespace containing the ID field.
+        field: Name of the attribute on args (default "id").
+
+    Returns:
+        The value of the requested field.
+
+    Raises:
+        SystemExit: If the field is None or missing.
+    """
+    val = getattr(args, field, None)
+    if val is None:
+        print(f"Error: {field} is required", file=sys.stderr)
+        raise SystemExit(1)
+    return val
+
+
+# Field definition tuples: (key, display_name, format_string, converter_or_None, left_justify)
+# key: API response dict key
+# display_name: Column header in table output
+# format_string: Python format spec (e.g., ">8", "<16", ">10.4f")
+# converter_or_None: Lambda to transform value, or None for raw value
+# left_justify: Boolean, True for left-aligned columns
+
 # These are the fields that are displayed when a search is run
 displayable_fields = (
     # ("bw_nvlink", "Bandwidth NVLink", "{}", None, True),
