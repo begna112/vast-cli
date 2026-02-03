@@ -299,27 +299,32 @@ class VastAI(VastAIBase):
             if logger.isEnabledFor(logging.DEBUG):
                 kwargs_repr = {key: repr(value) for key, value in kwargs.items()}
                 logging.debug(f"Calling {func.__name__} with arguments: kwargs={kwargs_repr}")
-            else:
+
+            # MFIX-08: Setup stdout capture with proper cleanup via finally block
+            out_b = None
+            out_o = None
+            if not logger.isEnabledFor(logging.DEBUG):
                 out_b = io.StringIO()
                 out_o = sys.stdout
                 sys.stdout = out_b
 
-            res = ''
+            res = None
             try:
                 res = func(args)
             except SystemExit as e:
-                # CLI functions call sys.exit(); capture exit code as return value
+                # MFIX-09: CLI functions call sys.exit(); capture exit code as return value
                 if e.code is not None and e.code != 0:
                     logging.warning(f"CLI function {func.__name__} exited with code {e.code}")
                 res = e.code
             except Exception as e:
                 logging.warning(f"Error calling {func.__name__}: {e}")
                 res = None
-
-            if not logger.isEnabledFor(logging.DEBUG):
-                sys.stdout = out_o
-                self.last_output = out_b.getvalue()
-                out_b.close()
+            finally:
+                # MFIX-08: ALWAYS restore stdout, even if unexpected exceptions occur
+                if out_o is not None:
+                    sys.stdout = out_o
+                    self.last_output = out_b.getvalue()
+                    out_b.close()
 
             if func.__name__ in _hooks:
               res = _hooks[func.__name__][1](state, res, self)
