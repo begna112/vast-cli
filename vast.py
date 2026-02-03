@@ -299,7 +299,7 @@ def string_to_unix_epoch(date_string):
 
 def unix_to_readable(ts):
     # ts: integer or float, Unix timestamp
-    return datetime.fromtimestamp(ts).strftime('%H:%M:%S|%h-%d-%Y')
+    return datetime.fromtimestamp(ts, tz=timezone.utc).strftime('%H:%M:%S|%h-%d-%Y')
 
 def fix_date_fields(query: Dict[str, Dict], date_fields: List[str]):
     """Takes in a query and date fields to correct and returns query with appropriate epoch dates"""
@@ -1003,8 +1003,8 @@ machine_fields = (
 # These fields are displayed when you do 'show maints'
 maintenance_fields = (
     ("machine_id", "Machine ID", "{}", None, True),
-    ("start_time", "Start (Date/Time)", "{}", lambda x: datetime.fromtimestamp(x).strftime('%Y-%m-%d/%H:%M'), True),
-    ("end_time", "End (Date/Time)", "{}", lambda x: datetime.fromtimestamp(x).strftime('%Y-%m-%d/%H:%M'), True),
+    ("start_time", "Start (Date/Time)", "{}", lambda x: datetime.fromtimestamp(x, tz=timezone.utc).strftime('%Y-%m-%d/%H:%M'), True),
+    ("end_time", "End (Date/Time)", "{}", lambda x: datetime.fromtimestamp(x, tz=timezone.utc).strftime('%Y-%m-%d/%H:%M'), True),
     ("duration_hours", "Duration (Hrs)", "{}", None, True),
     ("maintenance_category", "Category", "{}", None, True),
 )
@@ -1029,8 +1029,8 @@ scheduled_jobs_fields = (
     ("id", "Scheduled Job ID", "{}", None, True),
     ("instance_id", "Instance ID", "{}", None, True),
     ("api_endpoint", "API Endpoint", "{}", None, True),
-    ("start_time", "Start (Date/Time in UTC)", "{}", lambda x: datetime.fromtimestamp(x).strftime('%Y-%m-%d/%H:%M'), True),
-    ("end_time", "End (Date/Time in UTC)", "{}", lambda x: datetime.fromtimestamp(x).strftime('%Y-%m-%d/%H:%M'), True),
+    ("start_time", "Start (Date/Time in UTC)", "{}", lambda x: datetime.fromtimestamp(x, tz=timezone.utc).strftime('%Y-%m-%d/%H:%M'), True),
+    ("end_time", "End (Date/Time in UTC)", "{}", lambda x: datetime.fromtimestamp(x, tz=timezone.utc).strftime('%Y-%m-%d/%H:%M'), True),
     ("day_of_the_week", "Day of the Week", "{}", None, True),
     ("hour_of_the_day", "Hour of the Day in UTC", "{}", None, True),
     ("min_of_the_hour", "Minute of the Hour", "{}", None, True),
@@ -3481,7 +3481,7 @@ def _get_gpu_names() -> List[str]:
         """Checks if the cache file exists and is less than 24 hours old."""
         if not os.path.exists(CACHE_FILE):
             return False
-        cache_age = datetime.now() - datetime.fromtimestamp(os.path.getmtime(CACHE_FILE))
+        cache_age = datetime.now(tz=timezone.utc) - datetime.fromtimestamp(os.path.getmtime(CACHE_FILE), tz=timezone.utc)
         return cache_age < CACHE_DURATION
     
     if is_cache_valid():
@@ -7255,7 +7255,7 @@ def schedule__maint(args):
     """
     url = apiurl(args, "/machines/{id}/dnotify/".format(id=args.id))
 
-    dt = datetime.utcfromtimestamp(args.sdate)
+    dt = datetime.fromtimestamp(args.sdate, tz=timezone.utc)
     print(f"Scheduling maintenance window starting {dt} lasting {args.duration} hours")
     print(f"This will notify all clients of this machine.")
     ok = input("Continue? [y/n] ")
@@ -8101,15 +8101,25 @@ def main():
         sys.exit(res)
     except requests.exceptions.HTTPError as e:
         try:
-            errmsg = e.response.json().get("msg");
+            errmsg = e.response.json().get("msg")
         except JSONDecodeError:
             if e.response.status_code == 401:
                 errmsg = "Please log in or sign up"
             else:
                 errmsg = "(no detail message supplied)"
-        print("failed with error {e.response.status_code}: {errmsg}".format(**locals()));
+        if hasattr(args, 'raw') and args.raw:
+            error = {"error": True, "status_code": e.response.status_code, "msg": errmsg}
+            print(json.dumps(error, indent=1))
+        else:
+            print("failed with error {e.response.status_code}: {errmsg}".format(**locals()))
+        sys.exit(1)
     except ValueError as e:
-      print(e)
+        if hasattr(args, 'raw') and args.raw:
+            error = {"error": True, "msg": str(e)}
+            print(json.dumps(error, indent=1))
+        else:
+            print(e)
+        sys.exit(1)
 
 
 if __name__ == "__main__":
