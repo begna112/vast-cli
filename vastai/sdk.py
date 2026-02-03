@@ -1,7 +1,7 @@
 import importlib
 import types
 import argparse
-from typing import Any, Callable
+from typing import Any, Callable, cast
 import io
 import contextlib
 import requests
@@ -71,18 +71,20 @@ def queryParser(kwargs: dict[str, Any], instance: "VastAI") -> tuple[dict[str, b
 
     toPass = []
 
-    for key in state.keys():
-      state[key] = any([key, '=', 'true'] == list(expr) for expr in parsed)
+    for state_key in state.keys():
+      state[state_key] = any([state_key, '=', 'true'] == list(expr) for expr in parsed)
 
     for expr in parsed:
       if expr[0] in state.keys():
         continue
 
       elif expr[0] == 'geolocation' and state['georegion']:
-        region = _regions.get(expr[2].strip('"'))
-        expr = ['geolocation', 'in', f'[{region}]']
+        region = _regions.get(str(expr[2]).strip('"'))
+        expr_list: list[str] = ['geolocation', 'in', f'[{region}]']
+        toPass.append(' '.join(expr_list))
+        continue
 
-      toPass.append(' '.join(expr))
+      toPass.append(' '.join(str(e) for e in expr))
 
     kwargs['query'] = ' '.join(toPass)
 
@@ -133,7 +135,9 @@ def queryFormatter(state: dict[str, bool], obj: list[dict[str, Any]], instance: 
 def lastOutput(state: dict[str, bool] | None, obj: Any, instance: "VastAI") -> str | None:
     return instance.last_output
 
-_hooks = {
+# Hook functions: [pre_hook, post_hook] for each command
+# Pre-hooks transform kwargs, post-hooks transform results
+_hooks: dict[str, list[Callable[..., Any] | None]] = {
     'search__offers': [queryParser, queryFormatter],
     'logs': [None, lastOutput],
     'execute': [None, lastOutput]
@@ -203,11 +207,11 @@ class VastAI(VastAIBase):
         for action in sorted(parser._actions,  key=lambda action: len(action.option_strings) > 0):
             if action.dest == 'help':
                 continue
-            if "Alias" in action.help:
+            if action.help and "Alias" in action.help:
                 continue
 
             # Determine parameter kind
-            kind = inspect.Parameter.POSITIONAL_OR_KEYWORD
+            kind: inspect._ParameterKind = inspect.Parameter.POSITIONAL_OR_KEYWORD
             if action.option_strings:
                 kind = inspect.Parameter.KEYWORD_ONLY
 
@@ -283,7 +287,7 @@ class VastAI(VastAIBase):
     ) -> Callable[..., Any]:
         """Create a wrapper to check required arguments, convert keyword arguments, and capture output."""
 
-        def wrapper(self, **kwargs):
+        def wrapper(self: "VastAI", **kwargs: Any) -> Any:
             arg_details = self.imported_methods.get(method_name, {})
             for arg, details in arg_details.items():
                 if details["required"] and arg not in kwargs:
@@ -307,12 +311,15 @@ class VastAI(VastAIBase):
             kwargs.setdefault("curl", self.curl)
 
             # if we specified hooks we get that now
-            state = None
-            if func.__name__ in _hooks and _hooks[func.__name__][0] is not None:
-              state, kwargs = _hooks[func.__name__][0](kwargs, self)
+            state: dict[str, bool] | None = None
+            hooks_list = _hooks.get(func.__name__)
+            if hooks_list is not None:
+              pre_hook = hooks_list[0]
+              if pre_hook is not None:
+                state, kwargs = pre_hook(kwargs, self)
 
-            args = argparse.Namespace(**kwargs)
-            _vast.ARGS = args
+            namespace_args: argparse.Namespace = argparse.Namespace(**kwargs)
+            _vast.ARGS = namespace_args  # type: ignore[assignment]
 
             if logger.isEnabledFor(logging.DEBUG):
                 kwargs_repr = {key: repr(value) for key, value in kwargs.items()}
@@ -326,9 +333,9 @@ class VastAI(VastAIBase):
                 out_o = sys.stdout
                 sys.stdout = out_b
 
-            res = None
+            res: Any = None
             try:
-                res = func(args)
+                res = func(namespace_args)
             except SystemExit as e:
                 # MFIX-09: CLI functions call sys.exit(); capture exit code as return value
                 if e.code is not None and e.code != 0:
@@ -339,13 +346,16 @@ class VastAI(VastAIBase):
                 res = None
             finally:
                 # MFIX-08: ALWAYS restore stdout, even if unexpected exceptions occur
-                if out_o is not None:
+                if out_o is not None and out_b is not None:
                     sys.stdout = out_o
                     self.last_output = out_b.getvalue()
                     out_b.close()
 
-            if func.__name__ in _hooks:
-              res = _hooks[func.__name__][1](state, res, self)
+            hooks_list_post = _hooks.get(func.__name__)
+            if hooks_list_post is not None:
+              post_hook = hooks_list_post[1]
+              if post_hook is not None:
+                res = post_hook(state, res, self)
 
             if hasattr(res, 'json'):
                logging.debug(f" └-> {res.json()}")
@@ -379,7 +389,7 @@ class VastAI(VastAIBase):
         sig_help = getattr(func, "mysignature_help", None)
 
         if sig:
-            wrapper.__signature__, docappend = self.generate_signature_from_argparse(sig)
+            wrapper.__signature__, docappend = self.generate_signature_from_argparse(sig)  # type: ignore[attr-defined]
 
             # append epilog if exists
             if getattr(sig, "epilog", None):

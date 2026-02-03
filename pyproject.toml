@@ -153,6 +153,21 @@ ignore_errors = true
 module = "vast_pdf"
 ignore_errors = true
 
+# vastai_base.py - stub methods intentionally have empty bodies
+[[tool.mypy.overrides]]
+module = "vastai.vastai_base"
+ignore_errors = true
+
+# vastai_sdk.py - legacy wrapper, deprecated
+[[tool.mypy.overrides]]
+module = "vastai.vastai_sdk"
+ignore_errors = true
+
+# serverless modules - async code with complex typing requirements
+[[tool.mypy.overrides]]
+module = "vastai.serverless.*"
+ignore_errors = true
+
 # Tests - relaxed requirements
 [[tool.mypy.overrides]]
 module = "tests.*"

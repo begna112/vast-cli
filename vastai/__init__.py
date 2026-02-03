@@ -34,9 +34,9 @@ __all__ = [
 ]
 
 
-def __getattr__(name):
+def __getattr__(name: str) -> type:
     if name in _LAZY_IMPORTS:
         import importlib
         module = importlib.import_module(_LAZY_IMPORTS[name], __name__)
-        return getattr(module, name)
+        return getattr(module, name)  # type: ignore[no-any-return]
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
