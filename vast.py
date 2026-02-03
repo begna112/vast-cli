@@ -6498,8 +6498,13 @@ def cancel__maint(args):
         print(json_blob)
     r = http_put(args, url,  headers=headers,json=json_blob)
     r.raise_for_status()
-    print(r.text)
-    print(f"Cancel maintenance window(s) scheduled for machine {args.id} success".format(r.json()))
+    try:
+        rj = r.json()
+    except JSONDecodeError:
+        rj = {"success": True, "message": r.text}
+    if args.raw:
+        return rj
+    print(f"Cancel maintenance window(s) scheduled for machine {args.id} success")
 
 
 def cleanup_machine(args, machine_id):
@@ -6834,6 +6839,8 @@ def remove__defjob(args):
 
     if (r.status_code == 200):
         rj = r.json();
+        if args.raw:
+            return rj
         if (rj.get("success")):
             print("default instance for machine {machine_id} removed.".format(machine_id=args.id));
         else:
@@ -7145,6 +7152,8 @@ def set__defjob(args):
     r = http_put(args, req_url, headers=headers, json=json_blob)
     if (r.status_code == 200):
         rj = r.json();
+        if args.raw:
+            return rj
         if (rj.get("success")):
             print(
                 "bids created for machine {args.id},  @ ${args.price_gpu}/gpu/day, ${args.price_inetu}/GB up, ${args.price_inetd}/GB down".format(**locals()));
@@ -7253,7 +7262,10 @@ def set__min_bid(args):
         print(json_blob)
     r = http_put(args, url,  headers=headers,json=json_blob)
     r.raise_for_status()
-    print("Per gpu min bid price changed".format(r.json()))
+    rj = r.json()
+    if args.raw:
+        return rj
+    print("Per gpu min bid price changed".format(rj))
 
 
 @parser.command(
@@ -7291,7 +7303,10 @@ def schedule__maint(args):
         print(json_blob)
     r = http_put(args, url,  headers=headers,json=json_blob)
     r.raise_for_status()
-    print(f"Maintenance window scheduled for {dt} success".format(r.json()))
+    rj = r.json()
+    if args.raw:
+        return rj
+    print(f"Maintenance window scheduled for {dt} success".format(rj))
 
 @parser.command(
     argument("Machine", help="id of machine to display", type=int),
@@ -7424,6 +7439,8 @@ def unlist__machine(args):
     r = http_del(args, req_url, headers=headers)
     if (r.status_code == 200):
         rj = r.json();
+        if args.raw:
+            return rj
         if (rj.get("success")):
             print("all offers for machine {machine_id} removed, machine delisted.".format(machine_id=args.id));
         else:
