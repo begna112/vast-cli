@@ -1139,3 +1139,133 @@ class VastAIBase(ABC):
             Copy operation confirmation.
         """
         pass
+
+    # Team Member Methods
+
+    def invite_member(
+        self,
+        email: str,
+        role: Optional[str] = None,
+    ) -> str:
+        """Invite a member to the team.
+
+        Args:
+            email: Email address of the user to invite.
+            role: Role to assign to the invited user.
+
+        Returns:
+            Invitation confirmation message.
+        """
+        pass
+
+    def remove_member(self, id: int) -> str:
+        """Remove a member from the team.
+
+        Args:
+            id: ID of the team member to remove.
+
+        Returns:
+            Removal confirmation message.
+        """
+        pass
+
+    def show_members(self) -> str:
+        """Show team members.
+
+        Returns:
+            List of team members.
+        """
+        pass
+
+    # Log Methods
+
+    def get_endpt_logs(
+        self,
+        id: int,
+        level: int = 1,
+        tail: Optional[int] = None,
+    ) -> str:
+        """Get logs for a serverless endpoint.
+
+        Args:
+            id: ID of the endpoint group to fetch logs from.
+            level: Log detail level (0-3). Default is 1.
+            tail: Number of log lines to return from the end.
+
+        Returns:
+            Endpoint logs.
+        """
+        pass
+
+    def get_wrkgrp_logs(
+        self,
+        id: int,
+        level: int = 1,
+        tail: Optional[int] = None,
+    ) -> str:
+        """Get logs for a serverless worker group.
+
+        Args:
+            id: ID of the worker group to fetch logs from.
+            level: Log detail level (0-3). Default is 1.
+            tail: Number of log lines to return from the end.
+
+        Returns:
+            Worker group logs.
+        """
+        pass
+
+    def show_audit_logs(self) -> str:
+        """Show account audit logs.
+
+        Displays history of important actions and IP address accesses.
+
+        Returns:
+            List of audit log entries.
+        """
+        pass
+
+    # Scheduled Job Methods
+
+    def delete_scheduled_job(self, id: int) -> str:
+        """Delete a scheduled job.
+
+        Args:
+            id: ID of the scheduled job to delete.
+
+        Returns:
+            Deletion confirmation message.
+        """
+        pass
+
+    def show_scheduled_jobs(self) -> str:
+        """Show scheduled jobs.
+
+        Returns:
+            List of scheduled jobs for the account.
+        """
+        pass
+
+    # Maintenance Methods
+
+    def show_maints(self, ids: str, quiet: bool = False) -> str:
+        """Show maintenance information for host machines.
+
+        Args:
+            ids: Comma-separated string of machine IDs.
+            quiet: If True, only display numeric IDs. Default is False.
+
+        Returns:
+            Maintenance information for specified machines.
+        """
+        pass
+
+    # Network Disk Methods
+
+    def show_network_disks(self) -> str:
+        """Show network disks associated with your account.
+
+        Returns:
+            Network disk information grouped by cluster.
+        """
+        pass
