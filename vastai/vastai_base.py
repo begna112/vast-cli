@@ -946,3 +946,196 @@ class VastAIBase(ABC):
             Confirmation message with attachment details.
         """
         pass
+
+    # Machine Management Methods
+
+    def defrag_machines(self, ids: List[int]) -> str:
+        """Defragment machines to optimize GPU assignments.
+
+        Rearranges GPU assignments to make more multi-GPU offers available.
+
+        Args:
+            ids: List of machine IDs to defragment.
+
+        Returns:
+            Defragment result message.
+        """
+        pass
+
+    def delete_machine(self, id: int) -> str:
+        """Delete a machine if not in use by clients.
+
+        Force deletes a machine, disregarding host jobs on own machines.
+
+        Args:
+            id: ID of the machine to delete.
+
+        Returns:
+            Confirmation message of deletion.
+        """
+        pass
+
+    def self_test_machine(
+        self,
+        machine_id: int,
+        debugging: bool = False,
+        ignore_requirements: bool = False,
+    ) -> str:
+        """Perform a self-test on a machine.
+
+        Verifies machine compliance with required specifications and functionality.
+
+        Args:
+            machine_id: ID of the machine to test.
+            debugging: Enable debugging output. Default is False.
+            ignore_requirements: Ignore minimum system requirements. Default is False.
+
+        Returns:
+            Self-test results.
+        """
+        pass
+
+    def show_machine(self, id: int, quiet: bool = False) -> str:
+        """Show details of a single machine.
+
+        Args:
+            id: ID of the machine to display.
+            quiet: If True, only display numeric IDs. Default is False.
+
+        Returns:
+            Machine details.
+        """
+        pass
+
+    # Template Methods
+
+    def delete_template(
+        self,
+        template_id: Optional[int] = None,
+        hash_id: Optional[str] = None,
+    ) -> str:
+        """Delete a template by ID or hash.
+
+        Note: Deleting a template only removes the user's relationship to a template.
+
+        Args:
+            template_id: Template ID to delete.
+            hash_id: Hash ID of template to delete.
+
+        Returns:
+            Confirmation message.
+        """
+        pass
+
+    def update_template(
+        self,
+        hash_id: str,
+        name: Optional[str] = None,
+        image: Optional[str] = None,
+        image_tag: Optional[str] = None,
+        login: Optional[str] = None,
+        env: Optional[str] = None,
+        ssh: bool = False,
+        jupyter: bool = False,
+        direct: bool = False,
+        jupyter_dir: Optional[str] = None,
+        jupyter_lab: bool = False,
+        onstart_cmd: Optional[str] = None,
+        search_params: Optional[str] = None,
+        disk_space: Optional[str] = None,
+        no_default: bool = False,
+    ) -> str:
+        """Update an existing template.
+
+        Args:
+            hash_id: Hash ID of the template to update.
+            name: New name for the template.
+            image: Docker image for the template.
+            image_tag: Image tag.
+            login: Docker login credentials.
+            env: Environment variables string.
+            ssh: Enable SSH access.
+            jupyter: Enable Jupyter.
+            direct: Enable direct port access.
+            jupyter_dir: Jupyter working directory.
+            jupyter_lab: Use JupyterLab instead of Jupyter Notebook.
+            onstart_cmd: Command to run on startup.
+            search_params: Search parameters for matching offers.
+            disk_space: Recommended disk space.
+            no_default: Disable default query filters.
+
+        Returns:
+            Update confirmation message.
+        """
+        pass
+
+    # Snapshot Methods
+
+    def take_snapshot(
+        self,
+        instance_id: int,
+        repo: Optional[str] = None,
+        container_registry: str = "docker.io",
+        docker_login_user: Optional[str] = None,
+        docker_login_pass: Optional[str] = None,
+        pause: str = "true",
+    ) -> str:
+        """Take a container snapshot and push to registry.
+
+        Args:
+            instance_id: ID of the instance to snapshot.
+            repo: Docker repository to push snapshot to.
+            container_registry: Container registry URL. Default is 'docker.io'.
+            docker_login_user: Registry username.
+            docker_login_pass: Registry password or token.
+            pause: Pause container during commit ('true'/'false'). Default is 'true'.
+
+        Returns:
+            Snapshot scheduling confirmation.
+        """
+        pass
+
+    # Instance Update Methods
+
+    def update_instance(
+        self,
+        id: int,
+        template_id: Optional[int] = None,
+        template_hash_id: Optional[str] = None,
+        image: Optional[str] = None,
+        args: Optional[str] = None,
+        env: Optional[str] = None,
+        onstart: Optional[str] = None,
+    ) -> str:
+        """Update instance configuration from a new/updated template.
+
+        Args:
+            id: ID of the instance to update.
+            template_id: New template ID to associate.
+            template_hash_id: New template hash ID to associate.
+            image: New image UUID.
+            args: New arguments for the instance.
+            env: New environment variables.
+            onstart: New onstart script.
+
+        Returns:
+            Update confirmation message.
+        """
+        pass
+
+    # VM Copy Methods
+
+    def vm_copy(self, src: int, dst: int) -> str:
+        """Copy VM image from one instance to another.
+
+        Note: Destination VM must be stopped during copy. Source VM does not need
+        to be stopped, but it's recommended to stop it for the duration.
+
+        Args:
+            src: Instance ID of the source VM.
+            dst: Instance ID of the destination VM.
+
+        Returns:
+            Copy operation confirmation.
+        """
+        pass
