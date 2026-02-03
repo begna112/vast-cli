@@ -3195,8 +3195,18 @@ def destroy_instance(id,args):
     usage="vastai destroy instance id [-h] [--api-key API_KEY] [--raw]",
     help="Destroy an instance (irreversible, deletes data)",
     epilog=deindent("""
-        Perfoms the same action as pressing the "DESTROY" button on the website at https://console.vast.ai/instances/
-        Example: vastai destroy instance 4242
+        Performs the same action as pressing the "DESTROY" button on the website at https://console.vast.ai/instances/
+
+        WARNING: This action is IMMEDIATE and IRREVERSIBLE. All data on the instance will be permanently
+        deleted unless you have saved it to a persistent volume or external storage.
+
+        Examples:
+            vastai destroy instance 12345              # Destroy instance with ID 12345
+
+        Before destroying:
+          - Save any important data using 'vastai copy' or by mounting a persistent volume
+          - Check instance ID carefully with 'vastai show instances'
+          - Consider using 'vastai stop instance' if you want to pause without data loss
     """),
 )
 def destroy__instance(args):
@@ -4830,6 +4840,22 @@ def search__network_volumes(args: argparse.Namespace):
     argument("new_api_key", help="Api key to set as currently logged in user"),
     usage="vastai set api-key APIKEY",
     help="Set api-key (get your api-key from the console/CLI)",
+    epilog=deindent("""
+        Stores your Vast.ai API key locally for authentication with all CLI commands.
+        Get your API key from the Vast.ai console: https://console.vast.ai/account/
+
+        Examples:
+            vastai set api-key abc123def456...         # Set your API key
+
+        Security notes:
+          - API key is stored in ~/.config/vastai/vast_api_key
+          - Permissions are set to user-read-only (600)
+          - Do NOT share your API key or commit it to version control
+          - Regenerate your key at https://console.vast.ai/account/ if compromised
+          - You can also use the VAST_API_KEY environment variable instead
+
+        The legacy location ~/.vast_api_key is automatically removed when you set a new key.
+    """),
 )
 def set__api_key(args):
     """Caution: a bad API key will make it impossible to connect to the servers.
@@ -4894,6 +4920,21 @@ def set__user(args):
     argument("id", help="id of instance", type=int),
     usage="vastai ssh-url ID",
     help="ssh url helper",
+    epilog=deindent("""
+        Retrieves the SSH connection URL for an instance. Use this to get the host and port
+        information needed to connect via SSH.
+
+        Examples:
+            vastai ssh-url 12345                       # Get SSH URL for instance 12345
+
+        Output format:
+            ssh://root@<ip_address>:<port>
+
+        Use with ssh command:
+            ssh -p <port> root@<ip_address>
+
+        See also: 'vastai scp-url' for SCP file transfer URLs
+    """),
 )
 def ssh_url(args):
     """
@@ -4908,6 +4949,22 @@ def ssh_url(args):
     argument("id",   help="id", type=int),
     usage="vastai scp-url ID",
     help="scp url helper",
+    epilog=deindent("""
+        Retrieves the SCP connection URL for an instance. Use this to get the host and port
+        information needed to transfer files via SCP.
+
+        Examples:
+            vastai scp-url 12345                       # Get SCP URL for instance 12345
+
+        Output format:
+            scp://root@<ip_address>:<port>
+
+        Use with scp command:
+            scp -P <port> local_file root@<ip_address>:/remote/path
+            scp -P <port> root@<ip_address>:/remote/file ./local_path
+
+        See also: 'vastai ssh-url' for SSH connection URLs, 'vastai copy' for simplified file transfers
+    """),
 )
 def scp_url(args):
     """
@@ -5700,7 +5757,18 @@ def show__instance(args):
 @parser.command(
     argument("-q", "--quiet", action="store_true", help="only display numeric ids"),
     usage="vastai show instances [OPTIONS] [--api-key API_KEY] [--raw]",
-    help="Display user's current instances"
+    help="Display user's current instances",
+    epilog=deindent("""
+        Lists all instances owned by the authenticated user, including running, pending, and stopped instances.
+
+        Examples:
+            vastai show instances                      # List all instances in table format
+            vastai show instances --raw                # Output as JSON for scripting
+            vastai show instances --raw | jq '.[0]'   # Get first instance details
+            vastai show instances -q                   # List only instance IDs
+
+        Output includes: instance ID, machine ID, status, GPU info, rental cost, duration, and connection details.
+    """),
 )
 def show__instances(args = {}, extra = {}):
     """
@@ -5869,7 +5937,21 @@ def show__team_roles(args):
     usage="vastai show user [OPTIONS]",
     help="Get current user data",
     epilog=deindent("""
-        Shows stats for logged-in user. These include user balance, email, and ssh key. Does not show API key.
+        Displays account information for the authenticated user.
+
+        Examples:
+            vastai show user                           # Show user info in table format
+            vastai show user --raw                     # Output as JSON for scripting
+
+        Information displayed:
+          - Account balance and credit
+          - Email address
+          - Username
+          - SSH public key (if configured)
+          - Account settings
+
+        Note: API key is NOT displayed for security reasons.
+        Use 'vastai set api-key' to update your stored API key.
     """)
 )
 def show__user(args):
