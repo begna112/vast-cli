@@ -115,7 +115,7 @@ def queryFormatter(state, obj, instance):
             good = False
           else:
             res[k] = cutoff[k]
-      except:
+      except (KeyError, TypeError):
         good = False
 
       if not good:
@@ -307,8 +307,14 @@ class VastAI(VastAIBase):
             res = ''
             try:
                 res = func(args)
-            except:
-                pass
+            except SystemExit as e:
+                # CLI functions call sys.exit(); capture exit code as return value
+                if e.code is not None and e.code != 0:
+                    logging.warning(f"CLI function {func.__name__} exited with code {e.code}")
+                res = e.code
+            except Exception as e:
+                logging.warning(f"Error calling {func.__name__}: {e}")
+                res = None
 
             if not logger.isEnabledFor(logging.DEBUG):
                 sys.stdout = out_o
