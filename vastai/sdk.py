@@ -1,3 +1,34 @@
+"""
+Vast.ai Python SDK.
+
+This module provides the VastAI class, a Python SDK client for the Vast.ai GPU
+cloud platform. It wraps the vast.py CLI commands and exposes them as Python
+methods with proper type hints and docstrings.
+
+Example:
+    Basic usage::
+
+        from vastai import VastAI
+
+        client = VastAI(api_key="your-api-key")
+        offers = client.search_offers(limit=10)
+        print(f"Found {len(offers)} offers")
+
+    Creating an instance::
+
+        offer_id = offers[0]["id"]
+        result = client.create_instance(id=offer_id, image="pytorch/pytorch:latest")
+
+    Checking instances::
+
+        instances = client.show_instances()
+        for inst in instances:
+            print(f"ID: {inst['id']}, Status: {inst['actual_status']}")
+
+The SDK automatically handles authentication, retries, and output capture.
+All methods return parsed JSON when ``raw=True`` (the default for SDK usage).
+"""
+
 import types
 import argparse
 from typing import Any, Callable
@@ -36,6 +67,21 @@ _regions = {
 }
 
 def reverse_mapping(regions: dict[str, str]) -> dict[str, str]:
+    """
+    Create a reverse mapping from country codes to region codes.
+
+    Args:
+        regions: Dict mapping region codes (e.g., 'NA', 'EU') to comma-separated
+            country codes (e.g., 'CA,US').
+
+    Returns:
+        Dict mapping each country code to its region code.
+
+    Example:
+        >>> regions = {'NA': 'CA,US', 'EU': 'DE,FR'}
+        >>> reverse_mapping(regions)
+        {'CA': 'NA', 'US': 'NA', 'DE': 'EU', 'FR': 'EU'}
+    """
     reversed_mapping: dict[str, str] = {}
     for region, countries in regions.items():
         for country in countries.split(','):
@@ -44,90 +90,144 @@ def reverse_mapping(regions: dict[str, str]) -> dict[str, str]:
 
 _regions_rev = reverse_mapping(_regions)
 
+
 def queryParser(kwargs: dict[str, Any], instance: "VastAI") -> tuple[dict[str, bool], dict[str, Any]]:
-  # georegion uses the region modifiers as top level
-  # descriptors
-  #
-  # chunked reduces values communicated to more usable chunks
-  state: dict[str, bool] = {'georegion': False, 'chunked': False }
+    """
+    Pre-process query parameters before API call.
 
-  if kwargs.get('query') is not None:
-    qstr = kwargs['query']
+    Parses the query string to extract state flags (georegion, chunked) and
+    transforms geolocation queries when georegion mode is enabled.
 
-    key = Word(alphas + "_-")
-    operator = oneOf("= in != > < >= <=")
-    single_value = Word(alphanums + "_.-") | quotedString
+    Args:
+        kwargs: Keyword arguments passed to the SDK method, including 'query'.
+        instance: The VastAI instance for context.
 
-    array_value = (
-        Suppress("[") + delimitedList(quotedString) + Suppress("]")
-    ).setParseAction(lambda t: f"[{','.join(t)}]")
-    value = single_value | array_value
-    expr = Group(key + operator + value)
-    query = ZeroOrMore(expr)
-    parsed = query.parseString(qstr)
+    Returns:
+        A tuple of (state_dict, modified_kwargs) where:
+            - state_dict contains boolean flags for 'georegion' and 'chunked'
+            - modified_kwargs has the transformed query string
 
-    toPass = []
+    Note:
+        - 'georegion=true' in query enables region-based geolocation expansion
+        - 'chunked=true' enables value chunking for SkyPilot compatibility
+    """
+    # georegion uses the region modifiers as top level
+    # descriptors
+    #
+    # chunked reduces values communicated to more usable chunks
+    state: dict[str, bool] = {'georegion': False, 'chunked': False }
 
-    for state_key in state.keys():
-      state[state_key] = any([state_key, '=', 'true'] == list(expr) for expr in parsed)
+    if kwargs.get('query') is not None:
+        qstr = kwargs['query']
 
-    for expr in parsed:
-      if expr[0] in state.keys():
-        continue
+        key = Word(alphas + "_-")
+        operator = oneOf("= in != > < >= <=")
+        single_value = Word(alphanums + "_.-") | quotedString
 
-      elif expr[0] == 'geolocation' and state['georegion']:
-        region = _regions.get(str(expr[2]).strip('"'))
-        expr_list: list[str] = ['geolocation', 'in', f'[{region}]']
-        toPass.append(' '.join(expr_list))
-        continue
+        array_value = (
+            Suppress("[") + delimitedList(quotedString) + Suppress("]")
+        ).setParseAction(lambda t: f"[{','.join(t)}]")
+        value = single_value | array_value
+        expr = Group(key + operator + value)
+        query = ZeroOrMore(expr)
+        parsed = query.parseString(qstr)
 
-      toPass.append(' '.join(str(e) for e in expr))
+        toPass = []
 
-    kwargs['query'] = ' '.join(toPass)
+        for state_key in state.keys():
+            state[state_key] = any([state_key, '=', 'true'] == list(expr) for expr in parsed)
 
-  return (state, kwargs)
+        for expr in parsed:
+            if expr[0] in state.keys():
+                continue
+
+            elif expr[0] == 'geolocation' and state['georegion']:
+                region = _regions.get(str(expr[2]).strip('"'))
+                expr_list: list[str] = ['geolocation', 'in', f'[{region}]']
+                toPass.append(' '.join(expr_list))
+                continue
+
+            toPass.append(' '.join(str(e) for e in expr))
+
+        kwargs['query'] = ' '.join(toPass)
+
+    return (state, kwargs)
 
 def queryFormatter(state: dict[str, bool], obj: list[dict[str, Any]], instance: "VastAI") -> list[dict[str, Any]]:
-  # This algo is explicitly designed for skypilot to add
-  # depth to our catalog offerings
-  cutoff: dict[str, int] = {
-    'cpu_ram': 64 * 1024,
-    'cpu_cores': 32,
-    'min_bid': 0
-  }
+    """
+    Post-process search results based on query state flags.
 
-  filtered: list[dict[str, Any]] = []
-  for res in obj:
-    res['datacenter'] = (res['hosting_type'] == 1)
-    if state['georegion'] and res['geolocation'] is not None:
-      country = res['geolocation'][-2:]
-      res['geolocation'] += f', {_regions_rev[country]}'
+    Transforms search results by:
+    - Adding 'datacenter' boolean field
+    - Expanding geolocation to include region code when georegion=true
+    - Filtering and chunking values when chunked=true (for SkyPilot)
 
-    if state['chunked']:
-      good = True
+    Args:
+        state: State dict from queryParser with 'georegion' and 'chunked' flags.
+        obj: List of offer dictionaries from the API response.
+        instance: The VastAI instance for context.
 
-      try:
-        for k,v in cutoff.items():
-          if res[k] is not None and (res[k] < cutoff[k]):
-            good = False
-          else:
-            res[k] = cutoff[k]
-      except (KeyError, TypeError):
-        good = False
+    Returns:
+        Filtered and transformed list of offer dictionaries.
 
-      if not good:
-        continue
+    Note:
+        This algorithm is designed for SkyPilot integration to provide
+        standardized catalog offerings with chunked resource values.
+    """
+    # This algo is explicitly designed for skypilot to add
+    # depth to our catalog offerings
+    cutoff: dict[str, int] = {
+        'cpu_ram': 64 * 1024,
+        'cpu_cores': 32,
+        'min_bid': 0
+    }
 
-      #res['cpu_ram'] = upper(res['cpu_ram'])
-      #res['cpu_cores'] = max(res['cpu_cores'] & 0xffff8, 4)
-      res['gpu_ram'] = res['gpu_ram'] & 0xffffffffff0
-      res['disk_space'] = int(res['disk_space']) & 0xffffffffffc0
+    filtered: list[dict[str, Any]] = []
+    for res in obj:
+        res['datacenter'] = (res['hosting_type'] == 1)
+        if state['georegion'] and res['geolocation'] is not None:
+            country = res['geolocation'][-2:]
+            res['geolocation'] += f', {_regions_rev[country]}'
 
-    filtered.append(res)
+        if state['chunked']:
+            good = True
 
-  return filtered
+            try:
+                for k, v in cutoff.items():
+                    if res[k] is not None and (res[k] < cutoff[k]):
+                        good = False
+                    else:
+                        res[k] = cutoff[k]
+            except (KeyError, TypeError):
+                good = False
+
+            if not good:
+                continue
+
+            #res['cpu_ram'] = upper(res['cpu_ram'])
+            #res['cpu_cores'] = max(res['cpu_cores'] & 0xffff8, 4)
+            res['gpu_ram'] = res['gpu_ram'] & 0xffffffffff0
+            res['disk_space'] = int(res['disk_space']) & 0xffffffffffc0
+
+        filtered.append(res)
+
+    return filtered
 
 def lastOutput(state: dict[str, bool] | None, obj: Any, instance: "VastAI") -> str | None:
+    """
+    Return captured stdout output from the last command.
+
+    Used as a post-hook for commands like 'logs' and 'execute' where the
+    important output is printed to stdout rather than returned.
+
+    Args:
+        state: State dict (unused, for hook signature compatibility).
+        obj: Return value from the CLI function (unused).
+        instance: The VastAI instance containing last_output.
+
+    Returns:
+        The captured stdout content from the last command execution.
+    """
     return instance.last_output
 
 # Hook functions: [pre_hook, post_hook] for each command
@@ -139,7 +239,52 @@ _hooks: dict[str, list[Callable[..., Any] | None]] = {
 }
 
 class VastAI(VastAIBase):
-    """VastAI SDK class that dynamically imports functions from vast.py and binds them as instance methods."""
+    """
+    Python SDK client for the Vast.ai GPU cloud platform.
+
+    VastAI provides programmatic access to all Vast.ai CLI commands through
+    a clean Python interface. Each CLI command maps to a method on this class,
+    with 130+ methods covering instances, offers, billing, teams, and more.
+
+    Example:
+        Basic usage::
+
+            >>> from vastai import VastAI
+            >>> client = VastAI(api_key="your-api-key")
+            >>> offers = client.search_offers()
+            >>> print(offers[:3])  # First 3 offers
+
+        Creating an instance::
+
+            >>> offer_id = offers[0]["id"]
+            >>> result = client.create_instance(id=offer_id, image="pytorch/pytorch:latest")
+            >>> print(result)
+
+        Checking instances::
+
+            >>> instances = client.show_instances()
+            >>> for inst in instances:
+            ...     print(f"ID: {inst['id']}, Status: {inst['actual_status']}")
+
+    Attributes:
+        api_key: The Vast.ai API key for authentication.
+        raw: If True, methods return raw JSON dicts. If False, output is printed.
+        retry: Number of retry attempts for failed requests (default: 3).
+        server_url: Base URL for the Vast.ai API (default: https://console.vast.ai).
+        explain: If True, print API endpoint details before requests.
+        quiet: If True, suppress non-essential output.
+        curl: If True, print equivalent curl commands.
+        creds_source: Read-only property indicating API key source ('CODE', 'FILE', 'NONE').
+
+    Note:
+        Methods that return lists (search_*, show_*s) return ``list[dict[str, Any]]``.
+        Methods that return single objects return ``dict[str, Any]``.
+        Check method docstrings for specific return types.
+
+    See Also:
+        - :doc:`/sdk/quickstart` for a step-by-step guide
+        - :doc:`/sdk/reference/vastai` for full API reference
+    """
 
     def __init__(
         self,
@@ -151,6 +296,48 @@ class VastAI(VastAIBase):
         quiet: bool = False,
         curl: bool = False,
     ) -> None:
+        """
+        Initialize a VastAI client.
+
+        Args:
+            api_key: Vast.ai API key. If not provided, reads from environment
+                variable VAST_API_KEY or ~/.config/vastai/vast_api_key file.
+            server_url: Base URL for the Vast.ai API. Override for testing or
+                alternate endpoints. Defaults to "https://console.vast.ai".
+            retry: Number of retry attempts for transient failures (429, 5xx errors).
+                Defaults to 3.
+            raw: If True, methods return parsed JSON. If False, output is printed
+                to stdout (CLI behavior). Defaults to True for SDK usage.
+            explain: If True, print HTTP method and URL before each request.
+                Useful for debugging. Defaults to False.
+            quiet: If True, suppress progress messages and other non-essential
+                output. Defaults to False.
+            curl: If True, print equivalent curl commands for each API call.
+                Useful for debugging. Defaults to False.
+
+        Raises:
+            ValueError: If api_key is not provided and cannot be found in
+                environment or config file (raised by some methods, not __init__).
+
+        Example:
+            Basic initialization::
+
+                >>> client = VastAI(api_key="your-key")
+
+            With custom options::
+
+                >>> client = VastAI(
+                ...     api_key="your-key",
+                ...     retry=5,
+                ...     explain=True,
+                ...     quiet=True
+                ... )
+
+            Using stored credentials::
+
+                >>> # After running: vastai set api-key YOUR_KEY
+                >>> client = VastAI()  # Reads from config file
+        """
         # Instance attribute type declarations
         self._creds: str
         self._KEYPATH: str
@@ -190,11 +377,34 @@ class VastAI(VastAIBase):
 
     @property
     def creds_source(self) -> str:
+        """
+        Return the source of the API key credentials.
+
+        Returns:
+            One of:
+                - 'CODE': API key was passed to constructor
+                - 'FILE': API key was read from config file
+                - 'NONE': No API key found
+        """
         return self._creds
 
     def generate_signature_from_argparse(
         self, parser: argparse.ArgumentParser
     ) -> tuple[inspect.Signature, str]:
+        """
+        Generate a Python function signature from an argparse ArgumentParser.
+
+        Introspects the parser's actions to build an inspect.Signature and
+        corresponding docstring Args section for the wrapped method.
+
+        Args:
+            parser: The argparse.ArgumentParser for a CLI subcommand.
+
+        Returns:
+            A tuple of (Signature, docstring) where:
+                - Signature is an inspect.Signature with typed parameters
+                - docstring is a Google-style Args section string
+        """
         parameters: list[inspect.Parameter] = [inspect.Parameter("self", inspect.Parameter.POSITIONAL_OR_KEYWORD)]
         isFirst: bool = True
         docstring: str = ''
@@ -238,8 +448,16 @@ class VastAI(VastAIBase):
         return sig, docstring
 
     def import_cli_functions(self) -> None:
-        """Dynamically import functions from vast.py and bind them as instance methods."""
+        """
+        Dynamically import functions from vast.py and bind them as instance methods.
 
+        Iterates through all subparsers in the CLI argument parser and creates
+        wrapper methods for each command. The wrapper handles argument validation,
+        stdout capture, and hook execution.
+
+        This is called automatically during __init__ and populates the
+        imported_methods dict with argument metadata for each command.
+        """
         if hasattr(parser, "subparsers_") and parser.subparsers_:
             for name, subparser in parser.subparsers_.choices.items():
                 if name == "help":
@@ -280,7 +498,25 @@ class VastAI(VastAIBase):
     def create_wrapper(
         self, func: Callable[..., Any], method_name: str
     ) -> Callable[..., Any]:
-        """Create a wrapper to check required arguments, convert keyword arguments, and capture output."""
+        """
+        Create a wrapper function for a CLI command.
+
+        The wrapper handles:
+        - Required argument validation
+        - Choice validation for enum-like arguments
+        - Default value injection from argparse
+        - SDK-level defaults (api_key, server_url, etc.)
+        - Pre/post hooks for query transformation
+        - Stdout capture in raw mode
+        - SystemExit handling for CLI functions
+
+        Args:
+            func: The CLI function to wrap (e.g., search__offers).
+            method_name: The SDK method name (e.g., 'search_offers').
+
+        Returns:
+            A wrapper function that can be bound as an instance method.
+        """
 
         def wrapper(self: "VastAI", **kwargs: Any) -> Any:
             arg_details = self.imported_methods.get(method_name, {})
@@ -401,12 +637,33 @@ class VastAI(VastAIBase):
 
     def credentials_on_disk(self) -> None:
         """
-        nop is the classic "no operation". This is just used to make sure the
-        libraries don't crash and a key file exists
+        No-operation method for credential validation.
+
+        This method exists to ensure library compatibility and verify that
+        API key file handling doesn't cause crashes. It performs no action.
+
+        Note:
+            This is a stub method that may be overridden by subclasses
+            for actual credential validation.
         """
         pass
 
     def __getattr__(self, name: str) -> Any:
+        """
+        Handle attribute access for dynamically imported methods.
+
+        Provides a fallback for attribute lookup that checks imported_methods
+        before raising AttributeError.
+
+        Args:
+            name: The attribute name being accessed.
+
+        Returns:
+            The requested attribute if found in imported_methods.
+
+        Raises:
+            AttributeError: If the attribute is not found.
+        """
         if name in self.imported_methods:
             return getattr(self, name)
         raise AttributeError(f"{type(self).__name__} has no attribute {name}")
