@@ -1485,19 +1485,15 @@ def cancel__copy(args: argparse.Namespace):
     req_json = { "client_id": "me", "dst_id": dst_id, }
     r = http_del(args, url, headers=headers,json=req_json)
     r.raise_for_status()
-    if (r.status_code == 200):
-        try:
-            rj = r.json();
-        except JSONDecodeError:
-            print("Error: API returned invalid JSON response", file=sys.stderr)
-            return
-        if (rj["success"]):
-            print("Remote copy canceled - check instance status bar for progress updates (~30 seconds delayed).")
-        else:
-            print(rj["msg"]);
+    try:
+        rj = r.json();
+    except JSONDecodeError:
+        print("Error: API returned invalid JSON response", file=sys.stderr)
+        return
+    if rj.get("success"):
+        print("Remote copy canceled - check instance status bar for progress updates (~30 seconds delayed).")
     else:
-        print(r.text);
-        print("failed with error {r.status_code}".format(**locals()));
+        print(rj.get("msg", "Unknown error"));
 
 
 @parser.command(
@@ -1532,19 +1528,15 @@ def cancel__sync(args: argparse.Namespace):
     req_json = { "client_id": "me", "dst_id": dst_id, }
     r = http_del(args, url, headers=headers,json=req_json)
     r.raise_for_status()
-    if (r.status_code == 200):
-        try:
-            rj = r.json();
-        except JSONDecodeError:
-            print("Error: API returned invalid JSON response", file=sys.stderr)
-            return
-        if (rj["success"]):
-            print("Remote copy canceled - check instance status bar for progress updates (~30 seconds delayed).")
-        else:
-            print(rj["msg"]);
+    try:
+        rj = r.json();
+    except JSONDecodeError:
+        print("Error: API returned invalid JSON response", file=sys.stderr)
+        return
+    if rj.get("success"):
+        print("Remote copy canceled - check instance status bar for progress updates (~30 seconds delayed).")
     else:
-        print(r.text);
-        print("failed with error {r.status_code}".format(**locals()));
+        print(rj.get("msg", "Unknown error"));
 
 def default_start_date():
     return datetime.now(timezone.utc).strftime("%Y-%m-%d")
@@ -1739,46 +1731,43 @@ def copy(args: argparse.Namespace):
         url = apiurl(args, f"/commands/copy_direct/")
     r = http_put(args, url,  headers=headers,json=req_json)
     r.raise_for_status()
-    if (r.status_code == 200):
-        try:
-            rj = r.json()
-        except JSONDecodeError:
-            print("Error: API returned invalid JSON response", file=sys.stderr)
-            return
-        #print(json.dumps(rj, indent=1, sort_keys=True))
-        if (rj["success"]) and ((src_id is None or src_id == "local") or (dst_id is None or dst_id == "local")):
-            homedir = os.path.expanduser("~")
-            #print(f"homedir: {homedir}")
-            remote_port = None
-            identity = f"-i {args.identity}" if (args.identity is not None) else ""
-            if (src_id is None or src_id == "local"):
-                remote_port = rj["dst_port"]
-                remote_addr = rj["dst_addr"]
-                ssh_cmd = f"ssh {identity} -p {remote_port} -o StrictHostKeyChecking=no".strip()
-                rsync_args = ["rsync", "-arz", "-v", "--progress", "-e", ssh_cmd, src_path, f"vastai_kaalia@{remote_addr}::{dst_id}/{dst_path}"]
-                print(" ".join(rsync_args))
-                result = subprocess.run(rsync_args)
-            elif (dst_id is None or dst_id == "local"):
-                os.makedirs(dst_path, exist_ok=True)
-                remote_port = rj["src_port"]
-                remote_addr = rj["src_addr"]
-                ssh_cmd = f"ssh {identity} -p {remote_port} -o StrictHostKeyChecking=no".strip()
-                rsync_args = ["rsync", "-arz", "-v", "--progress", "-e", ssh_cmd, f"vastai_kaalia@{remote_addr}::{src_id}/{src_path}", dst_path]
-                print(" ".join(rsync_args))
-                result = subprocess.run(rsync_args)
-        else:
-            if (rj["success"]):
-                print("Remote to Remote copy initiated - check instance status bar for progress updates (~30 seconds delayed).")
-            else:
-                if rj["msg"] == "src_path not supported VMs.":
-                    print("copy between VM instances does not currently support subpaths (only full disk copy)")
-                elif rj["msg"] == "dst_path not supported for VMs.":
-                    print("copy between VM instances does not currently support subpaths (only full disk copy)")
-                else:
-                    print(rj["msg"])
+    try:
+        rj = r.json()
+    except JSONDecodeError:
+        print("Error: API returned invalid JSON response", file=sys.stderr)
+        return
+    #print(json.dumps(rj, indent=1, sort_keys=True))
+    if rj.get("success") and ((src_id is None or src_id == "local") or (dst_id is None or dst_id == "local")):
+        homedir = os.path.expanduser("~")
+        #print(f"homedir: {homedir}")
+        remote_port = None
+        identity = f"-i {args.identity}" if (args.identity is not None) else ""
+        if (src_id is None or src_id == "local"):
+            remote_port = rj["dst_port"]
+            remote_addr = rj["dst_addr"]
+            ssh_cmd = f"ssh {identity} -p {remote_port} -o StrictHostKeyChecking=no".strip()
+            rsync_args = ["rsync", "-arz", "-v", "--progress", "-e", ssh_cmd, src_path, f"vastai_kaalia@{remote_addr}::{dst_id}/{dst_path}"]
+            print(" ".join(rsync_args))
+            result = subprocess.run(rsync_args)
+        elif (dst_id is None or dst_id == "local"):
+            os.makedirs(dst_path, exist_ok=True)
+            remote_port = rj["src_port"]
+            remote_addr = rj["src_addr"]
+            ssh_cmd = f"ssh {identity} -p {remote_port} -o StrictHostKeyChecking=no".strip()
+            rsync_args = ["rsync", "-arz", "-v", "--progress", "-e", ssh_cmd, f"vastai_kaalia@{remote_addr}::{src_id}/{src_path}", dst_path]
+            print(" ".join(rsync_args))
+            result = subprocess.run(rsync_args)
     else:
-        print(r.text)
-        print("failed with error {r.status_code}".format(**locals()));
+        if rj.get("success"):
+            print("Remote to Remote copy initiated - check instance status bar for progress updates (~30 seconds delayed).")
+        else:
+            msg = rj.get("msg", "Unknown error")
+            if msg == "src_path not supported VMs.":
+                print("copy between VM instances does not currently support subpaths (only full disk copy)")
+            elif msg == "dst_path not supported for VMs.":
+                print("copy between VM instances does not currently support subpaths (only full disk copy)")
+            else:
+                print(msg)
 
 
 '''
@@ -1819,24 +1808,21 @@ def vm__copy(args: argparse.Namespace):
 
     r = http_put(args, url,  headers=headers,json=req_json)
     r.raise_for_status()
-    if (r.status_code == 200):
-        try:
-            rj = r.json();
-        except JSONDecodeError:
-            print("Error: API returned invalid JSON response", file=sys.stderr)
-            return
-        if (rj["success"]):
-            print("Remote to Remote copy initiated - check instance status bar for progress updates (~30 seconds delayed).")
-        else:
-            if rj["msg"] == "Invalid src_path.":
-                print("src instance is not a VM")
-            elif rj["msg"] == "Invalid dst_path.":
-                print("dst instance is not a VM")
-            else:
-                print(rj["msg"]);
+    try:
+        rj = r.json();
+    except JSONDecodeError:
+        print("Error: API returned invalid JSON response", file=sys.stderr)
+        return
+    if rj.get("success"):
+        print("Remote to Remote copy initiated - check instance status bar for progress updates (~30 seconds delayed).")
     else:
-        print(r.text);
-        print("failed with error {r.status_code}".format(**locals()));
+        msg = rj.get("msg", "Unknown error")
+        if msg == "Invalid src_path.":
+            print("src instance is not a VM")
+        elif msg == "Invalid dst_path.":
+            print("dst instance is not a VM")
+        else:
+            print(msg);
 '''
 
 @parser.command(
@@ -1957,12 +1943,8 @@ def cloud__copy(args: argparse.Namespace):
         
     r = http_post(args, url, headers=headers,json=req_json)
     r.raise_for_status()
-    if (r.status_code == 200):
-        print("Cloud Copy Started - check instance status bar for progress updates (~30 seconds delayed).")
-        print("When the operation is finished you should see 'Cloud Copy Operation Finished' in the instance status bar.")  
-    else:
-        print(r.text);
-        print("failed with error {r.status_code}".format(**locals()));
+    print("Cloud Copy Started - check instance status bar for progress updates (~30 seconds delayed).")
+    print("When the operation is finished you should see 'Cloud Copy Operation Finished' in the instance status bar.")
 
 
 @parser.command(
@@ -2020,20 +2002,15 @@ def take__snapshot(args: argparse.Namespace):
     # POST to the snapshot endpoint
     r = http_post(args, url, headers=headers, json=req_json)
     r.raise_for_status()
-
-    if r.status_code == 200:
-        try:
-            data = r.json()
-        except JSONDecodeError:
-            print("Error: API returned invalid JSON response", file=sys.stderr)
-            return
-        if data.get("success"):
-            print(f"Snapshot request sent successfully. Please check your repo {repo} in container registry {container_registry} in 5-10 mins. It can take longer than 5-10 mins to push your snapshot image to your repo depending on the size of your image.")
-        else:
-            print(data.get("msg", "Unknown error with snapshot request"))
+    try:
+        data = r.json()
+    except JSONDecodeError:
+        print("Error: API returned invalid JSON response", file=sys.stderr)
+        return
+    if data.get("success"):
+        print(f"Snapshot request sent successfully. Please check your repo {repo} in container registry {container_registry} in 5-10 mins. It can take longer than 5-10 mins to push your snapshot image to your repo depending on the size of your image.")
     else:
-        print(r.text);
-        print("failed with error {r.status_code}".format(**locals()));
+        print(data.get("msg", "Unknown error with snapshot request"))
 
 def validate_frequency_values(day_of_the_week, hour_of_the_day, frequency):
 
@@ -2114,23 +2091,13 @@ def add_scheduled_job(args, req_json, cli_command, api_endpoint, request_method,
 def update_scheduled_job(args, cli_command, schedule_job_url, frequency, start_date, end_date, request_body):
     response = http_put(args, schedule_job_url, headers=headers, json=request_body)
 
-        # Raise an exception for HTTP errors
+    # Raise an exception for HTTP errors
     response.raise_for_status()
-    if response.status_code == 200:
-        print(f"add_scheduled_job update: success - Scheduling {frequency} job to {cli_command} from {start_date} UTC to {end_date} UTC")
-        try:
-            print(response.json())
-        except JSONDecodeError:
-            print(response.text)
-    elif response.status_code == 401:
-        print(f"add_scheduled_job update: failed status_code: {response.status_code}. It could be because you aren't using a valid api_key.")
-    else:
-            # print(r.text)
-        print(f"add_scheduled_job update: failed status_code: {response.status_code}.")
-        try:
-            print(response.json())
-        except JSONDecodeError:
-            print(response.text)
+    print(f"add_scheduled_job update: success - Scheduling {frequency} job to {cli_command} from {start_date} UTC to {end_date} UTC")
+    try:
+        print(response.json())
+    except JSONDecodeError:
+        print(response.text)
 
     return response
 
@@ -2692,13 +2659,8 @@ def create__subaccount(args):
     url = apiurl(args, "/users/")
     r = http_post(args, url, headers=headers, json=json_blob)
     r.raise_for_status()
-
-    if r.status_code == 200:
-        rj = r.json()
-        print(rj)
-    else:
-        print(r.text)
-        print(f"Failed with error {r.status_code}")
+    rj = r.json()
+    print(rj)
 
 @parser.command(
     argument("--team_name", help="name of the team", type=str),
@@ -3158,15 +3120,11 @@ def destroy_instance(id,args):
     r.raise_for_status()
     if args.raw:
         return r.json()
-    elif (r.status_code == 200):
-        rj = r.json();
-        if (rj["success"]):
-            print("destroying instance {id}.".format(**(locals())));
-        else:
-            print(rj["msg"]);
+    rj = r.json();
+    if rj.get("success"):
+        print("destroying instance {id}.".format(**(locals())));
     else:
-        print(r.text);
-        print("failed with error {r.status_code}".format(**locals()));
+        print(rj.get("msg", "Unknown error"));
 
 
 @parser.command(
@@ -3268,22 +3226,18 @@ def execute(args):
         add_scheduled_job(args, json_blob, cli_command, api_endpoint, "PUT", instance_id=args.id)
         return
 
-    if (r.status_code == 200):
-        rj = r.json()
-        if (rj["success"]):
-            for i in range(0,30):
-                time.sleep(0.3)
-                url = rj["result_url"]
-                r = http_get(args, url)
-                if (r.status_code == 200):
-                    filtered_text = r.text.replace(rj["writeable_path"], '');
-                    print(filtered_text)
-                    break
-        else:
-            print(rj);
+    rj = r.json()
+    if rj.get("success"):
+        for i in range(0,30):
+            time.sleep(0.3)
+            url = rj["result_url"]
+            r = http_get(args, url)
+            if (r.status_code == 200):
+                filtered_text = r.text.replace(rj["writeable_path"], '');
+                print(filtered_text)
+                break
     else:
-        print(r.text);
-        print("failed with error {r.status_code}".format(**locals()));
+        print(rj);
 
 
 
@@ -3312,22 +3266,19 @@ def get__endpt_logs(args):
     r.raise_for_status()
     levels = {0 : "info0", 1: "info1", 2: "trace", 3: "debug"}
 
-    if (r.status_code == 200):
-        rj = None
-        try:
-            rj = r.json()
-        except Exception as e:
-            print(str(e))
-            print(r.text)
-        if args.raw:
-            # sort_keys
-            return rj or r.text
-        else:
-            dbg_lvl = levels[args.level]
-            if rj and dbg_lvl: print(rj[dbg_lvl])
-            #print(json.dumps(rj, indent=1, sort_keys=True))
-    else:
+    rj = None
+    try:
+        rj = r.json()
+    except Exception as e:
+        print(str(e))
         print(r.text)
+    if args.raw:
+        # sort_keys
+        return rj or r.text
+    else:
+        dbg_lvl = levels[args.level]
+        if rj and dbg_lvl: print(rj[dbg_lvl])
+        #print(json.dumps(rj, indent=1, sort_keys=True))
 
 @parser.command(
     argument("id", help="id of endpoint group to fetch logs from", type=int),
@@ -3354,22 +3305,19 @@ def get__wrkgrp_logs(args):
     r.raise_for_status()
     levels = {0 : "info0", 1: "info1", 2: "trace", 3: "debug"}
 
-    if (r.status_code == 200):
-        rj = None
-        try:
-            rj = r.json()
-        except Exception as e:
-            print(str(e))
-            print(r.text)
-        if args.raw:
-            # sort_keys
-            return rj or r.text
-        else:
-            dbg_lvl = levels[args.level]
-            if rj and dbg_lvl: print(rj[dbg_lvl])
-            #print(json.dumps(rj, indent=1, sort_keys=True))
-    else:
+    rj = None
+    try:
+        rj = r.json()
+    except Exception as e:
+        print(str(e))
         print(r.text)
+    if args.raw:
+        # sort_keys
+        return rj or r.text
+    else:
+        dbg_lvl = levels[args.level]
+        if rj and dbg_lvl: print(rj[dbg_lvl])
+        #print(json.dumps(rj, indent=1, sort_keys=True))
 
 @parser.command(
     argument("--email", help="email of user to be invited", type=str),
@@ -3381,11 +3329,7 @@ def invite__member(args):
     url = apiurl(args, "/team/invite/", query_args={"email": args.email, "role": args.role})
     r = http_post(args, url, headers=headers)
     r.raise_for_status()
-    if (r.status_code == 200):
-        print(f"successfully invited {args.email} to your current team")
-    else:
-        print(r.text);
-        print(f"failed with error {r.status_code}")
+    print(f"successfully invited {args.email} to your current team")
 
 
 @parser.command(
@@ -3716,24 +3660,19 @@ def logs(args):
 
     r = http_put(args, url, headers=headers, json=json_blob)
     r.raise_for_status()
-
-    if r.status_code == 200:
-        rj = r.json()
-        for i in range(0, 30):
-            time.sleep(0.3)
-            url = rj["result_url"]
-            print(f"waiting on logs for instance {args.INSTANCE_ID} fetching from {url}")
-            r = http_get(args, url)
-            if r.status_code == 200:
-                result = r.text
-                cleaned_text = re.sub(r'\n\s*\n', '\n', result)
-                print(cleaned_text)
-                break
-        else:
-            print(rj["msg"])
+    rj = r.json()
+    for i in range(0, 30):
+        time.sleep(0.3)
+        url = rj["result_url"]
+        print(f"waiting on logs for instance {args.INSTANCE_ID} fetching from {url}")
+        r = http_get(args, url)
+        if r.status_code == 200:
+            result = r.text
+            cleaned_text = re.sub(r'\n\s*\n', '\n', result)
+            print(cleaned_text)
+            break
     else:
-        print(r.text)
-        print(f"failed with error {r.status_code}")
+        print(rj.get("msg", "Unknown error"))
 
 
 
@@ -3863,9 +3802,7 @@ def reports(args):
     
     r = http_get(args, url, headers=headers, json=json_blob)
     r.raise_for_status()
-
-    if (r.status_code == 200):
-        print(f"reports: {json.dumps(r.json(), indent=2)}")
+    print(f"reports: {json.dumps(r.json(), indent=2)}")
 
 
 @parser.command(
@@ -3950,18 +3887,12 @@ def start_instance(id,args):
         print(json_blob)
     r = http_put(args, url,  headers=headers,json=json_blob)
     r.raise_for_status()
-
-    if (r.status_code == 200):
-        rj = r.json()
-        if (rj["success"]):
-            print("starting instance {id}.".format(**(locals())))
-        else:
-            print(rj["msg"])
-        return True
+    rj = r.json()
+    if rj.get("success"):
+        print("starting instance {id}.".format(**(locals())))
     else:
-        print(r.text)
-        print("failed with error {r.status_code}".format(**locals()))
-    return False
+        print(rj.get("msg", "Unknown error"))
+    return True
 
 @parser.command(
     argument("id", help="ID of instance to start/restart", type=int),
@@ -4017,18 +3948,12 @@ def stop_instance(id,args):
         print(json_blob)
     r = http_put(args, url,  headers=headers,json=json_blob)
     r.raise_for_status()
-
-    if (r.status_code == 200):
-        rj = r.json()
-        if (rj["success"]):
-            print("stopping instance {id}.".format(**(locals())))
-        else:
-            print(rj["msg"])
-        return True
+    rj = r.json()
+    if rj.get("success"):
+        print("stopping instance {id}.".format(**(locals())))
     else:
-        print(r.text)
-        print("failed with error {r.status_code}".format(**locals()))
-    return False
+        print(rj.get("msg", "Unknown error"))
+    return True
 
 
 @parser.command(
@@ -5081,17 +5006,16 @@ def show__workergroups(args):
     r.raise_for_status()
     #print("workergroup list ".format(r.json()))
 
-    if (r.status_code == 200):
-        rj = r.json();
-        if (rj["success"]):
-            rows = rj["results"] 
-            if args.raw:
-                return rows
-            else:
-                #print(rows)
-                print(json.dumps(rows, indent=1, sort_keys=True))
+    rj = r.json();
+    if rj.get("success"):
+        rows = rj["results"]
+        if args.raw:
+            return rows
         else:
-            print(rj["msg"]);
+            #print(rows)
+            print(json.dumps(rows, indent=1, sort_keys=True))
+    else:
+        print(rj.get("msg", "Unknown error"));
 
 @parser.command(
     usage="vastai show endpoints [--api-key API_KEY]",
@@ -5110,17 +5034,16 @@ def show__endpoints(args):
     r.raise_for_status()
     #print("workergroup list ".format(r.json()))
 
-    if (r.status_code == 200):
-        rj = r.json();
-        if (rj["success"]):
-            rows = rj["results"] 
-            if args.raw:
-                return rows
-            else:
-                #print(rows)
-                print(json.dumps(rows, indent=1, sort_keys=True))
+    rj = r.json();
+    if rj.get("success"):
+        rows = rj["results"]
+        if args.raw:
+            return rows
         else:
-            print(rj["msg"]);
+            #print(rows)
+            print(json.dumps(rows, indent=1, sort_keys=True))
+    else:
+        print(rj.get("msg", "Unknown error"));
 
 
 @parser.command(
@@ -5950,16 +5873,11 @@ def transfer__credit(args: argparse.Namespace):
         print(json_blob)
     r = http_put(args, url,  headers=headers,json=json_blob)
     r.raise_for_status()
-
-    if (r.status_code == 200):
-        rj = r.json();
-        if (rj["success"]):
-            print(f"Sent {args.amount} to {args.recipient} ".format(r.json()))
-        else:
-            print(rj["msg"]);
+    rj = r.json();
+    if rj.get("success"):
+        print(f"Sent {args.amount} to {args.recipient} ".format(r.json()))
     else:
-        print(r.text);
-        print("failed with error {r.status_code}".format(**locals()));
+        print(rj.get("msg", "Unknown error"));
 
 @parser.command(
     argument("id", help="id of autoscale group to update", type=int),
