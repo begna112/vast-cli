@@ -54,6 +54,9 @@ all = [
 dev = [
   "pytest>=8.0",
   "pytest-cov>=4.0",
+  "mypy>=1.14",
+  "types-requests>=2.32",
+  "types-python-dateutil>=2.9",
 ]
 
 [tool.pytest.ini_options]
@@ -117,3 +120,39 @@ style = "semver"
 
 [tool.poetry.requires-plugins]
 poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = ["plugin"] }
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+
+# Third-party libraries without stubs
+[[tool.mypy.overrides]]
+module = [
+    "borb.*",
+    "PIL.*",
+    "argcomplete.*",
+    "curlify.*",
+    "pyparsing.*",
+    "xdg.*",
+]
+ignore_missing_imports = true
+
+# Legacy vast.py - completely ignore (8000+ lines, not feasible to type)
+[[tool.mypy.overrides]]
+module = "vast"
+ignore_errors = true
+
+# vast_pdf.py - also legacy
+[[tool.mypy.overrides]]
+module = "vast_pdf"
+ignore_errors = true
+
+# Tests - relaxed requirements
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+disallow_untyped_calls = false
