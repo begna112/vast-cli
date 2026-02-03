@@ -45,7 +45,7 @@ TABCOMPLETE = False
 try:
     import argcomplete
     TABCOMPLETE = True
-except:
+except ImportError:
     # No tab-completion for you
     pass
 
@@ -123,14 +123,15 @@ def is_pip_package():
     except Exception:
         return False
 
-def get_update_command(stable_version: str) -> str:
+def get_update_command(stable_version: str) -> list:
     if is_pip_package():
+        cmd = [sys.executable, "-m", "pip", "install", "--force-reinstall", "--no-cache-dir"]
         if "test.pypi.org" in PYPI_BASE_PATH:
-            return f"{sys.executable} -m pip install --force-reinstall --no-cache-dir -i {PYPI_BASE_PATH} vastai=={stable_version}"
-        else:
-            return f"{sys.executable} -m pip install --force-reinstall --no-cache-dir vastai=={stable_version}"
+            cmd.extend(["-i", PYPI_BASE_PATH])
+        cmd.append(f"vastai=={stable_version}")
+        return cmd
     else:
-        return f"git fetch --all --tags --prune && git checkout tags/v{stable_version}"
+        return ["git", "fetch", "--all", "--tags", "--prune"]
 
 
 def get_local_version():
@@ -190,12 +191,20 @@ def check_for_update():
     print("Updating...")
     _ = subprocess.run(
         update_command,
-        shell=True,
         check=True,
         text=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
+    if not is_pip_package():
+        # git case: need a second command to checkout the tag
+        _ = subprocess.run(
+            ["git", "checkout", f"tags/v{pypi_version}"],
+            check=True,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
 
     print("Update completed successfully!\nAttempt to run your command again!")
     sys.exit(0)
@@ -218,7 +227,7 @@ try:
       'temp': xdg.xdg_cache_home()
   }
 
-except:
+except (ImportError, KeyError, OSError):
   # Reasonable defaults.
   DIRS = {
       'config': os.path.join(os.getenv('HOME'), '.config'),
@@ -1373,7 +1382,7 @@ def parse_vast_url(url_str):
         try:
             instance_id = int(path)
             path = "/"
-        except:
+        except (ValueError, TypeError):
             pass
 
     valid_unix_path_regex = re.compile('^(/)?([^/\0]+(/)?)+$')
@@ -1738,26 +1747,25 @@ def copy(args: argparse.Namespace):
             return
         #print(json.dumps(rj, indent=1, sort_keys=True))
         if (rj["success"]) and ((src_id is None or src_id == "local") or (dst_id is None or dst_id == "local")):
-            homedir = subprocess.getoutput("echo $HOME")
+            homedir = os.path.expanduser("~")
             #print(f"homedir: {homedir}")
             remote_port = None
             identity = f"-i {args.identity}" if (args.identity is not None) else ""
             if (src_id is None or src_id == "local"):
-                #result = subprocess.run(f"mkdir -p {src_path}", shell=True)
                 remote_port = rj["dst_port"]
                 remote_addr = rj["dst_addr"]
-                cmd = f"rsync -arz -v --progress --rsh=ssh -e 'ssh {identity} -p {remote_port} -o StrictHostKeyChecking=no' {src_path} vastai_kaalia@{remote_addr}::{dst_id}/{dst_path}"
-                print(cmd)
-                result = subprocess.run(cmd, shell=True)
-                #result = subprocess.run(["sudo", "rsync" "-arz", "-v", "--progress", "-rsh=ssh", "-e 'sudo ssh -i {homedir}/.ssh/id_rsa -p {remote_port} -o StrictHostKeyChecking=no'", src_path, "vastai_kaalia@{remote_addr}::{dst_id}"], shell=True)
+                ssh_cmd = f"ssh {identity} -p {remote_port} -o StrictHostKeyChecking=no".strip()
+                rsync_args = ["rsync", "-arz", "-v", "--progress", "-e", ssh_cmd, src_path, f"vastai_kaalia@{remote_addr}::{dst_id}/{dst_path}"]
+                print(" ".join(rsync_args))
+                result = subprocess.run(rsync_args)
             elif (dst_id is None or dst_id == "local"):
-                result = subprocess.run(f"mkdir -p {dst_path}", shell=True)
+                os.makedirs(dst_path, exist_ok=True)
                 remote_port = rj["src_port"]
                 remote_addr = rj["src_addr"]
-                cmd = f"rsync -arz -v --progress --rsh=ssh -e 'ssh {identity} -p {remote_port} -o StrictHostKeyChecking=no' vastai_kaalia@{remote_addr}::{src_id}/{src_path} {dst_path}"
-                print(cmd)
-                result = subprocess.run(cmd, shell=True)
-                #result = subprocess.run(["sudo", "rsync" "-arz", "-v", "--progress", "-rsh=ssh", "-e 'ssh -i {homedir}/.ssh/id_rsa -p {remote_port} -o StrictHostKeyChecking=no'", "vastai_kaalia@{remote_addr}::{src_id}", dst_path], shell=True)
+                ssh_cmd = f"ssh {identity} -p {remote_port} -o StrictHostKeyChecking=no".strip()
+                rsync_args = ["rsync", "-arz", "-v", "--progress", "-e", ssh_cmd, f"vastai_kaalia@{remote_addr}::{src_id}/{src_path}", dst_path]
+                print(" ".join(rsync_args))
+                result = subprocess.run(rsync_args)
         else:
             if (rj["success"]):
                 print("Remote to Remote copy initiated - check instance status bar for progress updates (~30 seconds delayed).")
@@ -4896,7 +4904,7 @@ def _ssh_url(args, protocol):
     try:
         with open(f"{DIRS['temp']}/ssh_{args.id}.json", 'r') as openfile:
             json_object = json.load(openfile)
-    except:
+    except (OSError, json.JSONDecodeError, KeyError):
         pass
 
     port      = None
@@ -4936,10 +4944,10 @@ def _ssh_url(args, protocol):
             if (port_22d is not None):
                 ipaddr = instance["public_ipaddr"]
                 port   = int(port_22d[0]["HostPort"])
-            else:        
+            else:
                 ipaddr = instance["ssh_host"]
                 port   = int(instance["ssh_port"])+1 if "jupyter" in instance["image_runtype"] else int(instance["ssh_port"])
-        except:
+        except (KeyError, TypeError, ValueError):
             port = -1
 
     if (port > 0):
@@ -4952,7 +4960,7 @@ def _ssh_url(args, protocol):
     try:
         with open(f"{DIRS['temp']}/ssh_{args.id}.json", "w") as outfile:
             json.dump({"ipaddr":ipaddr, "port":port}, outfile)
-    except:
+    except OSError:
         pass
 
 @parser.command(
@@ -8043,7 +8051,7 @@ try:
       pre = super().quote_completions(completions, cword_prequote, last_wordbreak_pos)
       # preference the non-hyphenated options first
       return sorted(pre, key=lambda x: x.startswith('-'))
-except:
+except (NameError, AttributeError):
   pass
 
 
