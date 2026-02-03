@@ -4076,7 +4076,7 @@ def search__benchmarks(args):
     r = http_get(args, url, headers=headers)
     r.raise_for_status()
     rows = r.json()
-    if True: # args.raw:
+    if args.raw:
         return rows
     else:
         display_table(rows, displayable_fields)
@@ -4182,7 +4182,7 @@ def search__invoices(args):
     r = http_get(args, url, headers=headers)
     r.raise_for_status()
     rows = r.json()
-    if True: # args.raw:
+    if args.raw:
         return rows
     else:
         display_table(rows, displayable_fields)
@@ -4493,8 +4493,8 @@ def search__templates(args):
         r.raise_for_status()
     elif 'json' in r.headers.get("Content-Type"):
         rows = r.json().get('templates', [])
-        if True: #args.raw:
-            print(json.dumps(rows, indent=1, sort_keys=True))
+        if args.raw:
+            return rows
         else:
             display_table(rows, displayable_fields)
     else:
@@ -7549,7 +7549,7 @@ def run_machinetester(ip_address, port, instance_id, machine_id, delay, args, ap
             return 'unknown'
 
     # Prepare destroy_args with required attributes set to False as needed
-    destroy_args = argparse.Namespace(api_key=api_key, url="https://console.vast.ai", retry=3, explain=False, raw=args.raw, debbuging=args.debugging,)
+    destroy_args = argparse.Namespace(api_key=api_key, url="https://console.vast.ai", retry=3, explain=False, raw=args.raw, debugging=args.debugging,)
 
     # Delay start if specified
     if delay > 0:
