@@ -51,6 +51,12 @@ serverless = [
 all = [
   "vastai[serverless]",
 ]
+dev = [
+  "pytest>=8.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
 
 [tool.poetry]
 packages = [
