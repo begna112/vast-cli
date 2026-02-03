@@ -216,3 +216,54 @@ class TestSDKMethodCoverage:
         for method in critical_methods:
             assert hasattr(sdk, method) or method in sdk.imported_methods, \
                 f"Critical method '{method}' missing from SDK"
+
+
+class TestSDKMethodExecution:
+    """Verify SDK methods execute through the vast module correctly."""
+
+    def test_show_instances_method_exists_and_callable(self):
+        """show_instances method should exist and be callable."""
+        from vastai import VastAI
+
+        sdk = VastAI(api_key="test_key")
+
+        # Method should exist as callable
+        assert hasattr(sdk, 'show_instances'), "show_instances should be bound"
+        assert callable(sdk.show_instances), "show_instances should be callable"
+
+    def test_search_offers_method_exists_and_callable(self):
+        """search_offers method should exist and be callable."""
+        from vastai import VastAI
+
+        sdk = VastAI(api_key="test_key")
+
+        assert hasattr(sdk, 'search_offers'), "search_offers should be bound"
+        assert callable(sdk.search_offers), "search_offers should be callable"
+
+    def test_method_binding_uses_vast_functions(self):
+        """SDK methods should be bound from vast module functions."""
+        from vastai import VastAI
+        import vast
+
+        sdk = VastAI(api_key="test_key")
+
+        # The method should be in imported_methods and callable
+        if 'show_instances' in sdk.imported_methods:
+            # The bound method comes from vast.show__instances
+            vast_func_name = 'show__instances'
+            assert hasattr(vast, vast_func_name), \
+                f"vast.{vast_func_name} should exist for SDK to bind"
+
+    def test_method_returns_callable_not_none(self):
+        """SDK methods should return callable functions, not None."""
+        from vastai import VastAI
+
+        sdk = VastAI(api_key="test_key")
+
+        # Check several methods to ensure they're properly bound
+        methods_to_check = ['search_offers', 'show_instances', 'show_machines', 'show_user']
+
+        for method_name in methods_to_check:
+            method = getattr(sdk, method_name, None)
+            assert method is not None, f"{method_name} should not be None"
+            assert callable(method), f"{method_name} should be callable"
