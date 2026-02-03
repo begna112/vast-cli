@@ -1743,16 +1743,16 @@ def copy(args: argparse.Namespace):
         remote_port = None
         identity = f"-i {args.identity}" if (args.identity is not None) else ""
         if (src_id is None or src_id == "local"):
-            remote_port = rj["dst_port"]
-            remote_addr = rj["dst_addr"]
+            remote_port = rj.get("dst_port")
+            remote_addr = rj.get("dst_addr")
             ssh_cmd = f"ssh {identity} -p {remote_port} -o StrictHostKeyChecking=no".strip()
             rsync_args = ["rsync", "-arz", "-v", "--progress", "-e", ssh_cmd, src_path, f"vastai_kaalia@{remote_addr}::{dst_id}/{dst_path}"]
             print(" ".join(rsync_args))
             result = subprocess.run(rsync_args)
         elif (dst_id is None or dst_id == "local"):
             os.makedirs(dst_path, exist_ok=True)
-            remote_port = rj["src_port"]
-            remote_addr = rj["src_addr"]
+            remote_port = rj.get("src_port")
+            remote_addr = rj.get("src_addr")
             ssh_cmd = f"ssh {identity} -p {remote_port} -o StrictHostKeyChecking=no".strip()
             rsync_args = ["rsync", "-arz", "-v", "--progress", "-e", ssh_cmd, f"vastai_kaalia@{remote_addr}::{src_id}/{src_path}", dst_path]
             print(" ".join(rsync_args))
@@ -1915,7 +1915,7 @@ def cloud__copy(args: argparse.Namespace):
         except JSONDecodeError:
             print("Error: API returned invalid JSON response", file=sys.stderr)
             return
-        row = rj["instances"]
+        row = rj.get("instances")
 
         if args.transfer.lower() == "instance to cloud":
             if row: 
@@ -2076,9 +2076,13 @@ def add_scheduled_job(args, req_json, cli_command, api_endpoint, request_method,
         user_input = input("Existing scheduled job found. Do you want to update it (y|n)? ")
         if user_input.strip().lower() == "y":
             try:
-                scheduled_job_id = response.json()["scheduled_job_id"]
+                resp_data = response.json()
             except JSONDecodeError:
                 print("Error: API returned invalid JSON response", file=sys.stderr)
+                return
+            scheduled_job_id = resp_data.get("scheduled_job_id")
+            if not scheduled_job_id:
+                print("Error: API response missing required 'scheduled_job_id' field", file=sys.stderr)
                 return
             schedule_job_url = apiurl(args, f"/commands/schedule_job/{scheduled_job_id}/")
             response = update_scheduled_job(args, cli_command, schedule_job_url, frequency, args.start_date, args.end_date, request_body)
@@ -2165,7 +2169,7 @@ def create__cluster(args: argparse.Namespace):
     if args.raw:
         return rj
 
-    print(rj["msg"])
+    print(rj.get("msg", "Unknown error"))
 
 @parser.command(
     argument("name", help="Environment variable name", type=str),
@@ -2797,10 +2801,10 @@ def create__template(args):
     r.raise_for_status()
     try:
         rj = r.json()
-        if rj["success"]:
-            print(f"New Template: {rj['template']}")
+        if rj.get("success"):
+            print(f"New Template: {rj.get('template', '')}")
         else:
-            print(rj['msg'])
+            print(rj.get('msg', 'Unknown error'))
     except requests.exceptions.JSONDecodeError:
         print("The response is not valid JSON.")
 
@@ -2896,7 +2900,7 @@ def create__overlay(args: argparse.Namespace):
     if args.raw:
         return r.json()
 
-    print(r.json()["msg"])
+    print(r.json().get("msg", "Unknown error"))
 
 @parser.command(
     argument("id", help="id of apikey to remove", type=int),
@@ -2947,7 +2951,7 @@ def delete__cluster(args: argparse.Namespace):
     if args.raw:
         return result
 
-    print(result["msg"])
+    print(result.get("msg", "Unknown error"))
 
 
 @parser.command(
@@ -3054,7 +3058,7 @@ def delete__overlay(args: argparse.Namespace):
     if args.raw:
         return result
 
-    print(result["msg"])
+    print(result.get("msg", "Unknown error"))
 
 @parser.command(
     argument("--template-id", help="Template ID of Template to Delete", type=int),
@@ -3228,12 +3232,15 @@ def execute(args):
 
     rj = r.json()
     if rj.get("success"):
+        url = rj.get("result_url")
+        if not url:
+            print("Error: API response missing required 'result_url' field", file=sys.stderr)
+            return
         for i in range(0,30):
             time.sleep(0.3)
-            url = rj["result_url"]
             r = http_get(args, url)
             if (r.status_code == 200):
-                filtered_text = r.text.replace(rj["writeable_path"], '');
+                filtered_text = r.text.replace(rj.get("writeable_path", ''), '');
                 print(filtered_text)
                 break
     else:
@@ -3357,7 +3364,7 @@ def join__cluster(args: argparse.Namespace):
     if args.raw:
         return r.json()
 
-    print(r.json()["msg"])
+    print(r.json().get("msg", "Unknown error"))
 
 
 @parser.command(
@@ -3384,7 +3391,7 @@ def join__overlay(args: argparse.Namespace):
     if args.raw:
         return r.json()
 
-    print(r.json()["msg"])
+    print(r.json().get("msg", "Unknown error"))
 
 
 
@@ -3406,10 +3413,10 @@ def label__instance(args):
         print(json_blob)
     result = api_call(args, "PUT", "/instances/{id}/".format(id=args.id), json_body=json_blob)
 
-    if result["success"]:
+    if result.get("success"):
         print("label for {args.id} set to {args.label}.".format(**(locals())));
     else:
-        print(result["msg"]);
+        print(result.get("msg", "Unknown error"));
 
 
 def fetch_url_content(url):
@@ -3661,9 +3668,12 @@ def logs(args):
     r = http_put(args, url, headers=headers, json=json_blob)
     r.raise_for_status()
     rj = r.json()
+    url = rj.get("result_url")
+    if not url:
+        print("Error: API response missing required 'result_url' field", file=sys.stderr)
+        return
     for i in range(0, 30):
         time.sleep(0.3)
-        url = rj["result_url"]
         print(f"waiting on logs for instance {args.INSTANCE_ID} fetching from {url}")
         r = http_get(args, url)
         if r.status_code == 200:
@@ -3700,12 +3710,12 @@ def prepay__instance(args):
     except JSONDecodeError:
         print("Error: API returned invalid JSON response", file=sys.stderr)
         return
-    if rj["success"]:
-        timescale = round( rj["timescale"], 3)
-        discount_rate = 100.0*round( rj["discount_rate"], 3)
+    if rj.get("success"):
+        timescale = round( rj.get("timescale", 0), 3)
+        discount_rate = 100.0*round( rj.get("discount_rate", 0), 3)
         print("prepaid for {timescale} months of instance {args.id} applying ${args.amount} credits for a discount of {discount_rate}%".format(**(locals())));
     else:
-        print(rj["msg"]);
+        print(rj.get("msg", "Unknown error"));
 
 '''
 '''
@@ -4397,7 +4407,7 @@ def search__offers(args):
         print(f"invalid return Content-Type: {r.headers.get('Content-Type')}")
         return   
 
-    rows = r.json()["offers"]
+    rows = r.json().get("offers", [])
 
     # TODO: add this post-query geolocation filter to the database call rather than handling it locally
     if 'rented' in query:
@@ -4624,8 +4634,8 @@ def search__volumes(args: argparse.Namespace):
         print(f"invalid return Content-Type: {r.headers.get('Content-Type')}")
         return   
 
-    rows = r.json()["offers"]
-    
+    rows = r.json().get("offers", [])
+
     if args.raw:
         return rows
     else:
@@ -4721,8 +4731,8 @@ def search__network_volumes(args: argparse.Namespace):
         print(f"invalid return Content-Type: {r.headers.get('Content-Type')}")
         return   
 
-    rows = r.json()["offers"]
-    
+    rows = r.json().get("offers", [])
+
     if args.raw:
         return rows
     else:
@@ -4848,7 +4858,7 @@ def _ssh_url(args, protocol):
         except JSONDecodeError:
             print("Error: API returned invalid JSON response", file=sys.stderr)
             return 1
-        rows = rj["instances"]
+        rows = rj.get("instances", [])
 
         if args.id:
             matches = [r for r in rows if r['id'] == args.id]
@@ -5008,7 +5018,7 @@ def show__workergroups(args):
 
     rj = r.json();
     if rj.get("success"):
-        rows = rj["results"]
+        rows = rj.get("results", [])
         if args.raw:
             return rows
         else:
@@ -5036,7 +5046,7 @@ def show__endpoints(args):
 
     rj = r.json();
     if rj.get("success"):
-        rows = rj["results"]
+        rows = rj.get("results", [])
         if args.raw:
             return rows
         else:
@@ -5209,7 +5219,7 @@ def show__invoices(args):
     except JSONDecodeError:
         print("Error: API returned invalid JSON response", file=sys.stderr)
         return
-    rows = rj["invoices"]
+    rows = rj.get("invoices", [])
     # print("Timestamp for first row: ", rows[0]["timestamp"])
     invoice_filter_data = filter_invoice_items(args, rows)
     rows = invoice_filter_data["rows"]
@@ -5235,7 +5245,7 @@ def show__invoices(args):
         
         result = http_post(args, url, headers=headers,json=req_json)
         result.raise_for_status()
-        filtered_rows = result.json()["contracts"]
+        filtered_rows = result.json().get("contracts", [])
         #print(rows)
 
         contract_ids = select(filtered_rows, 'id')
@@ -5248,7 +5258,7 @@ def show__invoices(args):
                 rows2.append(row)
         rows = rows2
 
-    current_charges = rj["current"]
+    current_charges = rj.get("current")
     if args.quiet:
         for row in rows:
             id = row.get("id", None)
@@ -5593,7 +5603,10 @@ def show__instance(args):
     :rtype:
     """
     result = api_call(args, "GET", f"/instances/{args.id}/", query_args={"owner": "me"})
-    row = result["instances"]
+    row = result.get("instances")
+    if not row:
+        print("Error: API response missing required 'instances' field", file=sys.stderr)
+        return
     row['duration'] = time.time() - row['start_date']
     row['extra_env'] = {env_var[0]: env_var[1] for env_var in row['extra_env']}
     return output_result(args, row, instance_fields)
@@ -5619,7 +5632,7 @@ def show__instances(args = {}, extra = {}):
     except JSONDecodeError:
         print("Error: API returned invalid JSON response", file=sys.stderr)
         return
-    rows = rj["instances"]
+    rows = rj.get("instances", [])
     new_rows = []
     for row in rows:
         row = {k: strip_strings(v) for k, v in row.items()}
@@ -5794,7 +5807,7 @@ def show__volumes(args: argparse.Namespace):
     }
     type = types.get(args.type, "all")
     result = api_call(args, "GET", "/volumes", query_args={"owner": "me", "type": type})
-    rows = result["volumes"]
+    rows = result.get("volumes", [])
     processed = []
     for row in rows:
         row = {k: strip_strings(v) for k, v in row.items()}
@@ -5833,7 +5846,7 @@ def remove_machine_from_cluster(args: argparse.Namespace):
     if args.raw:
         return r.json()
 
-    print(r.json()["msg"])
+    print(r.json().get("msg", "Unknown error"))
 
 
 
@@ -6117,8 +6130,8 @@ def update__template(args):
     r.raise_for_status()
     try:
         rj = r.json()
-        if rj["success"]:
-            print(f"updated template: {json.dumps(rj['template'], indent=1)}")
+        if rj.get("success"):
+            print(f"updated template: {json.dumps(rj.get('template', ''), indent=1)}")
         else:
             print("template update failed")
     except requests.exceptions.JSONDecodeError as e:
@@ -6367,7 +6380,7 @@ def add__network_disk(args):
     if args.raw:
         return rj
 
-    print("Attached network disk to machines. Disk id: " + str(rj["disk_id"]))
+    print("Attached network disk to machines. Disk id: " + str(rj.get("disk_id", "unknown")))
 
 
 
@@ -6411,13 +6424,13 @@ def cleanup_machine(args, machine_id):
 
     if (r.status_code == 200):
         rj = r.json()
-        if (rj["success"]):
+        if (rj.get("success")):
             print(json.dumps(r.json(), indent=1))
         else:
             if args.raw:
                 return r.json()
             else:
-                print(rj["msg"])
+                print(rj.get("msg", "Unknown error"))
     else:
         print(r.text)
         print("failed with error {r.status_code}".format(**locals()))
@@ -6481,10 +6494,10 @@ def delete__machine(args):
     r = http_post(args, req_url, headers=headers)
     if (r.status_code == 200):
         rj = r.json()
-        if (rj["success"]):
+        if (rj.get("success")):
             print("deleted machine_id ({machine_id}) and all related contracts.".format(machine_id=args.id));
         else:
-            print(rj["msg"]);
+            print(rj.get("msg", "Unknown error"));
     else:
         print(r.text);
         print("failed with error {r.status_code}".format(**locals()));
@@ -6514,7 +6527,7 @@ def list_machine(args, id):
 
     if (r.status_code == 200):
         rj = r.json()
-        if (rj["success"]):
+        if (rj.get("success")):
             price_gpu_ = str(args.price_gpu) if args.price_gpu is not None else "def"
             price_inetu_ = str(args.price_inetu)
             price_inetd_ = str(args.price_inetd)
@@ -6535,7 +6548,7 @@ def list_machine(args, id):
             if args.raw:
                 return r.json()
             else:
-                print(rj["msg"])
+                print(rj.get("msg", "Unknown error"))
     else:
         print(r.text)
         print("failed with error {r.status_code}".format(**locals()))
@@ -6634,7 +6647,7 @@ def list__network_volume(args):
     if args.raw:
         return r.json()
 
-    print(r.json()["msg"])
+    print(r.json().get("msg", "Unknown error"))
 
 
 
@@ -6729,10 +6742,10 @@ def remove__defjob(args):
 
     if (r.status_code == 200):
         rj = r.json();
-        if (rj["success"]):
+        if (rj.get("success")):
             print("default instance for machine {machine_id} removed.".format(machine_id=args.id));
         else:
-            print(rj["msg"]);
+            print(rj.get("msg", "Unknown error"));
     else:
         print(r.text);
         print("failed with error {r.status_code}".format(**locals()));
@@ -7040,11 +7053,11 @@ def set__defjob(args):
     r = http_put(args, req_url, headers=headers, json=json_blob)
     if (r.status_code == 200):
         rj = r.json();
-        if (rj["success"]):
+        if (rj.get("success")):
             print(
                 "bids created for machine {args.id},  @ ${args.price_gpu}/gpu/day, ${args.price_inetu}/GB up, ${args.price_inetd}/GB down".format(**locals()));
         else:
-            print(rj["msg"]);
+            print(rj.get("msg", "Unknown error"));
     else:
         print(r.text);
         print("failed with error {r.status_code}".format(**locals()));
@@ -7227,7 +7240,7 @@ def show__machines(args):
     :rtype:
     """
     result = api_call(args, "GET", "/machines", query_args={"owner": "me"})
-    rows = result["machines"]
+    rows = result.get("machines", [])
     if args.raw:
         return rows
     else:
@@ -7319,10 +7332,10 @@ def unlist__machine(args):
     r = http_del(args, req_url, headers=headers)
     if (r.status_code == 200):
         rj = r.json();
-        if (rj["success"]):
+        if (rj.get("success")):
             print("all offers for machine {machine_id} removed, machine delisted.".format(machine_id=args.id));
         else:
-            print(rj["msg"]);
+            print(rj.get("msg", "Unknown error"));
     else:
         print(r.text);
         print("failed with error {r.status_code}".format(**locals()));
@@ -7348,7 +7361,7 @@ def unlist__network_volume(args):
     if args.raw:
         return r.json()
 
-    print(r.json()["msg"])
+    print(r.json().get("msg", "Unknown error"))
 
 @parser.command(
     argument("id", help="volume ID you want to unlist", type=int),
@@ -7372,7 +7385,7 @@ def unlist__volume(args):
     if args.raw:
         return r.json()
     else:
-        print(r.json()["msg"])
+        print(r.json().get("msg", "Unknown error"))
 
 
 def suppress_stdout():
