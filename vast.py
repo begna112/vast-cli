@@ -2695,7 +2695,7 @@ def create__subaccount(args):
     usage="vastai create-team --team_name TEAM_NAME",
     help="Create a new team",
     epilog=deindent("""
-         Creates a new team under your account. 
+         Creates a new team under your account.
 
         Unlike legacy teams, this command does NOT convert your personal account into a team.
         Each team is created as a separate account, and you can be a member of multiple teams.
@@ -2706,13 +2706,9 @@ def create__subaccount(args):
           - Default roles (owner, manager, member) are automatically created.
           - You can invite others, assign roles, and manage resources within the team.
 
-        Optional:
-          You can transfer a portion of your existing personal credits to the team by using 
-          the `--transfer_credit` flag. Example:
-              vastai create-team --team_name myteam --transfer_credit 25
-
         Notes:
           - You cannot create a team from within another team account.
+          - To transfer credits to a team, use `vastai transfer credit <team_email> <amount>` after team creation.
 
         For more details, see:
         https://vast.ai/docs/teams-quickstart
@@ -5762,7 +5758,13 @@ def show__clusters(args: argparse.Namespace):
     for cluster_id, cluster_data in response_data['clusters'].items():
         machine_ids = [ node["machine_id"] for node in cluster_data["nodes"]]
 
-        manager_node = next(node for node in cluster_data['nodes'] if node['is_cluster_manager'])
+        manager_node = next(
+            (node for node in cluster_data['nodes'] if node['is_cluster_manager']),
+            None
+        )
+        if manager_node is None:
+            # Cluster has no manager node, skip displaying this cluster
+            continue
 
         row_data = {
             'id': cluster_id,
