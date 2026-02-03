@@ -688,7 +688,10 @@ def api_call(args, method, path, *, json_body=None, query_args=None):
     r.raise_for_status()
 
     if r.content:
-        return r.json()
+        try:
+            return r.json()
+        except JSONDecodeError:
+            return {"_raw_text": r.text}
     return None
 
 
@@ -1435,7 +1438,11 @@ def attach__ssh(args):
     req_json = {"ssh_key": ssh_key}
     r = http_post(args, url, headers=headers, json=req_json)
     r.raise_for_status()
-    print(r.json())
+    try:
+        print(r.json())
+    except JSONDecodeError:
+        print("Error: API returned invalid JSON response", file=sys.stderr)
+        return
 
 @parser.command(
     argument("dst", help="instance_id:/path to target of copy operation", type=str),
@@ -1470,7 +1477,11 @@ def cancel__copy(args: argparse.Namespace):
     r = http_del(args, url, headers=headers,json=req_json)
     r.raise_for_status()
     if (r.status_code == 200):
-        rj = r.json();
+        try:
+            rj = r.json();
+        except JSONDecodeError:
+            print("Error: API returned invalid JSON response", file=sys.stderr)
+            return
         if (rj["success"]):
             print("Remote copy canceled - check instance status bar for progress updates (~30 seconds delayed).")
         else:
@@ -1513,7 +1524,11 @@ def cancel__sync(args: argparse.Namespace):
     r = http_del(args, url, headers=headers,json=req_json)
     r.raise_for_status()
     if (r.status_code == 200):
-        rj = r.json();
+        try:
+            rj = r.json();
+        except JSONDecodeError:
+            print("Error: API returned invalid JSON response", file=sys.stderr)
+            return
         if (rj["success"]):
             print("Remote copy canceled - check instance status bar for progress updates (~30 seconds delayed).")
         else:
@@ -1633,10 +1648,15 @@ def clone__volume(args: argparse.Namespace):
         print(json_blob)
     r = http_post(args, url,  headers=headers,json=json_blob)
     r.raise_for_status()
+    try:
+        rj = r.json()
+    except JSONDecodeError:
+        print("Error: API returned invalid JSON response", file=sys.stderr)
+        return
     if args.raw:
-        return r.json()
+        return rj
     else:
-        print("Created. {}".format(r.json()))
+        print("Created. {}".format(rj))
 
 
 @parser.command(
@@ -1711,7 +1731,11 @@ def copy(args: argparse.Namespace):
     r = http_put(args, url,  headers=headers,json=req_json)
     r.raise_for_status()
     if (r.status_code == 200):
-        rj = r.json()
+        try:
+            rj = r.json()
+        except JSONDecodeError:
+            print("Error: API returned invalid JSON response", file=sys.stderr)
+            return
         #print(json.dumps(rj, indent=1, sort_keys=True))
         if (rj["success"]) and ((src_id is None or src_id == "local") or (dst_id is None or dst_id == "local")):
             homedir = subprocess.getoutput("echo $HOME")
@@ -1788,7 +1812,11 @@ def vm__copy(args: argparse.Namespace):
     r = http_put(args, url,  headers=headers,json=req_json)
     r.raise_for_status()
     if (r.status_code == 200):
-        rj = r.json();
+        try:
+            rj = r.json();
+        except JSONDecodeError:
+            print("Error: API returned invalid JSON response", file=sys.stderr)
+            return
         if (rj["success"]):
             print("Remote to Remote copy initiated - check instance status bar for progress updates (~30 seconds delayed).")
         else:
@@ -1981,7 +2009,11 @@ def take__snapshot(args: argparse.Namespace):
     r.raise_for_status()
 
     if r.status_code == 200:
-        data = r.json()
+        try:
+            data = r.json()
+        except JSONDecodeError:
+            print("Error: API returned invalid JSON response", file=sys.stderr)
+            return
         if data.get("success"):
             print(f"Snapshot request sent successfully. Please check your repo {repo} in container registry {container_registry} in 5-10 mins. It can take longer than 5-10 mins to push your snapshot image to your repo depending on the size of your image.")
         else:
@@ -2097,7 +2129,11 @@ def create__api_key(args):
         permissions = load_permissions_from_file(args.permission_file)
         r = http_post(args, url, headers=headers, json={"name": args.name, "permissions": permissions, "key_params": args.key_params})
         r.raise_for_status()
-        print("api-key created {}".format(r.json()))
+        try:
+            print("api-key created {}".format(r.json()))
+        except JSONDecodeError:
+            print("Error: API returned invalid JSON response", file=sys.stderr)
+            return
     except FileNotFoundError:
         print("Error: Permission file '{}' not found.".format(args.permission_file))
     except requests.exceptions.RequestException as e:
@@ -2992,7 +3028,11 @@ def delete__env_var(args):
     r = http_del(args, url, headers=headers, json=data)
     r.raise_for_status()
 
-    result = r.json()
+    try:
+        result = r.json()
+    except JSONDecodeError:
+        print("Error: API returned invalid JSON response", file=sys.stderr)
+        return
     if result.get("success"):
         print(result.get("msg", "Environment variable deleted successfully."))
     else:
@@ -3684,7 +3724,11 @@ def prepay__instance(args):
     r = http_put(args, url,  headers=headers,json=json_blob)
     r.raise_for_status()
 
-    rj = r.json();
+    try:
+        rj = r.json();
+    except JSONDecodeError:
+        print("Error: API returned invalid JSON response", file=sys.stderr)
+        return
     if rj["success"]:
         timescale = round( rj["timescale"], 3)
         discount_rate = 100.0*round( rj["discount_rate"], 3)
@@ -4082,7 +4126,11 @@ def search__benchmarks(args):
     url = apiurl(args, "/benchmarks", {"select_cols" : ['*'], "select_filters" : query})
     r = http_get(args, url, headers=headers)
     r.raise_for_status()
-    rows = r.json()
+    try:
+        rows = r.json()
+    except JSONDecodeError:
+        print("Error: API returned invalid JSON response", file=sys.stderr)
+        return 1
     if args.raw:
         return rows
     else:
@@ -4188,7 +4236,11 @@ def search__invoices(args):
     url = apiurl(args, "/invoices", {"select_cols" : ['*'], "select_filters" : query})
     r = http_get(args, url, headers=headers)
     r.raise_for_status()
-    rows = r.json()
+    try:
+        rows = r.json()
+    except JSONDecodeError:
+        print("Error: API returned invalid JSON response", file=sys.stderr)
+        return 1
     if args.raw:
         return rows
     else:
@@ -5364,7 +5416,11 @@ def show__invoices_v1(args):
     while looping:
         response = http_get(args, url)
         response.raise_for_status()
-        response = response.json()
+        try:
+            response = response.json()
+        except JSONDecodeError:
+            print("Error: API returned invalid JSON response", file=sys.stderr)
+            return
 
         found_results += response.get('results', [])
         found_count += response.get('count', 0)
