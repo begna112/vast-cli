@@ -57,6 +57,7 @@ dev = [
   "mypy>=1.14",
   "types-requests>=2.32",
   "types-python-dateutil>=2.9",
+  "ruff>=0.9",
 ]
 
 [tool.pytest.ini_options]
@@ -156,3 +157,46 @@ ignore_errors = true
 module = "tests.*"
 disallow_untyped_defs = false
 disallow_untyped_calls = false
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+exclude = [
+    ".git",
+    ".venv",
+    "__pycache__",
+    "build",
+    "dist",
+    ".eggs",
+    "*.egg-info",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # pyflakes
+    "I",      # isort
+    "B",      # flake8-bugbear (common mistakes)
+    "C4",     # flake8-comprehensions
+    "UP",     # pyupgrade (modern Python syntax)
+]
+ignore = [
+    "E501",   # line too long (handled by formatter or legacy)
+]
+
+[tool.ruff.lint.per-file-ignores]
+# vast.py legacy: allow print, builtin shadowing, long lines, mutable defaults (already fixed)
+"vast.py" = ["T20", "A001", "A002", "E501", "B006"]
+"vast_pdf.py" = ["T20", "E501"]
+# Tests: allow unused imports (fixtures), assertions
+"tests/**/*.py" = ["F401", "S101"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["vastai", "vast"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
