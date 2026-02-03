@@ -4886,10 +4886,8 @@ def _ssh_url(args, protocol):
     help="Show an api-key",
 )
 def show__api_key(args):
-    url = apiurl(args, "/auth/apikeys/{id}/".format(id=args.id))
-    r = http_get(args, url, headers=headers)
-    r.raise_for_status()
-    print(r.json())
+    result = api_call(args, "GET", f"/auth/apikeys/{args.id}/")
+    return output_result(args, result)
 
 @parser.command(
     usage="vastai show api-keys",
@@ -5071,10 +5069,8 @@ def show__deposit(args):
     :param argparse.Namespace args: should supply all the command-line options
     :rtype:
     """
-    req_url = apiurl(args, "/instances/balance/{id}/".format(id=args.id) , {"owner": "me"} )
-    r = http_get(args, req_url)
-    r.raise_for_status()
-    print(json.dumps(r.json(), indent=1, sort_keys=True))
+    rows = api_call(args, "GET", f"/instances/balance/{args.id}/", query_args={"owner": "me"})
+    return output_result(args, rows)
 
 
 @parser.command(
@@ -5126,14 +5122,8 @@ def show__earnings(args):
         except ValueError as e:
             print(f"Warning: Invalid start date format! Ignoring start date! \n {str(e)}")
 
-    req_url = apiurl(args, "/users/me/machine-earnings", {"owner": "me", "sday": sday, "eday": eday, "machid" :args.machine_id});
-    r = http_get(args, req_url)
-    r.raise_for_status()
-    rows = r.json()
-
-    if args.raw:
-        return rows
-    print(json.dumps(rows, indent=1, sort_keys=True))
+    rows = api_call(args, "GET", "/users/me/machine-earnings", query_args={"owner": "me", "sday": sday, "eday": eday, "machid": args.machine_id})
+    return output_result(args, rows)
 
 
 def sum(X, k):
@@ -5158,11 +5148,8 @@ def select(X,k):
 )
 def show__env_vars(args):
     """Show the environment variables for the current user."""
-    url = apiurl(args, "/secrets/")
-    r = http_get(args, url, headers=headers)
-    r.raise_for_status()
-
-    env_vars = r.json().get("secrets", {})
+    result = api_call(args, "GET", "/secrets/")
+    env_vars = result.get("secrets", {})
 
     if args.raw:
         if not args.show_values:
@@ -5590,21 +5577,11 @@ def show__instance(args):
     :param argparse.Namespace args: should supply all the command-line options
     :rtype:
     """
-
-    #req_url = apiurl(args, "/instance", {"owner": "me"});
-    req_url = apiurl(args, "/instances/{id}/".format(id=args.id) , {"owner": "me"} )
-   
-    #r = http_get(req_url)
-    r = http_get(args, req_url)
-    r.raise_for_status()
-    row = r.json()["instances"]
+    result = api_call(args, "GET", f"/instances/{args.id}/", query_args={"owner": "me"})
+    row = result["instances"]
     row['duration'] = time.time() - row['start_date']
     row['extra_env'] = {env_var[0]: env_var[1] for env_var in row['extra_env']}
-    if args.raw:
-        return row
-    else:
-        #print(row)
-        display_table([row], instance_fields)
+    return output_result(args, row, instance_fields)
 
 @parser.command(
     argument("-q", "--quiet", action="store_true", help="only display numeric ids"),
@@ -5739,14 +5716,8 @@ def show__subaccounts(args):
     help="Show your team members",
 )
 def show__members(args):
-    url = apiurl(args, "/team/members/")
-    r = http_get(args, url, headers=headers)
-    r.raise_for_status()
-
-    if args.raw:
-        return r
-    else:
-        print(r.json())
+    result = api_call(args, "GET", "/team/members/")
+    return output_result(args, result)
 
 @parser.command(
     argument("NAME", help="name of the role", type=str),
@@ -5754,24 +5725,16 @@ def show__members(args):
     help="Show your team role",
 )
 def show__team_role(args):
-    url = apiurl(args, "/team/roles/{id}/".format(id=args.NAME))
-    r = http_get(args, url, headers=headers)
-    r.raise_for_status()
-    print(json.dumps(r.json(), indent=1, sort_keys=True))
+    result = api_call(args, "GET", f"/team/roles/{args.NAME}/")
+    return output_result(args, result)
 
 @parser.command(
     usage="vastai show team-roles",
     help="Show roles for a team"
 )
 def show__team_roles(args):
-    url = apiurl(args, "/team/roles-full/")
-    r = http_get(args, url, headers=headers)
-    r.raise_for_status()
-
-    if args.raw:
-        return r
-    else:
-        print(r.json())
+    result = api_call(args, "GET", "/team/roles-full/")
+    return output_result(args, result)
 
 @parser.command(
     argument("-q", "--quiet", action="store_true", help="display information about user"),
@@ -5788,16 +5751,9 @@ def show__user(args):
     :param argparse.Namespace args: should supply all the command-line options
     :rtype:
     """
-    req_url = apiurl(args, "/users/current", {"owner": "me"});
-    r = http_get(args, req_url);
-    r.raise_for_status()
-    user_blob = r.json()
+    user_blob = api_call(args, "GET", "/users/current", query_args={"owner": "me"})
     user_blob.pop("api_key")
-
-    if args.raw:
-        return user_blob
-    else:
-        display_table([user_blob], user_fields)
+    return output_result(args, user_blob, user_fields)
 
 @parser.command(
     argument("-t", "--type", help="volume type to display. Default to all. Possible values are \"local\", \"all\", \"network\"", type=str, default="all"),
@@ -5814,13 +5770,11 @@ def show__volumes(args: argparse.Namespace):
         "all": "all_volume"
     }
     type = types.get(args.type, "all")
-    req_url = apiurl(args, "/volumes", {"owner": "me", "type" : type});
-    r = http_get(args, req_url)
-    r.raise_for_status()
-    rows = r.json()["volumes"]
+    result = api_call(args, "GET", "/volumes", query_args={"owner": "me", "type": type})
+    rows = result["volumes"]
     processed = []
     for row in rows:
-        row = {k: strip_strings(v) for k, v in row.items()} 
+        row = {k: strip_strings(v) for k, v in row.items()}
         row['duration'] = time.time() - row['start_date']
         processed.append(row)
     if args.raw:
@@ -7227,12 +7181,9 @@ def show__machine(args):
     :param argparse.Namespace args: should supply all the command-line options
     :rtype:
     """
-    req_url = apiurl(args, f"/machines/{args.Machine}", {"owner": "me"});
-    r = http_get(args, req_url)
-    r.raise_for_status()
-    rows = r.json()
+    rows = api_call(args, "GET", f"/machines/{args.Machine}", query_args={"owner": "me"})
     if args.raw:
-        return r
+        return rows
     else:
         if args.quiet:
             ids = [f"{row['id']}" for row in rows]
@@ -7253,14 +7204,12 @@ def show__machines(args):
     :param argparse.Namespace args: should supply all the command-line options
     :rtype:
     """
-    req_url = apiurl(args, "/machines", {"owner": "me"});
-    r = http_get(args, req_url)
-    r.raise_for_status()
-    rows = r.json()["machines"]
+    result = api_call(args, "GET", "/machines", query_args={"owner": "me"})
+    rows = result["machines"]
     if args.raw:
-        return r
+        return rows
     else:
-        if args.quiet:            
+        if args.quiet:
             ids = [f"{row['id']}" for row in rows]
             print(" ".join(id for id in ids))
         else:
@@ -7283,14 +7232,11 @@ def show__maints(args):
     machine_ids = args.ids.split(',')
     machine_ids = list(map(int, machine_ids))
 
-    req_url = apiurl(args, "/machines/maintenances", {"owner": "me", "machine_ids" : machine_ids});
-    r = http_get(args, req_url)
-    r.raise_for_status()
-    rows = r.json()
+    rows = api_call(args, "GET", "/machines/maintenances", query_args={"owner": "me", "machine_ids": machine_ids})
     if args.raw:
-        return r
+        return rows
     else:
-        if args.quiet:   
+        if args.quiet:
             ids = [f"{row['machine_id']}" for row in rows]
             print(" ".join(id for id in ids))
         else:
