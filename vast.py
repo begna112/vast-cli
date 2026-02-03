@@ -10,7 +10,7 @@ import argparse
 import os
 import time
 import calendar
-from typing import Dict, List, Tuple, Optional
+from typing import Any, Dict, List, Tuple, Optional
 from datetime import date, datetime, timedelta, timezone
 import hashlib
 import math
@@ -664,7 +664,14 @@ def deindent(message: str) -> str:
     return message.strip()
 
 
-def api_call(args, method, path, *, json_body=None, query_args=None):
+def api_call(
+    args: argparse.Namespace,
+    method: str,
+    path: str,
+    *,
+    json_body: dict[str, Any] | None = None,
+    query_args: dict[str, Any] | None = None,
+) -> dict[str, Any] | list[dict[str, Any]] | None:
     """Centralized API call: URL construction + HTTP dispatch + status check.
 
     Args:
@@ -704,7 +711,11 @@ def api_call(args, method, path, *, json_body=None, query_args=None):
     return None
 
 
-def output_result(args, data, fields=None):
+def output_result(
+    args: argparse.Namespace,
+    data: list[dict[str, Any]] | dict[str, Any],
+    fields: list[tuple[str, str, str]] | None = None,
+) -> list[dict[str, Any]] | dict[str, Any] | None:
     """Unified output handler for command results.
 
     In raw mode: returns data for main() to serialize as JSON.
@@ -731,7 +742,13 @@ def output_result(args, data, fields=None):
     return None
 
 
-def error_output(args, status_code, message, *, detail=None):
+def error_output(
+    args: argparse.Namespace,
+    status_code: int,
+    message: str,
+    *,
+    detail: str | None = None,
+) -> None:
     """Output an error in the appropriate format for the current mode.
 
     In raw mode: prints JSON error object to stderr.
@@ -752,7 +769,7 @@ def error_output(args, status_code, message, *, detail=None):
         print(f"failed with error {status_code}: {message}", file=sys.stderr)
 
 
-def require_id(args, field="id"):
+def require_id(args: argparse.Namespace, field: str = "id") -> int | str:
     """Extract and validate an ID argument.
 
     Args:
