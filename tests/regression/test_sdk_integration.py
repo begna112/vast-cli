@@ -50,3 +50,117 @@ class TestSDKLiveModuleImport:
         # APIKEY_FILE should match
         assert sdk.APIKEY_FILE == vast.APIKEY_FILE, \
             "SDK APIKEY_FILE should match vast.APIKEY_FILE"
+
+
+class TestSDKFeatureCompleteness:
+    """SDK-09: VastAI class must support all documented features."""
+
+    def test_instantiation_with_api_key(self):
+        """VastAI can be instantiated with api_key parameter."""
+        from vastai import VastAI
+
+        sdk = VastAI(api_key="test_key_12345")
+
+        assert sdk.api_key == "test_key_12345"
+        assert sdk._creds == "CODE"  # API key provided in code
+
+    def test_raw_mode_default(self):
+        """VastAI defaults to raw=True for SDK usage."""
+        from vastai import VastAI
+
+        sdk = VastAI(api_key="test_key")
+
+        assert sdk.raw is True, "SDK should default to raw=True"
+
+    def test_raw_mode_toggle(self):
+        """VastAI raw mode can be toggled."""
+        from vastai import VastAI
+
+        sdk_raw = VastAI(api_key="test_key", raw=True)
+        sdk_human = VastAI(api_key="test_key", raw=False)
+
+        assert sdk_raw.raw is True
+        assert sdk_human.raw is False
+
+    def test_server_url_parameter(self):
+        """VastAI accepts server_url parameter."""
+        from vastai import VastAI
+
+        sdk = VastAI(api_key="test_key", server_url="https://custom.vast.ai")
+
+        assert sdk.server_url == "https://custom.vast.ai"
+
+    def test_retry_parameter(self):
+        """VastAI accepts retry parameter."""
+        from vastai import VastAI
+
+        sdk = VastAI(api_key="test_key", retry=5)
+
+        assert sdk.retry == 5
+
+    def test_explain_parameter(self):
+        """VastAI accepts explain parameter."""
+        from vastai import VastAI
+
+        sdk = VastAI(api_key="test_key", explain=True)
+
+        assert sdk.explain is True
+
+    def test_quiet_parameter(self):
+        """VastAI accepts quiet parameter."""
+        from vastai import VastAI
+
+        sdk = VastAI(api_key="test_key", quiet=True)
+
+        assert sdk.quiet is True
+
+    def test_imported_methods_populated(self):
+        """VastAI should have imported_methods dict populated."""
+        from vastai import VastAI
+
+        sdk = VastAI(api_key="test_key")
+
+        assert hasattr(sdk, 'imported_methods')
+        assert isinstance(sdk.imported_methods, dict)
+        # Should have many methods (vast.py has 115+ commands)
+        assert len(sdk.imported_methods) > 50, \
+            f"Expected 50+ methods, got {len(sdk.imported_methods)}"
+
+    def test_dynamic_method_binding(self):
+        """VastAI should have methods dynamically bound from vast.py."""
+        from vastai import VastAI
+
+        sdk = VastAI(api_key="test_key")
+
+        # Check some well-known methods exist
+        assert hasattr(sdk, 'search_offers'), "search_offers should be bound"
+        assert hasattr(sdk, 'show_instances'), "show_instances should be bound"
+        assert hasattr(sdk, 'show_machines'), "show_machines should be bound"
+        assert callable(sdk.search_offers), "search_offers should be callable"
+
+    def test_workergroup_and_autoscaler_aliases(self):
+        """SDK-06: Both workergroup and autoscaler/autogroup aliases should work."""
+        from vastai import VastAI
+
+        sdk = VastAI(api_key="test_key")
+
+        # Workergroup naming (primary method names from CLI)
+        assert hasattr(sdk, 'create_workergroup') or 'create_workergroup' in sdk.imported_methods, \
+            "create_workergroup should exist"
+        assert hasattr(sdk, 'show_workergroups') or 'show_workergroups' in sdk.imported_methods, \
+            "show_workergroups should exist"
+        assert hasattr(sdk, 'delete_workergroup') or 'delete_workergroup' in sdk.imported_methods, \
+            "delete_workergroup should exist"
+        assert hasattr(sdk, 'update_workergroup') or 'update_workergroup' in sdk.imported_methods, \
+            "update_workergroup should exist"
+
+        # Autoscaler/autogroup backwards compatibility aliases (SDK-06 requirement)
+        # Base class provides aliases: create_autogroup, delete_autoscaler, show_autoscalers, update_autoscaler
+        assert hasattr(sdk, 'create_autogroup'), \
+            "create_autogroup alias should exist (SDK-06)"
+        assert hasattr(sdk, 'show_autoscalers'), \
+            "show_autoscalers alias should exist (SDK-06)"
+        assert hasattr(sdk, 'delete_autoscaler'), \
+            "delete_autoscaler alias should exist (SDK-06)"
+        assert hasattr(sdk, 'update_autoscaler'), \
+            "update_autoscaler alias should exist (SDK-06)"
