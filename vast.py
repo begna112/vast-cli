@@ -1448,10 +1448,13 @@ def attach__ssh(args):
     r = http_post(args, url, headers=headers, json=req_json)
     r.raise_for_status()
     try:
-        print(r.json())
+        rj = r.json()
     except JSONDecodeError:
         print("Error: API returned invalid JSON response", file=sys.stderr)
         return
+    if args.raw:
+        return rj
+    print(rj)
 
 @parser.command(
     argument("dst", help="instance_id:/path to target of copy operation", type=str),
@@ -1490,6 +1493,8 @@ def cancel__copy(args: argparse.Namespace):
     except JSONDecodeError:
         print("Error: API returned invalid JSON response", file=sys.stderr)
         return
+    if args.raw:
+        return rj
     if rj.get("success"):
         print("Remote copy canceled - check instance status bar for progress updates (~30 seconds delayed).")
     else:
@@ -1533,6 +1538,8 @@ def cancel__sync(args: argparse.Namespace):
     except JSONDecodeError:
         print("Error: API returned invalid JSON response", file=sys.stderr)
         return
+    if args.raw:
+        return rj
     if rj.get("success"):
         print("Remote copy canceled - check instance status bar for progress updates (~30 seconds delayed).")
     else:
@@ -1615,6 +1622,8 @@ def change__bid(args: argparse.Namespace):
         return
 
     result = api_call(args, "PUT", "/instances/bid_price/{id}/".format(id=args.id), json_body=json_blob)
+    if args.raw:
+        return result
     print("Per gpu bid price changed".format(result))
 
 
@@ -2124,10 +2133,13 @@ def create__api_key(args):
         r = http_post(args, url, headers=headers, json={"name": args.name, "permissions": permissions, "key_params": args.key_params})
         r.raise_for_status()
         try:
-            print("api-key created {}".format(r.json()))
+            rj = r.json()
         except JSONDecodeError:
             print("Error: API returned invalid JSON response", file=sys.stderr)
             return
+        if args.raw:
+            return rj
+        print("api-key created {}".format(rj))
     except FileNotFoundError:
         print("Error: Permission file '{}' not found.".format(args.permission_file))
     except requests.exceptions.RequestException as e:
@@ -2182,6 +2194,8 @@ def create__env_var(args):
     data = {"key": args.name, "value": args.value}
     result = api_call(args, "POST", "/secrets/", json_body=data)
 
+    if args.raw:
+        return result
     if result.get("success"):
         print(result.get("msg", "Environment variable created successfully."))
     else:
@@ -2222,6 +2236,8 @@ def create__ssh_key(args):
     # Send the SSH key to the API
     result = api_call(args, "POST", "/ssh/", json_body={"ssh_key": ssh_key_content})
 
+    if args.raw:
+        return result
     # Print json response
     print("ssh-key created {}\nNote: You may need to add the new public key to any pre-existing instances".format(result))
 
@@ -2384,7 +2400,10 @@ def create__workergroup(args):
     r.raise_for_status()
     if 'application/json' in r.headers.get('Content-Type', ''):
         try:
-            print("workergroup create {}".format(r.json()))
+            rj = r.json()
+            if args.raw:
+                return rj
+            print("workergroup create {}".format(rj))
         except requests.exceptions.JSONDecodeError:
             print("The response is not valid JSON.")
             print(r)
@@ -2424,7 +2443,10 @@ def create__endpoint(args):
     r.raise_for_status()
     if 'application/json' in r.headers.get('Content-Type', ''):
         try:
-            print("create endpoint {}".format(r.json()))
+            rj = r.json()
+            if args.raw:
+                return rj
+            print("create endpoint {}".format(rj))
         except requests.exceptions.JSONDecodeError:
             print("The response is not valid JSON.")
             print(r)
@@ -2640,7 +2662,7 @@ def create__subaccount(args):
     """
     # Default value for host_only, can adjust based on expected default behavior
     host_only = False
-    
+
     # Only process the --account_type argument if it's provided
     if args.type:
         host_only = args.type.lower() == "host"
@@ -2664,6 +2686,8 @@ def create__subaccount(args):
     r = http_post(args, url, headers=headers, json=json_blob)
     r.raise_for_status()
     rj = r.json()
+    if args.raw:
+        return rj
     print(rj)
 
 @parser.command(
@@ -2697,6 +2721,8 @@ def create__subaccount(args):
 
 def create__team(args):
     result = api_call(args, "POST", "/team/", json_body={"team_name": args.team_name})
+    if args.raw:
+        return result
     print(result)
 
 @parser.command(
@@ -2712,6 +2738,8 @@ def create__team(args):
 def create__team_role(args):
     permissions = load_permissions_from_file(args.permissions)
     result = api_call(args, "POST", "/team/roles/", json_body={"name": args.name, "permissions": permissions})
+    if args.raw:
+        return result
     print(result)
 
 def get_template_arguments():
@@ -2768,7 +2796,7 @@ def create__template(args):
     default_search_query = {}
     if not args.no_default:
         default_search_query = {"verified": {"eq": True}, "external": {"eq": False}, "rentable": {"eq": True}, "rented": {"eq": False}}
-    
+
     extra_filters = parse_query(args.search_params, default_search_query, offers_fields, offers_alias, offers_mult)
     template = {
         "name" : args.name,
@@ -2801,6 +2829,8 @@ def create__template(args):
     r.raise_for_status()
     try:
         rj = r.json()
+        if args.raw:
+            return rj
         if rj.get("success"):
             print(f"New Template: {rj.get('template', '')}")
         else:
@@ -2909,6 +2939,8 @@ def create__overlay(args: argparse.Namespace):
 )
 def delete__api_key(args):
     result = api_call(args, "DELETE", f"/auth/apikeys/{args.id}/")
+    if args.raw:
+        return result
     print(result)
 
 @parser.command(
@@ -2918,6 +2950,8 @@ def delete__api_key(args):
 )
 def delete__ssh_key(args):
     result = api_call(args, "DELETE", f"/ssh/{args.id}/")
+    if args.raw:
+        return result
     print(result)
 
 @parser.command(
@@ -2927,6 +2961,8 @@ def delete__ssh_key(args):
 )
 def delete__scheduled_job(args):
     result = api_call(args, "DELETE", f"/commands/schedule_job/{args.id}/")
+    if args.raw:
+        return result
     print(result)
 
 
@@ -2974,7 +3010,10 @@ def delete__workergroup(args):
     r.raise_for_status()
     if 'application/json' in r.headers.get('Content-Type', ''):
         try:
-            print("workergroup delete {}".format(r.json()))
+            rj = r.json()
+            if args.raw:
+                return rj
+            print("workergroup delete {}".format(rj))
         except requests.exceptions.JSONDecodeError:
             print("The response is not valid JSON.")
             print(r)
@@ -3002,7 +3041,10 @@ def delete__endpoint(args):
     r.raise_for_status()
     if 'application/json' in r.headers.get('Content-Type', ''):
         try:
-            print("delete endpoint {}".format(r.json()))
+            rj = r.json()
+            if args.raw:
+                return rj
+            print("delete endpoint {}".format(rj))
         except requests.exceptions.JSONDecodeError:
             print("The response is not valid JSON.")
             print(r)
@@ -3028,6 +3070,8 @@ def delete__env_var(args):
     except JSONDecodeError:
         print("Error: API returned invalid JSON response", file=sys.stderr)
         return
+    if args.raw:
+        return result
     if result.get("success"):
         print(result.get("msg", "Environment variable deleted successfully."))
     else:
@@ -3073,7 +3117,7 @@ def delete__overlay(args: argparse.Namespace):
 )
 def delete__template(args):
     url = apiurl(args, f"/template/" )
-    
+
     if args.hash_id:
         json_blob = { "hash_id": args.hash_id }
     elif args.template_id:
@@ -3081,18 +3125,20 @@ def delete__template(args):
     else:
         print('ERROR: Must Specify either Template ID or Hash ID to delete a template')
         return
-    
+
     if (args.explain):
         print("request json: ")
         print(json_blob)
         print(args)
         print(url)
     r = http_del(args, url, headers=headers,json=json_blob)
-    print(r)
     # r.raise_for_status()
     if 'application/json' in r.headers.get('Content-Type', ''):
         try:
-            print(r.json()['msg'])
+            rj = r.json()
+            if args.raw:
+                return rj
+            print(rj.get('msg', 'Unknown error'))
         except requests.exceptions.JSONDecodeError:
             print("The response is not valid JSON.")
             print(r)
@@ -3164,6 +3210,8 @@ def destroy__instances(args):
 )
 def destroy__team(args):
     result = api_call(args, "DELETE", "/team/")
+    if args.raw:
+        return result
     print(result)
 
 @parser.command(
@@ -3180,9 +3228,12 @@ def detach__ssh(args):
     r = http_del(args, url, headers=headers)
     r.raise_for_status()
     try:
-        print(r.json())
+        rj = r.json()
     except JSONDecodeError:
-        print(r.text)
+        rj = {"response": r.text}
+    if args.raw:
+        return rj
+    print(rj)
 
 @parser.command(
     argument("id", help="id of instance to execute on", type=int),
@@ -3336,6 +3387,12 @@ def invite__member(args):
     url = apiurl(args, "/team/invite/", query_args={"email": args.email, "role": args.role})
     r = http_post(args, url, headers=headers)
     r.raise_for_status()
+    try:
+        rj = r.json()
+    except JSONDecodeError:
+        rj = {"success": True, "email": args.email}
+    if args.raw:
+        return rj
     print(f"successfully invited {args.email} to your current team")
 
 
@@ -3413,6 +3470,8 @@ def label__instance(args):
         print(json_blob)
     result = api_call(args, "PUT", "/instances/{id}/".format(id=args.id), json_body=json_blob)
 
+    if args.raw:
+        return result
     if result.get("success"):
         print("label for {args.id} set to {args.label}.".format(**(locals())));
     else:
@@ -3710,6 +3769,8 @@ def prepay__instance(args):
     except JSONDecodeError:
         print("Error: API returned invalid JSON response", file=sys.stderr)
         return
+    if args.raw:
+        return rj
     if rj.get("success"):
         timescale = round( rj.get("timescale", 0), 3)
         discount_rate = 100.0*round( rj.get("discount_rate", 0), 3)
@@ -3749,6 +3810,8 @@ def reboot__instance(args):
         add_scheduled_job(args, json_blob, cli_command, api_endpoint, "PUT", instance_id=args.id)
         return
 
+    if args.raw:
+        return result
     if result and result.get("success"):
         print("Rebooting instance {args.id}.".format(**(locals())));
     else:
@@ -3770,6 +3833,8 @@ def recycle__instance(args):
     """
     result = api_call(args, "PUT", "/instances/recycle/{id}/".format(id=args.id))
 
+    if args.raw:
+        return result
     if result and result.get("success"):
         print("Recycling instance {args.id}.".format(**(locals())));
     else:
@@ -3782,6 +3847,8 @@ def recycle__instance(args):
 )
 def remove__member(args):
     result = api_call(args, "DELETE", f"/team/members/{args.id}/")
+    if args.raw:
+        return result
     print(result)
 
 @parser.command(
@@ -3791,6 +3858,8 @@ def remove__member(args):
 )
 def remove__team_role(args):
     result = api_call(args, "DELETE", f"/team/roles/{args.NAME}/")
+    if args.raw:
+        return result
     print(result)
 
 @parser.command(
@@ -3809,10 +3878,13 @@ def reports(args):
     if (args.explain):
         print("request json: ")
         print(json_blob)
-    
+
     r = http_get(args, url, headers=headers, json=json_blob)
     r.raise_for_status()
-    print(f"reports: {json.dumps(r.json(), indent=2)}")
+    rj = r.json()
+    if args.raw:
+        return rj
+    print(f"reports: {json.dumps(rj, indent=2)}")
 
 
 @parser.command(
@@ -3832,9 +3904,12 @@ def reset__api_key(args):
     r = http_put(args, url,  headers=headers,json=json_blob)
     r.raise_for_status()
     try:
-        print("api-key reset ".format(r.json()))
+        rj = r.json()
     except JSONDecodeError:
-        print("api-key reset (no JSON response)")
+        rj = {"success": True, "message": "api-key reset"}
+    if args.raw:
+        return rj
+    print("api-key reset")
 
 
 def exec_with_threads(f, args, nt=16, max_retries=5):
@@ -5869,7 +5944,7 @@ def remove_machine_from_cluster(args: argparse.Namespace):
 )
 def transfer__credit(args: argparse.Namespace):
     url = apiurl(args, "/commands/transfer_credit/")
- 
+
     if not args.skip:
         print(f"Transfer ${args.amount} credit to account {args.recipient}?  This is irreversible.")
         ok = input("Continue? [y/n] ")
@@ -5887,6 +5962,8 @@ def transfer__credit(args: argparse.Namespace):
     r = http_put(args, url,  headers=headers,json=json_blob)
     r.raise_for_status()
     rj = r.json();
+    if args.raw:
+        return rj
     if rj.get("success"):
         print(f"Sent {args.amount} to {args.recipient} ".format(r.json()))
     else:
@@ -5930,7 +6007,10 @@ def update__workergroup(args):
     r.raise_for_status()
     if 'application/json' in r.headers.get('Content-Type', ''):
         try:
-            print("workergroup update {}".format(r.json()))
+            rj = r.json()
+            if args.raw:
+                return rj
+            print("workergroup update {}".format(rj))
         except requests.exceptions.JSONDecodeError:
             print("The response is not valid JSON.")
             print(r)
@@ -5967,7 +6047,10 @@ def update__endpoint(args):
     r.raise_for_status()
     if 'application/json' in r.headers.get('Content-Type', ''):
         try:
-            print("update endpoint {}".format(r.json()))
+            rj = r.json()
+            if args.raw:
+                return rj
+            print("update endpoint {}".format(rj))
         except requests.exceptions.JSONDecodeError:
             print("The response is not valid JSON.")
             print(r)
@@ -5990,6 +6073,8 @@ def update__env_var(args):
     r.raise_for_status()
 
     result = r.json()
+    if args.raw:
+        return result
     if result.get("success"):
         print(result.get("msg", "Environment variable updated successfully."))
     else:
@@ -6016,7 +6101,7 @@ def update__instance(args):
     """
     url = apiurl(args, f"/instances/update_template/{args.id}/")
     json_blob = {"id": args.id}
-    
+
     if args.template_id:
         json_blob["template_id"] = args.template_id
     if args.template_hash_id:
@@ -6033,11 +6118,13 @@ def update__instance(args):
     if args.explain:
         print("request json: ")
         print(json_blob)
-    
+
     r = http_put(args, url, headers=headers, json=json_blob)
 
     if r.status_code == 200:
         response_data = r.json()
+        if args.raw:
+            return response_data
         if response_data.get("success"):
             print(f"Instance {args.id} updated successfully.")
             print("Updated instance details:")
@@ -6472,7 +6559,10 @@ def defrag__machines(args):
     r.raise_for_status()
     if 'application/json' in r.headers.get('Content-Type', ''):
         try:
-            print(f"defragment result: {r.json()}")
+            rj = r.json()
+            if args.raw:
+                return rj
+            print(f"defragment result: {rj}")
         except requests.exceptions.JSONDecodeError:
             print("The response is not valid JSON.")
             print(r)
@@ -6494,6 +6584,8 @@ def delete__machine(args):
     r = http_post(args, req_url, headers=headers)
     if (r.status_code == 200):
         rj = r.json()
+        if args.raw:
+            return rj
         if (rj.get("success")):
             print("deleted machine_id ({machine_id}) and all related contracts.".format(machine_id=args.id));
         else:
