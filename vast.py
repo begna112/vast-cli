@@ -2864,10 +2864,8 @@ def create__overlay(args: argparse.Namespace):
     help="Remove an api-key",
 )
 def delete__api_key(args):
-    url = apiurl(args, "/auth/apikeys/{id}/".format(id=args.id))
-    r = http_del(args, url, headers=headers)
-    r.raise_for_status()
-    print(r.json())
+    result = api_call(args, "DELETE", f"/auth/apikeys/{args.id}/")
+    print(result)
 
 @parser.command(
     argument("id", help="id ssh key to delete", type=int),
@@ -2875,10 +2873,8 @@ def delete__api_key(args):
     help="Remove an ssh-key",
 )
 def delete__ssh_key(args):
-    url = apiurl(args, "/ssh/{id}/".format(id=args.id))
-    r = http_del(args, url, headers=headers)
-    r.raise_for_status()
-    print(r.json())
+    result = api_call(args, "DELETE", f"/ssh/{args.id}/")
+    print(result)
 
 @parser.command(
     argument("id", help="id of scheduled job to remove", type=int),
@@ -2886,10 +2882,8 @@ def delete__ssh_key(args):
     help="Delete a scheduled job",
 )
 def delete__scheduled_job(args):
-    url = apiurl(args, "/commands/schedule_job/{id}/".format(id=args.id))
-    r = http_del(args, url, headers=headers)
-    r.raise_for_status()
-    print(r.json())
+    result = api_call(args, "DELETE", f"/commands/schedule_job/{args.id}/")
+    print(result)
 
 
 
@@ -3774,10 +3768,8 @@ def recycle__instance(args):
     help="Remove a team member",
 )
 def remove__member(args):
-    url = apiurl(args, "/team/members/{id}/".format(id=args.id))
-    r = http_del(args, url, headers=headers)
-    r.raise_for_status()
-    print(r.json())
+    result = api_call(args, "DELETE", f"/team/members/{args.id}/")
+    print(result)
 
 @parser.command(
     argument("NAME", help="name of the role", type=str),
@@ -3785,10 +3777,8 @@ def remove__member(args):
     help="Remove a role from your team",
 )
 def remove__team_role(args):
-    url = apiurl(args, "/team/roles/{id}/".format(id=args.NAME))
-    r = http_del(args, url, headers=headers)
-    r.raise_for_status()
-    print(r.json())
+    result = api_call(args, "DELETE", f"/team/roles/{args.NAME}/")
+    print(result)
 
 @parser.command(
     argument("id", help="machine id", type=int),
@@ -4926,14 +4916,8 @@ def show__audit_logs(args):
     :param argparse.Namespace args: should supply all the command-line options
     :rtype:
     """
-    req_url = apiurl(args, "/audit_logs/")
-    r = http_get(args, req_url)
-    r.raise_for_status()
-    rows = r.json()
-    if args.raw:
-        return rows
-    else:
-        display_table(rows, audit_log_fields)
+    rows = api_call(args, "GET", "/audit_logs/")
+    return output_result(args, rows, audit_log_fields)
 
 def normalize_schedule_fields(job):
     """
@@ -4979,10 +4963,7 @@ def show__scheduled_jobs(args):
     :param argparse.Namespace args: should supply all the command-line options
     :rtype:
     """
-    req_url = apiurl(args, "/commands/schedule_job/")
-    r = http_get(args, req_url)
-    r.raise_for_status()
-    rows = r.json()
+    rows = api_call(args, "GET", "/commands/schedule_job/")
     if args.raw:
         return rows
     else:
@@ -5074,14 +5055,8 @@ def show__connections(args):
     """
     req_url = apiurl(args, "/users/cloud_integrations/");
     print(req_url)
-    r = http_get(args, req_url, headers=headers);
-    r.raise_for_status()
-    rows = r.json()
-
-    if args.raw:
-        return rows
-    else:
-        display_table(rows, connection_fields)
+    rows = api_call(args, "GET", "/users/cloud_integrations/")
+    return output_result(args, rows, connection_fields)
 
 
 @parser.command(
@@ -5678,15 +5653,9 @@ def show__ipaddrs(args):
     :param argparse.Namespace args: should supply all the command-line options
     :rtype:
     """
-
-    req_url = apiurl(args, "/users/me/ipaddrs", {"owner": "me"});
-    r = http_get(args, req_url);
-    r.raise_for_status()
-    rows = r.json()["results"]
-    if args.raw:
-        return rows
-    else:
-        display_table(rows, ipaddr_fields)
+    data = api_call(args, "GET", "/users/me/ipaddrs", query_args={"owner": "me"})
+    rows = data["results"]
+    return output_result(args, rows, ipaddr_fields)
 
 
 @parser.command(
@@ -5697,10 +5666,7 @@ def show__ipaddrs(args):
     """)
 )
 def show__clusters(args: argparse.Namespace):
-    req_url = apiurl(args, "/clusters/")
-    r = http_get(args, req_url)
-    r.raise_for_status()
-    response_data = r.json()
+    response_data = api_call(args, "GET", "/clusters/")
 
     if args.raw:
         return response_data
@@ -5733,10 +5699,7 @@ def show__clusters(args: argparse.Namespace):
     """)
 )
 def show__overlays(args: argparse.Namespace):
-    req_url = apiurl(args, "/overlay/")
-    r = http_get(args, req_url)
-    r.raise_for_status()
-    response_data = r.json()
+    response_data = api_call(args, "GET", "/overlay/")
     if args.raw:
         return response_data
     rows = []
@@ -5767,14 +5730,9 @@ def show__subaccounts(args):
     :param argparse.Namespace args: should supply all the command-line options
     :rtype:
     """
-    req_url = apiurl(args, "/subaccounts", {"owner": "me"});
-    r = http_get(args, req_url);
-    r.raise_for_status()
-    rows = r.json()["users"]
-    if args.raw:
-        return rows
-    else:
-        display_table(rows, user_fields)
+    data = api_call(args, "GET", "/subaccounts", query_args={"owner": "me"})
+    rows = data["users"]
+    return output_result(args, rows, user_fields)
 
 @parser.command(
     usage="vastai show members",
