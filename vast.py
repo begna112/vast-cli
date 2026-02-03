@@ -633,6 +633,70 @@ def deindent(message: str) -> str:
     return message.strip()
 
 
+def api_call(args, method, path, *, json_body=None, query_args=None):
+    """Centralized API call: URL construction + HTTP dispatch + status check.
+
+    Args:
+        args: argparse.Namespace with url, api_key, explain, raw, retry, curl.
+        method: HTTP method string ("GET", "POST", "PUT", "DELETE").
+        path: API path (e.g., "/instances/", "/auth/apikeys/{id}/").
+        json_body: Optional dict for request body (POST/PUT/DELETE).
+        query_args: Optional dict for URL query parameters.
+
+    Returns:
+        Parsed JSON response (dict or list), or None for empty responses.
+
+    Raises:
+        requests.exceptions.HTTPError: On non-2xx status codes.
+    """
+    url = apiurl(args, path, query_args)
+    dispatch = {
+        "GET": http_get,
+        "POST": http_post,
+        "PUT": http_put,
+        "DELETE": http_del,
+    }
+    http_fn = dispatch[method]
+
+    if method == "GET":
+        r = http_fn(args, url, headers=headers, json=json_body)
+    else:
+        r = http_fn(args, url, headers=headers, json=json_body if json_body is not None else {})
+
+    r.raise_for_status()
+
+    if r.content:
+        return r.json()
+    return None
+
+
+def output_result(args, data, fields=None):
+    """Unified output handler for command results.
+
+    In raw mode: returns data for main() to serialize as JSON.
+    In table mode: calls display_table() if fields are provided.
+    In JSON mode: prints formatted JSON (when no fields defined).
+
+    Args:
+        args: argparse.Namespace with raw flag.
+        data: The response data (dict, list, or None).
+        fields: Optional tuple of field definitions for display_table().
+
+    Returns:
+        data if in raw mode, None otherwise.
+    """
+    if args.raw:
+        return data
+    if data is None:
+        return None
+    if fields:
+        rows = data if isinstance(data, list) else [data]
+        display_table(rows, fields)
+    else:
+        print(json.dumps(data, indent=1, sort_keys=True))
+    return None
+
+
 # These are the fields that are displayed when a search is run
 displayable_fields = (
     # ("bw_nvlink", "Bandwidth NVLink", "{}", None, True),
