@@ -326,6 +326,7 @@ class hidden_aliases(object):
 
 def http_request(verb, args, req_url, headers: dict[str, str] | None = None, json = None):
     t = 0.15
+    r = None
     for i in range(0, args.retry):
         req = requests.Request(method=verb, url=req_url, headers=headers, json=json)
         session = requests.Session()
@@ -340,7 +341,14 @@ def http_request(verb, args, req_url, headers: dict[str, str] | None = None, jso
             print("\n" + ' \\\n  '.join(parts).strip() + "\n")
             sys.exit(0)
         else:
-            r = session.send(prep)
+            try:
+                r = session.send(prep)
+            except requests.exceptions.RequestException as e:
+                if i < args.retry - 1:
+                    time.sleep(t)
+                    t *= 1.5
+                    continue
+                raise
 
         if (r.status_code == 429):
             time.sleep(t)
