@@ -2017,7 +2017,7 @@ def add_scheduled_job(args, req_json, cli_command, api_endpoint, request_method,
                 "instance_id": instance_id
             }
                 # Send a POST request
-    response = requests.post(schedule_job_url, headers=headers, json=request_body)
+    response = http_post(args, schedule_job_url, headers=headers, json=request_body)
 
     if args.explain:
         print("request json: ")
@@ -2033,15 +2033,15 @@ def add_scheduled_job(args, req_json, cli_command, api_endpoint, request_method,
         if user_input.strip().lower() == "y":
             scheduled_job_id = response.json()["scheduled_job_id"]
             schedule_job_url = apiurl(args, f"/commands/schedule_job/{scheduled_job_id}/")
-            response = update_scheduled_job(cli_command, schedule_job_url, frequency, args.start_date, args.end_date, request_body)
+            response = update_scheduled_job(args, cli_command, schedule_job_url, frequency, args.start_date, args.end_date, request_body)
         else:
             print("Job update aborted by the user.")
     else:
             # print(r.text)
         print(f"add_scheduled_job insert: failed error: {response.status_code}. Response body: {response.text}")        
 
-def update_scheduled_job(cli_command, schedule_job_url, frequency, start_date, end_date, request_body):
-    response = requests.put(schedule_job_url, headers=headers, json=request_body)
+def update_scheduled_job(args, cli_command, schedule_job_url, frequency, start_date, end_date, request_body):
+    response = http_put(args, schedule_job_url, headers=headers, json=request_body)
 
         # Raise an exception for HTTP errors
     response.raise_for_status()
@@ -2367,7 +2367,7 @@ def create__endpoint(args):
     if (args.explain):
         print("request json: ")
         print(json_blob)
-    r = requests.post(url, headers=headers,json=json_blob)
+    r = http_post(args, url, headers=headers, json=json_blob)
     r.raise_for_status()
     if 'application/json' in r.headers.get('Content-Type', ''):
         try:
@@ -3797,7 +3797,7 @@ def reports(args):
         print("request json: ")
         print(json_blob)
     
-    r = requests.get(url, headers=headers, json=json_blob)
+    r = http_get(args, url, headers=headers, json=json_blob)
     r.raise_for_status()
 
     if (r.status_code == 200):
@@ -4092,7 +4092,7 @@ def search__benchmarks(args):
         return 1  
     #url = apiurl(args, "/benchmarks", {"select_cols" : ['id','last_update','machine_id','score'], "select_filters" : query})
     url = apiurl(args, "/benchmarks", {"select_cols" : ['*'], "select_filters" : query})
-    r = requests.get(url, headers=headers)
+    r = http_get(args, url, headers=headers)
     r.raise_for_status()
     rows = r.json()
     if True: # args.raw:
@@ -4198,7 +4198,7 @@ def search__invoices(args):
         print("Error: ", e)
         return 1  
     url = apiurl(args, "/invoices", {"select_cols" : ['*'], "select_filters" : query})
-    r = requests.get(url, headers=headers)
+    r = http_get(args, url, headers=headers)
     r.raise_for_status()
     rows = r.json()
     if True: # args.raw:
@@ -4784,7 +4784,7 @@ def set__user(args):
     with open(args.file, 'r') as file:
         params = json.load(file)
     url = apiurl(args, "/users/")
-    r = requests.put(url, headers=headers, json=params)
+    r = http_put(args, url, headers=headers, json=params)
     r.raise_for_status()
     print(f"{r.json()}")
 
@@ -6481,7 +6481,7 @@ def defrag__machines(args):
     if (args.explain):
         print("request json: ")
         print(json_blob)
-    r = requests.put(url, headers=headers,json=json_blob)
+    r = http_put(args, url, headers=headers, json=json_blob)
     r.raise_for_status()
     if 'application/json' in r.headers.get('Content-Type', ''):
         try:
