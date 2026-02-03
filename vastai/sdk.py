@@ -1,7 +1,7 @@
 import importlib
 import types
 import argparse
-from typing import Optional, Any
+from typing import Any, Callable
 import io
 import contextlib
 import requests
@@ -10,7 +10,7 @@ import re
 import os
 import sys
 import logging
-from pyparsing import Word, alphas, alphanums, oneOf, Optional, Group, ZeroOrMore, quotedString, delimitedList, Suppress
+from pyparsing import Word, alphas, alphanums, oneOf, Group, ZeroOrMore, quotedString, delimitedList, Suppress
 
 from .vastai_base import VastAIBase
 from vast import parser, APIKEY_FILE
@@ -38,8 +38,8 @@ _regions = {
   'OC': ('AU,FJ,GU,KI,MH,FM,NR,NZ,PG,PW,SL,TO,TV,VU'),  # Oceania
 }
 
-def reverse_mapping(regions):
-    reversed_mapping = {}
+def reverse_mapping(regions: dict[str, str]) -> dict[str, str]:
+    reversed_mapping: dict[str, str] = {}
     for region, countries in regions.items():
         for country in countries.split(','):
             reversed_mapping[country] = region
@@ -47,12 +47,12 @@ def reverse_mapping(regions):
 
 _regions_rev = reverse_mapping(_regions)
 
-def queryParser(kwargs, instance):
+def queryParser(kwargs: dict[str, Any], instance: "VastAI") -> tuple[dict[str, bool], dict[str, Any]]:
   # georegion uses the region modifiers as top level
   # descriptors
   #
   # chunked reduces values communicated to more usable chunks
-  state = {'georegion': False, 'chunked': False }
+  state: dict[str, bool] = {'georegion': False, 'chunked': False }
 
   if kwargs.get('query') is not None:
     qstr = kwargs['query']
@@ -88,10 +88,10 @@ def queryParser(kwargs, instance):
 
   return (state, kwargs)
 
-def queryFormatter(state, obj, instance):
+def queryFormatter(state: dict[str, bool], obj: list[dict[str, Any]], instance: "VastAI") -> list[dict[str, Any]]:
   # This algo is explicitly designed for skypilot to add
   # depth to our catalog offerings
-  cutoff = {
+  cutoff: dict[str, int] = {
     'cpu_ram': 64 * 1024,
     'cpu_cores': 32,
     'min_bid': 0
@@ -130,7 +130,7 @@ def queryFormatter(state, obj, instance):
 
   return filtered
 
-def lastOutput(state, obj, instance):
+def lastOutput(state: dict[str, bool] | None, obj: Any, instance: "VastAI") -> str | None:
     return instance.last_output
 
 _hooks = {
@@ -144,14 +144,28 @@ class VastAI(VastAIBase):
 
     def __init__(
         self,
-        api_key=None,
-        server_url="https://console.vast.ai",
-        retry=3,
-        raw=True,
-        explain=False,
-        quiet=False,
-        curl=False
-    ):
+        api_key: str | None = None,
+        server_url: str = "https://console.vast.ai",
+        retry: int = 3,
+        raw: bool = True,
+        explain: bool = False,
+        quiet: bool = False,
+        curl: bool = False,
+    ) -> None:
+        # Instance attribute type declarations
+        self._creds: str
+        self._KEYPATH: str
+        self.api_key: str | None
+        self.api_key_access: str | None
+        self.server_url: str
+        self.retry: int
+        self.raw: bool
+        self.explain: bool
+        self.quiet: bool
+        self.curl: bool
+        self.imported_methods: dict[str, dict[str, Any]]
+        self.last_output: str | None
+
         if not api_key:
             if os.path.exists(APIKEY_FILE):
                 with open(APIKEY_FILE, "r") as reader:
@@ -176,13 +190,15 @@ class VastAI(VastAIBase):
         self.import_cli_functions()
 
     @property
-    def creds_source(self):
+    def creds_source(self) -> str:
         return self._creds
 
-    def generate_signature_from_argparse(self, parser):
-        parameters = [inspect.Parameter("self", inspect.Parameter.POSITIONAL_OR_KEYWORD)]
-        isFirst = True
-        docstring = ''
+    def generate_signature_from_argparse(
+        self, parser: argparse.ArgumentParser
+    ) -> tuple[inspect.Signature, str]:
+        parameters: list[inspect.Parameter] = [inspect.Parameter("self", inspect.Parameter.POSITIONAL_OR_KEYWORD)]
+        isFirst: bool = True
+        docstring: str = ''
 
         for action in sorted(parser._actions,  key=lambda action: len(action.option_strings) > 0):
             if action.dest == 'help':
@@ -222,7 +238,7 @@ class VastAI(VastAIBase):
         sig = inspect.Signature(parameters)
         return sig, docstring
 
-    def import_cli_functions(self):
+    def import_cli_functions(self) -> None:
         """Dynamically import functions from vast.py and bind them as instance methods."""
 
         if hasattr(parser, "subparsers_") and parser.subparsers_:
@@ -262,7 +278,9 @@ class VastAI(VastAIBase):
         else:
             print("No subparsers have been configured.")
 
-    def create_wrapper(self, func, method_name):
+    def create_wrapper(
+        self, func: Callable[..., Any], method_name: str
+    ) -> Callable[..., Any]:
         """Create a wrapper to check required arguments, convert keyword arguments, and capture output."""
 
         def wrapper(self, **kwargs):
@@ -376,14 +394,14 @@ class VastAI(VastAIBase):
 
         return wrapper
 
-    def credentials_on_disk(self):
+    def credentials_on_disk(self) -> None:
         """
         nop is the classic "no operation". This is just used to make sure the
         libraries don't crash and a key file exists
         """
         pass
 
-    def __getattr__(self, name):
+    def __getattr__(self, name: str) -> Any:
         if name in self.imported_methods:
             return getattr(self, name)
         raise AttributeError(f"{type(self).__name__} has no attribute {name}")
