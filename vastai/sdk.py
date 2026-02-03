@@ -1,10 +1,7 @@
-import importlib
 import types
 import argparse
-from typing import Any, Callable, cast
+from typing import Any, Callable
 import io
-import contextlib
-import requests
 import inspect
 import re
 import os
@@ -99,9 +96,7 @@ def queryFormatter(state: dict[str, bool], obj: list[dict[str, Any]], instance: 
     'min_bid': 0
   }
 
-  upper = lambda amount: amount & (0xffff << max(amount.bit_length() - 1,1))
-
-  filtered = []
+  filtered: list[dict[str, Any]] = []
   for res in obj:
     res['datacenter'] = (res['hosting_type'] == 1)
     if state['georegion'] and res['geolocation'] is not None:

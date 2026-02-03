@@ -3669,7 +3669,6 @@ def launch__instance(args):
         "disk": args.disk,  
         "q" : query,
         "env" : parse_env(args.env),
-        "disk": args.disk,
         "label": args.label,
         "extra": args.extra,
         "onstart": args.onstart_cmd,
@@ -6727,7 +6726,6 @@ def list__machines(args):
     """
     """
     return [list_machine(args, id) for id in args.ids]
-    return res
 
 
 

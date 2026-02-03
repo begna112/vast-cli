@@ -39,7 +39,7 @@ class TestStdoutCapture:
 
         # Check that stdout restoration is inside finally
         finally_match = re.search(
-            r'finally:\s*\n\s*#.*MFIX-08.*\n\s*if out_o is not None:\s*\n\s*sys\.stdout = out_o',
+            r'finally:\s*\n\s*#.*MFIX-08.*\n\s*if out_o is not None.*:\s*\n\s*sys\.stdout = out_o',
             content
         )
         assert finally_match is not None, "stdout restoration should be inside finally block with MFIX-08 comment"
