@@ -3242,7 +3242,7 @@ def execute(args):
             for i in range(0,30):
                 time.sleep(0.3)
                 url = rj["result_url"]
-                r = requests.get(url)
+                r = http_get(args, url)
                 if (r.status_code == 200):
                     filtered_text = r.text.replace(rj["writeable_path"], '');
                     print(filtered_text)
@@ -3437,7 +3437,7 @@ def label__instance(args):
 
 
 def fetch_url_content(url):
-    response = requests.get(url)
+    response = requests.get(url, timeout=DEFAULT_TIMEOUT)
     response.raise_for_status()  # Raises an HTTPError for bad responses
     return response.text
 
@@ -3458,7 +3458,7 @@ def _get_gpu_names() -> List[str]:
     else:
         endpoint = "/api/v0/gpu_names/unique/"
         url = f"{server_url_default}{endpoint}"
-        r = requests.get(url, headers={})
+        r = requests.get(url, headers={}, timeout=DEFAULT_TIMEOUT)
         r.raise_for_status()  # Will raise an exception for HTTP errors
         gpu_names = r.json()
         with open(CACHE_FILE, "w") as file:
@@ -3691,7 +3691,7 @@ def logs(args):
             time.sleep(0.3)
             url = rj["result_url"]
             print(f"waiting on logs for instance {args.INSTANCE_ID} fetching from {url}")
-            r = requests.get(url)
+            r = http_get(args, url)
             if r.status_code == 200:
                 result = r.text
                 cleaned_text = re.sub(r'\n\s*\n', '\n', result)
