@@ -1269,3 +1269,39 @@ class VastAIBase(ABC):
             Network disk information grouped by cluster.
         """
         pass
+
+    # Invoice V1 Methods
+
+    def show_invoices_v1(
+        self,
+        invoices: bool = False,
+        charges: bool = False,
+        invoice_type: Optional[List[str]] = None,
+        charge_type: Optional[List[str]] = None,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+        limit: int = 20,
+        next_token: Optional[str] = None,
+        format: str = "table",
+        verbose: bool = False,
+        latest_first: bool = False,
+    ) -> str:
+        """Show invoices or charges with advanced filtering (v1 API).
+
+        Args:
+            invoices: Show invoices instead of charges.
+            charges: Show charges instead of invoices.
+            invoice_type: Filter by invoice types (transfers, stripe, bitpay, etc.).
+            charge_type: Filter by charge types (instance, volume, serverless).
+            start_date: Start date (YYYY-MM-DD or timestamp).
+            end_date: End date (YYYY-MM-DD or timestamp).
+            limit: Number of results per page (default: 20, max: 100).
+            next_token: Pagination token for next page.
+            format: Output format ('table' or 'tree'). Default is 'table'.
+            verbose: Include full details (tree view only). Default is False.
+            latest_first: Sort by latest first. Default is False.
+
+        Returns:
+            Invoice or charge information based on selected filters.
+        """
+        pass
