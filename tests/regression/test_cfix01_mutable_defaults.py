@@ -17,7 +17,7 @@ def _make_args():
     return argparse.Namespace(retry=1, curl=False)
 
 
-def _mock_http_request(verb, args, req_url, headers, json):
+def _mock_http_request(verb, args, req_url, headers, json, **kwargs):
     """Capture the json arg and return a mock response."""
     r = MagicMock()
     r.status_code = 200
