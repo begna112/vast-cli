@@ -3621,12 +3621,12 @@ def launch__instance(args):
         if not name: continue
         direction = "asc"
         field = name
-        if name.strip("-") != name:
+        if name.startswith("-"):
             direction = "desc"
-            field = name.strip("-")
-        if name.strip("+") != name:
+            field = name.lstrip("-")
+        elif name.startswith("+"):
             direction = "asc"
-            field = name.strip("+")
+            field = name.lstrip("+")
         #print(f"{field} {name} {direction}")
         if field in offers_alias:
             field = offers_alias[field];
@@ -4422,12 +4422,12 @@ def search__offers(args):
             if not name: continue
             direction = "asc"
             field = name
-            if name.strip("-") != name:
+            if name.startswith("-"):
                 direction = "desc"
-                field = name.strip("-")
-            if name.strip("+") != name:
+                field = name.lstrip("-")
+            elif name.startswith("+"):
                 direction = "asc"
-                field = name.strip("+")
+                field = name.lstrip("+")
             #print(f"{field} {name} {direction}")
             if field in offers_alias:
                 field = offers_alias[field];
@@ -4677,12 +4677,12 @@ def search__volumes(args: argparse.Namespace):
             if not name: continue
             direction = "asc"
             field = name
-            if name.strip("-") != name:
+            if name.startswith("-"):
                 direction = "desc"
-                field = name.strip("-")
-            if name.strip("+") != name:
+                field = name.lstrip("-")
+            elif name.startswith("+"):
                 direction = "asc"
-                field = name.strip("+")
+                field = name.lstrip("+")
             if field in offers_alias:
                 field = offers_alias[field];
             order.append([field, direction])
@@ -4774,12 +4774,12 @@ def search__network_volumes(args: argparse.Namespace):
             if not name: continue
             direction = "asc"
             field = name
-            if name.strip("-") != name:
+            if name.startswith("-"):
                 direction = "desc"
-                field = name.strip("-")
-            if name.strip("+") != name:
+                field = name.lstrip("-")
+            elif name.startswith("+"):
                 direction = "asc"
-                field = name.strip("+")
+                field = name.lstrip("+")
             if field in offers_alias:
                 field = offers_alias[field];
             order.append([field, direction])
@@ -5198,7 +5198,6 @@ def show__earnings(args):
     if args.end_date:
         try:
             end_date = dateutil.parser.parse(str(args.end_date))
-            end_date_txt = end_date.isoformat()
             end_timestamp = end_date.timestamp()
             eday = end_timestamp / Days
         except ValueError as e:
@@ -5207,7 +5206,6 @@ def show__earnings(args):
     if args.start_date:
         try:
             start_date = dateutil.parser.parse(str(args.start_date))
-            start_date_txt = start_date.isoformat()
             start_timestamp = start_date.timestamp()
             sday = start_timestamp / Days
         except ValueError as e:
@@ -5217,10 +5215,11 @@ def show__earnings(args):
     return output_result(args, rows)
 
 
-def sum(X, k):
+def sum_field(X, k):
+    """Sum the values of field k across all items in X."""
     y = 0
     for x in X:
-        a = float(x.get(k,0))
+        a = float(x.get(k, 0))
         y += a
     return y
 
@@ -5346,7 +5345,7 @@ def show__invoices(args):
     else:
         print(filter_header)
         display_table(rows, invoice_fields)
-        print(f"Total: ${sum(rows, 'amount')}")
+        print(f"Total: ${sum_field(rows, 'amount')}")
         print("Current: ", current_charges)
 
 # Helper to convert date string or int to timestamp
@@ -6268,7 +6267,7 @@ def convert_dates_to_timestamps(args):
             start_date_txt = start_date.isoformat()
             start_timestamp = calendar.timegm(start_date.timetuple())
         except ValueError as e:
-            print(f"Warning: Invalid start date format! Ignoring end date! \n {str(e)}")
+            print(f"Warning: Invalid start date format! Ignoring start date! \n {str(e)}")
 
     return start_timestamp, end_timestamp
 
