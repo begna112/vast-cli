@@ -1448,8 +1448,9 @@ def get_ssh_key(argstr):
 @parser.command(
     argument("instance_id", help="id of instance to attach to", type=int),
     argument("ssh_key", help="ssh key to attach to instance", type=str),
+    description="Attach an SSH key to an instance for remote access",
     usage="vastai attach ssh instance_id ssh_key",
-    help="Attach an ssh key to an instance. This will allow you to connect to the instance with the ssh key",
+    help="Attach an SSH key to an instance for remote access",
     epilog=deindent("""
         Attach an ssh key to an instance. This will allow you to connect to the instance with the ssh key.
 
@@ -1475,8 +1476,9 @@ def attach__ssh(args):
 
 @parser.command(
     argument("dst", help="instance_id:/path to target of copy operation", type=str),
+    description="Cancel an in-progress file copy operation",
     usage="vastai cancel copy DST",
-    help="Cancel a remote copy in progress, specified by DST id",
+    help="Cancel an in-progress file copy operation",
     epilog=deindent("""
         Use this command to cancel any/all current remote copy operations copying to a specific named instance, given by DST.
 
@@ -1520,8 +1522,9 @@ def cancel__copy(args: argparse.Namespace):
 
 @parser.command(
     argument("dst", help="instance_id:/path to target of sync operation", type=str),
+    description="Cancel an in-progress file sync operation",
     usage="vastai cancel sync DST",
-    help="Cancel a remote copy in progress, specified by DST id",
+    help="Cancel an in-progress file sync operation",
     epilog=deindent("""
         Use this command to cancel any/all current remote cloud sync operations copying to a specific named instance, given by DST.
 
@@ -1612,6 +1615,7 @@ def parse_hour_cron_style(value):
     argument("--end_date", type=str, default=default_end_date(), help="End date/time in format 'YYYY-MM-DD HH:MM:SS PM' (UTC). Default is 7 days from now. (optional)"),
     argument("--day", type=parse_day_cron_style, help="Day of week you want scheduled job to run on (0-6, where 0=Sunday) or \"*\". Default will be 0. For ex. --day 0", default=0),
     argument("--hour", type=parse_hour_cron_style, help="Hour of day you want scheduled job to run on (0-23) or \"*\" (UTC). Default will be 0. For ex. --hour 16", default=0),
+    description="Change the bid price for a spot/interruptible instance",
     usage="vastai change bid id [--price PRICE]",
     help="Change the bid price for a spot/interruptible instance",
     epilog=deindent("""
@@ -1650,8 +1654,9 @@ def change__bid(args: argparse.Namespace):
     argument("dest", help="id of volume offer volume is being copied to", type=int),
     argument("-s", "--size", help="Size of new volume contract, in GB. Must be greater than or equal to the source volume, and less than or equal to the destination offer.", type=float),
     argument("-d", "--disable_compression", action="store_true", help="Do not compress volume data before copying."),
+    description="Create a copy of an existing volume",
     usage="vastai copy volume <source_id> <dest_id> [options]",
-    help="Clone an existing volume",
+    help="Create a copy of an existing volume",
     epilog=deindent("""
         Create a new volume with the given offer, by copying the existing volume. 
         Size defaults to the size of the existing volume, but can be increased if there is available space.
@@ -1690,8 +1695,9 @@ def clone__volume(args: argparse.Namespace):
     argument("src", help="Source location for copy operation (supports multiple formats)", type=str),
     argument("dst", help="Target location for copy operation (supports multiple formats)", type=str),
     argument("-i", "--identity", help="Location of ssh private key", type=str),
+    description="Copy files/directories between instances or between local and instance",
     usage="vastai copy SRC DST",
-    help="Copy directories between instances and/or local",
+    help="Copy files/directories between instances or between local and instance",
     epilog=deindent("""
         Copies a directory from a source location to a target location. Each of source and destination
         directories can be either local or remote, subject to appropriate read and write
@@ -1867,8 +1873,9 @@ def vm__copy(args: argparse.Namespace):
     argument("--end_date", type=str, help="End date/time in format 'YYYY-MM-DD HH:MM:SS PM' (UTC). Default is contract's end. (optional)"),
     argument("--day", type=parse_day_cron_style, help="Day of week you want scheduled job to run on (0-6, where 0=Sunday) or \"*\". Default will be 0. For ex. --day 0", default=0),
     argument("--hour", type=parse_hour_cron_style, help="Hour of day you want scheduled job to run on (0-23) or \"*\" (UTC). Default will be 0. For ex. --hour 16", default=0),
+    description="Copy files between instances and cloud storage (S3, GCS, Azure)",
     usage="vastai cloud copy --src SRC --dst DST --instance INSTANCE_ID -connection CONNECTION_ID --transfer TRANSFER_TYPE",
-    help="Copy files/folders to and from cloud providers",
+    help="Copy files between instances and cloud storage (S3, GCS, Azure)",
     epilog=deindent("""
         Copies a directory from a source location to a target location. Each of source and destination
         directories can be either local or remote, subject to appropriate read and write
@@ -1980,10 +1987,11 @@ def cloud__copy(args: argparse.Namespace):
     argument("--docker_login_user",help="Username for container registry with repo",     type=str),
     argument("--docker_login_pass",help="Password or token for container registry with repo",     type=str),
     argument("--pause",            help="Pause container's processes being executed by the CPU to take snapshot (true/false). Default will be true", type=str, default="true"),
+    description="Create a snapshot of a running container and push to registry",
     usage="vastai take snapshot INSTANCE_ID "
           "--repo REPO --docker_login_user USER --docker_login_pass PASS"
           "[--container_registry REGISTRY] [--pause true|false]",
-    help="Schedule a snapshot of a running container and push it to your repo in a container registry",
+    help="Create a snapshot of a running container and push to registry",
     epilog=deindent("""
         Takes a snapshot of a running container instance and pushes snapshot to the specified repository in container registry.
         
@@ -2136,8 +2144,9 @@ def update_scheduled_job(args, cli_command, schedule_job_url, frequency, start_d
     argument("--name", help="name of the api-key", type=str),
     argument("--permission_file", help="file path for json encoded permissions, see https://vast.ai/docs/cli/roles-and-permissions for more information", type=str),
     argument("--key_params", help="optional wildcard key params for advanced keys", type=str),
+    description="Create a new API key with custom permissions",
     usage="vastai create api-key --name NAME --permission_file PERMISSIONS",
-    help="Create a new api-key with restricted permissions. Can be sent to other users and teammates",
+    help="Create a new API key with custom permissions",
     epilog=deindent("""
         In order to create api keys you must understand how permissions must be sent via json format. 
         You can find more information about permissions here: https://vast.ai/docs/cli/roles-and-permissions
@@ -2168,8 +2177,9 @@ def create__api_key(args):
 @parser.command(
     argument("subnet", help="local subnet for cluster, ex: '0.0.0.0/24'", type=str),
     argument("manager_id", help="Machine ID of manager node in cluster. Must exist already.", type=int),
+    description="[Beta] Create a new machine cluster",
     usage="vastai create cluster SUBNET MANAGER_ID",
-    help="Create Vast cluster",
+    help="[Beta] Create a new machine cluster",
     epilog=deindent("""
         Create Vast Cluster by defining a local subnet and manager id.""")
 )
@@ -2203,8 +2213,9 @@ def create__cluster(args: argparse.Namespace):
 @parser.command(
     argument("name", help="Environment variable name", type=str),
     argument("value", help="Environment variable value", type=str),
+    description="Create a new account-level environment variable",
     usage="vastai create env-var <name> <value>",
-    help="Create a new user environment variable",
+    help="Create a new account-level environment variable",
 )
 def create__env_var(args):
     """Create a new environment variable for the current user."""
@@ -2221,8 +2232,9 @@ def create__env_var(args):
 @parser.command(
     argument("ssh_key", help="add your existing ssh public key to your account (from the .pub file). If no public key is provided, a new key pair will be generated.", type=str, nargs='?'),
     argument("-y", "--yes", help="automatically answer yes to prompts", action="store_true"),
+    description="Add an SSH public key to your account",
     usage="vastai create ssh-key [ssh_public_key] [-y]",
-    help="Create a new ssh-key",
+    help="Add an SSH public key to your account",
     epilog=deindent("""
         You may use this command to add an existing public key, or create a new ssh key pair and add that public key, to your Vast account. 
         
@@ -2387,8 +2399,9 @@ def generate_ssh_key(auto_yes=False):
     argument("--cold_mult",   help="[NOTE: this field isn't currently used at the workergroup level]cold/stopped instance capacity target as multiple of hot capacity target (default 2.0)", type=float),
     argument("--cold_workers",   help="min number of workers to keep 'cold' for this workergroup", type=int),
     argument("--auto_instance", help=argparse.SUPPRESS, type=str, default="prod"),
+    description="Create an autoscaling worker group for serverless inference",
     usage="vastai workergroup create [OPTIONS]",
-    help="Create a new autoscale group",
+    help="Create an autoscaling worker group for serverless inference",
     epilog=deindent("""
         Create a new autoscaling group to manage a pool of worker instances.
                     
@@ -2440,8 +2453,9 @@ def create__workergroup(args):
     argument("--endpoint_name", help="deployment endpoint name (allows multiple autoscale groups to share same deployment endpoint)", type=str),
     argument("--auto_instance", help=argparse.SUPPRESS, type=str, default="prod"),
 
+    description="Create a serverless inference endpoint",
     usage="vastai create endpoint [OPTIONS]",
-    help="Create a new endpoint group",
+    help="Create a serverless inference endpoint",
     epilog=deindent("""
         Create a new endpoint group to manage many autoscaling groups
                     
@@ -2562,8 +2576,9 @@ def validate_portal_config(json_blob):
     argument("--mount-path", help="The path to the volume from within the new instance container. e.g. /root/volume", type=str),
     argument("--volume-label", help="(optional) A name to give the new volume. Only usable with --create-volume", type=str),
     
+    description="Create a new GPU instance from an offer",
     usage="vastai create instance ID [OPTIONS] [--args ...]",
-    help="Create a new instance",
+    help="Create a new GPU instance from an offer",
     epilog=deindent("""
         Performs the same action as pressing the "RENT" button on the website at https://console.vast.ai/create/ 
         Creates an instance from an offer ID (which is returned from "search offers"). Each offer ID can only be used to create one instance.
@@ -2664,8 +2679,9 @@ def create__instance(args: argparse.Namespace):
     argument("--username", help="username to use for login", type=str),
     argument("--password", help="password to use for login", type=str),
     argument("--type", help="host/client", type=str),
+    description="Create a subaccount for delegated access",
     usage="vastai create subaccount --email EMAIL --username USERNAME --password PASSWORD --type TYPE",
-    help="Create a subaccount",
+    help="Create a subaccount for delegated access",
     epilog=deindent("""
        Creates a new account that is considered a child of your current account as defined via the API key. 
 
@@ -2709,6 +2725,7 @@ def create__subaccount(args):
 
 @parser.command(
     argument("--team_name", help="name of the team", type=str),
+    description="Create a new team",
     usage="vastai create-team --team_name TEAM_NAME",
     help="Create a new team",
     epilog=deindent("""
@@ -2741,8 +2758,9 @@ def create__team(args):
 @parser.command(
     argument("--name", help="name of the role", type=str),
     argument("--permissions", help="file path for json encoded permissions, look in the docs for more information", type=str),
+    description="Create a custom role with specific permissions",
     usage="vastai create team-role --name NAME --permissions PERMISSIONS",
-    help="Add a new role to your team",
+    help="Create a custom role with specific permissions",
     epilog=deindent("""
         Creating a new team role involves understanding how permissions must be sent via json format.
         You can find more information about permissions here: https://vast.ai/docs/cli/roles-and-permissions
@@ -2781,8 +2799,9 @@ def get_template_arguments():
 
 @parser.command(
     *get_template_arguments(),
+    description="Create a reusable instance configuration template",
     usage="vastai create template",
-    help="Create a new template",
+    help="Create a reusable instance configuration template",
     epilog=deindent("""
         Create a template that can be used to create instances with
 
@@ -2857,8 +2876,9 @@ def create__template(args):
     argument("-s", "--size",
              help="size in GB of volume. Default %(default)s GB.", default=15, type=float),
     argument("-n", "--name", help="Optional name of volume.", type=str),
+    description="Create a new persistent storage volume",
     usage="vastai create volume ID [options]",
-    help="Create a new volume",
+    help="Create a new persistent storage volume",
     epilog=deindent("""
         Creates a volume from an offer ID (which is returned from "search volumes"). Each offer ID can be used to create multiple volumes,
         provided the size of all volumes does not exceed the size of the offer.
@@ -2891,8 +2911,9 @@ def create__volume(args: argparse.Namespace):
     argument("-s", "--size",
              help="size in GB of network volume. Default %(default)s GB.", default=15, type=float),
     argument("-n", "--name", help="Optional name of network volume.", type=str),
+    description="[Host] [Beta] Create a new network-attached storage volume",
     usage="vastai create network volume ID [options]",
-    help="Create a new network volume",
+    help="[Host] [Beta] Create a new network-attached storage volume",
     epilog=deindent("""
         Creates a network volume from an offer ID (which is returned from "search network volumes"). Each offer ID can be used to create multiple volumes,
         provided the size of all volumes does not exceed the size of the offer.
@@ -2922,8 +2943,9 @@ def create__network_volume(args: argparse.Namespace):
 @parser.command(
     argument("cluster_id", help="ID of cluster to create overlay on top of", type=int),
     argument("name", help="overlay network name"),
+    description="[Beta] Create a virtual overlay network on a cluster",
     usage="vastai create overlay CLUSTER_ID OVERLAY_NAME",
-    help="Creates overlay network on top of a physical cluster",
+    help="[Beta] Create a virtual overlay network on a cluster",
     epilog=deindent("""
     Creates an overlay network to allow local networking between instances on a physical cluster""")
 )
@@ -2947,8 +2969,9 @@ def create__overlay(args: argparse.Namespace):
 
 @parser.command(
     argument("id", help="id of apikey to remove", type=int),
+    description="Delete an API key",
     usage="vastai delete api-key ID",
-    help="Remove an api-key",
+    help="Delete an API key",
 )
 def delete__api_key(args):
     result = api_call(args, "DELETE", f"/auth/apikeys/{args.id}/")
@@ -2958,8 +2981,9 @@ def delete__api_key(args):
 
 @parser.command(
     argument("id", help="id ssh key to delete", type=int),
+    description="Remove an SSH key from your account",
     usage="vastai delete ssh-key ID",
-    help="Remove an ssh-key",
+    help="Remove an SSH key from your account",
 )
 def delete__ssh_key(args):
     result = api_call(args, "DELETE", f"/ssh/{args.id}/")
@@ -2969,6 +2993,7 @@ def delete__ssh_key(args):
 
 @parser.command(
     argument("id", help="id of scheduled job to remove", type=int),
+    description="Delete a scheduled job",
     usage="vastai delete scheduled-job ID",
     help="Delete a scheduled job",
 )
@@ -2982,8 +3007,9 @@ def delete__scheduled_job(args):
 
 @parser.command(
     argument("cluster_id", help="ID of cluster to delete", type=int),
+    description="[Beta] Delete a machine cluster",
     usage="vastai delete cluster CLUSTER_ID",
-    help="Delete Cluster",
+    help="[Beta] Delete a machine cluster",
     epilog=deindent("""
         Delete Vast Cluster""")
 )
@@ -3005,8 +3031,9 @@ def delete__cluster(args: argparse.Namespace):
 
 @parser.command(
     argument("id", help="id of group to delete", type=int),
+    description="Delete an autoscaling worker group",
     usage="vastai delete workergroup ID ",
-    help="Delete a workergroup group",
+    help="Delete an autoscaling worker group",
     epilog=deindent("""
         Note that deleting a workergroup doesn't automatically destroy all the instances that are associated with your workergroup.
         Example: vastai delete workergroup 4242
@@ -3037,8 +3064,9 @@ def delete__workergroup(args):
 
 @parser.command(
     argument("id", help="id of endpoint group to delete", type=int),
+    description="Delete a serverless inference endpoint",
     usage="vastai delete endpoint ID ",
-    help="Delete an endpoint group",
+    help="Delete a serverless inference endpoint",
     epilog=deindent("""
         Example: vastai delete endpoint 4242
     """),
@@ -3068,6 +3096,7 @@ def delete__endpoint(args):
 
 @parser.command(
     argument("name", help="Environment variable name to delete", type=str),
+    description="Delete a user environment variable",
     usage="vastai delete env-var <name>",
     help="Delete a user environment variable",
 )
@@ -3092,8 +3121,9 @@ def delete__env_var(args):
 
 @parser.command(
     argument("overlay_identifier", help="ID (int) or name (str) of overlay to delete", nargs="?"),
+    description="[Beta] Delete an overlay network and its instances",
     usage="vastai delete overlay OVERLAY_IDENTIFIER",
-    help="Deletes overlay and removes all of its associated instances"
+    help="[Beta] Delete an overlay network and its instances"
 )
 def delete__overlay(args: argparse.Namespace):
     identifier = args.overlay_identifier
@@ -3120,8 +3150,9 @@ def delete__overlay(args: argparse.Namespace):
 @parser.command(
     argument("--template-id", help="Template ID of Template to Delete", type=int),
     argument("--hash-id", help="Hash ID of Template to Delete", type=str),
+    description="Delete a template",
     usage="vastai delete template [--template-id <id> | --hash-id <hash_id>]",
-    help="Delete a Template",
+    help="Delete a template",
     epilog=deindent("""
         Note: Deleting a template only removes the user's replationship to a template. It does not get destroyed
         Example: vastai delete template --template-id 12345
@@ -3163,8 +3194,9 @@ def delete__template(args):
 
 @parser.command(
     argument("id", help="id of volume contract", type=int),
+    description="Delete a persistent storage volume",
     usage="vastai delete volume ID",
-    help="Delete a volume",
+    help="Delete a persistent storage volume",
     epilog=deindent("""
         Deletes volume with the given ID. All instances using the volume must be destroyed before the volume can be deleted.
     """)
@@ -3192,6 +3224,7 @@ def destroy_instance(id,args):
 
 @parser.command(
     argument("id", help="id of instance to delete", type=int),
+    description="Destroy an instance (irreversible, deletes data)",
     usage="vastai destroy instance id [-h] [--api-key API_KEY] [--raw]",
     help="Destroy an instance (irreversible, deletes data)",
     epilog=deindent("""
@@ -3218,6 +3251,7 @@ def destroy__instance(args):
 
 @parser.command(
     argument("ids", help="ids of instance to destroy", type=int, nargs='+'),
+    description="Destroy a list of instances (irreversible, deletes data)",
     usage="vastai destroy instances [--raw] <id>",
     help="Destroy a list of instances (irreversible, deletes data)",
 )
@@ -3228,8 +3262,9 @@ def destroy__instances(args):
         destroy_instance(id, args)
 
 @parser.command(
+    description="Delete your team and remove all members",
     usage="vastai destroy team",
-    help="Destroy your team",
+    help="Delete your team and remove all members",
 )
 def destroy__team(args):
     result = api_call(args, "DELETE", "/team/")
@@ -3240,8 +3275,9 @@ def destroy__team(args):
 @parser.command(
     argument("instance_id", help="id of the instance", type=int),
     argument("ssh_key_id", help="id of the key to detach to the instance", type=str),
+    description="Remove an SSH key from an instance",
     usage="vastai detach instance_id ssh_key_id",
-    help="Detach an ssh key from an instance",
+    help="Remove an SSH key from an instance",
     epilog=deindent("""
         Example: vastai detach 99999 12345
     """)
@@ -3266,8 +3302,9 @@ def detach__ssh(args):
     argument("--end_date", type=str, default=default_end_date(), help="End date/time in format 'YYYY-MM-DD HH:MM:SS PM' (UTC). Default is 7 days from now. (optional)"),
     argument("--day", type=parse_day_cron_style, help="Day of week you want scheduled job to run on (0-6, where 0=Sunday) or \"*\". Default will be 0. For ex. --day 0", default=0),
     argument("--hour", type=parse_hour_cron_style, help="Hour of day you want scheduled job to run on (0-23) or \"*\" (UTC). Default will be 0. For ex. --hour 16", default=0),
+    description="Execute a command on a running instance",
     usage="vastai execute id COMMAND",
-    help="Execute a (constrained) remote command on a machine",
+    help="Execute a command on a running instance",
     epilog=deindent("""
         Examples:
           vastai execute 99999 'ls -l -o -r'
@@ -3326,8 +3363,9 @@ def execute(args):
     argument("id", help="id of endpoint group to fetch logs from", type=int),
     argument("--level", help="log detail level (0 to 3)", type=int, default=1),
     argument("--tail", help="", type=int, default=None),
+    description="Get logs for a serverless endpoint",
     usage="vastai get endpt-logs ID [--api-key API_KEY]",
-    help="Fetch logs for a specific serverless endpoint group",
+    help="Get logs for a serverless endpoint",
     epilog=deindent("""
         Example: vastai get endpt-logs 382
     """),
@@ -3365,8 +3403,9 @@ def get__endpt_logs(args):
     argument("id", help="id of endpoint group to fetch logs from", type=int),
     argument("--level", help="log detail level (0 to 3)", type=int, default=1),
     argument("--tail", help="", type=int, default=None),
+    description="Get logs for an autoscaling worker group",
     usage="vastai get wrkgrp-logs ID [--api-key API_KEY]",
-    help="Fetch logs for a specific serverless worker group group",
+    help="Get logs for an autoscaling worker group",
     epilog=deindent("""
         Example: vastai get endpt-logs 382
     """),
@@ -3403,8 +3442,9 @@ def get__wrkgrp_logs(args):
 @parser.command(
     argument("--email", help="email of user to be invited", type=str),
     argument("--role", help="role of user to be invited", type=str),
+    description="Invite a user to join your team",
     usage="vastai invite member --email EMAIL --role ROLE",
-    help="Invite a team member",
+    help="Invite a user to join your team",
 )
 def invite__member(args):
     url = apiurl(args, "/team/invite/", query_args={"email": args.email, "role": args.role})
@@ -3422,8 +3462,9 @@ def invite__member(args):
 @parser.command(
     argument("cluster_id", help="ID of cluster to add machine to", type=int),
     argument("machine_ids", help="machine id(s) to join cluster", type=int, nargs="+"),
+    description="[Beta] Add a machine to an existing cluster",
     usage="vastai join cluster CLUSTER_ID MACHINE_IDS",
-    help="Join Machine to Cluster",
+    help="[Beta] Add a machine to an existing cluster",
     epilog=deindent("""
         Join's Machine to Vast Cluster
     """)
@@ -3450,8 +3491,9 @@ def join__cluster(args: argparse.Namespace):
 @parser.command(
     argument("name", help="Overlay network name to join instance to.", type=str),
     argument("instance_id", help="Instance ID to add to overlay.", type=int),
+    description="[Beta] Connect an instance to an overlay network",
     usage="vastai join overlay OVERLAY_NAME INSTANCE_ID",
-    help="Adds instance to an overlay network",
+    help="[Beta] Connect an instance to an overlay network",
     epilog=deindent("""
     Adds an instance to a compatible overlay network.""")
 )
@@ -3478,6 +3520,7 @@ def join__overlay(args: argparse.Namespace):
 @parser.command(
     argument("id", help="id of instance to label", type=int),
     argument("label", help="label to set", type=str),
+    description="Assign a string label to an instance",
     usage="vastai label instance <id> <label>",
     help="Assign a string label to an instance",
 )
@@ -3585,8 +3628,9 @@ def _parse_region(region):
     argument("--force", help="Skip sanity checks when creating from an existing instance", action="store_true"),
     argument("--cancel-unavail", help="Return error if scheduling fails (rather than creating a stopped instance)", action="store_true"),
     argument("--template_hash",   help="template hash which contains all relevant information about an instance. This can be used as a replacement for other parameters describing the instance configuration", type=str),
+    description="Launch a new instance using search parameters to auto-select the best offer",
     usage="vastai launch instance [--help] [--api-key API_KEY] <gpu_name> <num_gpus> <image> [geolocation] [disk_space]",
-    help="Launch the top instance from the search offers based on the given parameters",
+    help="Launch a new instance using search parameters to auto-select the best offer",
     epilog=deindent("""
         Launches an instance based on the given parameters. The instance will be created with the top offer from the search results.
         Besides the gpu_name and num_gpus, you must pass in an '--image' argument as a minimum.
@@ -3729,6 +3773,7 @@ def launch__instance(args):
     argument("--tail", help="Number of lines to show from the end of the logs (default '1000')", type=str),
     argument("--filter", help="Grep filter for log entries", type=str),
     argument("--daemon-logs", help="Fetch daemon system logs instead of container logs", action="store_true"),
+    description="Get the logs for an instance",
     usage="vastai logs INSTANCE_ID [OPTIONS] ",
     help="Get the logs for an instance",
 )
@@ -3770,8 +3815,9 @@ def logs(args):
 @parser.command(
     argument("id", help="id of instance to prepay for", type=int),
     argument("amount", help="amount of instance credit prepayment (default discount func of 0.2 for 1 month, 0.3 for 3 months)", type=float),
+    description="Prepay credits for a reserved instance to prevent interruption",
     usage="vastai prepay instance ID AMOUNT",
-    help="Deposit credits into reserved instance",
+    help="Prepay credits for a reserved instance to prevent interruption",
 )
 def prepay__instance(args):
     """
@@ -3811,6 +3857,7 @@ def prepay__instance(args):
     argument("--end_date", type=str, default=default_end_date(), help="End date/time in format 'YYYY-MM-DD HH:MM:SS PM' (UTC). Default is 7 days from now. (optional)"),
     argument("--day", type=parse_day_cron_style, help="Day of week you want scheduled job to run on (0-6, where 0=Sunday) or \"*\". Default will be 0. For ex. --day 0", default=0),
     argument("--hour", type=parse_hour_cron_style, help="Hour of day you want scheduled job to run on (0-23) or \"*\" (UTC). Default will be 0. For ex. --hour 16", default=0),
+    description="Reboot (stop/start) an instance",
     usage="vastai reboot instance ID [OPTIONS]",
     help="Reboot (stop/start) an instance",
     epilog=deindent("""
@@ -3842,8 +3889,9 @@ def reboot__instance(args):
 
 @parser.command(
     argument("id", help="id of instance to recycle", type=int),
+    description="Destroy and recreate an instance with the same configuration",
     usage="vastai recycle instance ID [OPTIONS]",
-    help="Recycle (destroy/create) an instance",
+    help="Destroy and recreate an instance with the same configuration",
     epilog=deindent("""
         Destroys and recreates container in place (from newly pulled image) without any risk of losing GPU priority.
     """),
@@ -3864,6 +3912,7 @@ def recycle__instance(args):
 
 @parser.command(
     argument("id", help="id of user to remove", type=int),
+    description="Remove a team member",
     usage="vastai remove member ID",
     help="Remove a team member",
 )
@@ -3875,8 +3924,9 @@ def remove__member(args):
 
 @parser.command(
     argument("NAME", help="name of the role", type=str),
+    description="Delete a custom role from your team",
     usage="vastai remove team-role NAME",
-    help="Remove a role from your team",
+    help="Delete a custom role from your team",
 )
 def remove__team_role(args):
     result = api_call(args, "DELETE", f"/team/roles/{args.NAME}/")
@@ -3886,8 +3936,9 @@ def remove__team_role(args):
 
 @parser.command(
     argument("id", help="machine id", type=int),
+    description="[Host] Get usage and performance reports for a machine",
     usage="vastai reports ID",
-    help="Get the user reports for a given machine",
+    help="[Host] Get usage and performance reports for a machine",
 )
 def reports(args):
     """
@@ -3910,8 +3961,9 @@ def reports(args):
 
 
 @parser.command(
+    description="Invalidate current API key and generate a new one",
     usage="vastai reset api-key",
-    help="Reset your api-key (get new key from website)",
+    help="Invalidate current API key and generate a new one",
 )
 def reset__api_key(args):
     """Caution: a bad API key will make it impossible to connect to the servers.
@@ -4003,6 +4055,7 @@ def start_instance(id,args):
 
 @parser.command(
     argument("id", help="ID of instance to start/restart", type=int),
+    description="Start a stopped instance",
     usage="vastai start instance ID [OPTIONS]",
     help="Start a stopped instance",
     epilog=deindent("""
@@ -4024,8 +4077,9 @@ def start__instance(args):
 
 @parser.command(
     argument("ids", help="ids of instance to start", type=int, nargs='+'),
+    description="Start multiple stopped instances",
     usage="vastai start instances [OPTIONS] ID0 ID1 ID2...",
-    help="Start a list of instances",
+    help="Start multiple stopped instances",
 )
 def start__instances(args):
     """
@@ -4065,6 +4119,7 @@ def stop_instance(id,args):
 
 @parser.command(
     argument("id", help="id of instance to stop", type=int),
+    description="Stop a running instance",
     usage="vastai stop instance ID [OPTIONS]",
     help="Stop a running instance",
     epilog=deindent("""
@@ -4083,8 +4138,9 @@ def stop__instance(args):
 
 @parser.command(
     argument("ids", help="ids of instance to stop", type=int, nargs='+'),
+    description="Stop multiple running instances",
     usage="vastai stop instances [OPTIONS] ID0 ID1 ID2...",
-    help="Stop a list of instances",
+    help="Stop multiple running instances",
     epilog=deindent("""
         Examples: 
             vastai stop instances $(vastai show instances -q)
@@ -4140,8 +4196,9 @@ benchmarks_fields = {
 
 @parser.command(
     argument("query", help="Search query in simple query syntax (see below)", nargs="*", default=None),
+    description="Search machine benchmark results with filters",
     usage="vastai search benchmarks [--help] [--api-key API_KEY] [--raw] <query>",
-    help="Search for benchmark results using custom query",
+    help="Search machine benchmark results with filters",
     epilog=deindent("""
         Query syntax:
 
@@ -4235,8 +4292,9 @@ invoices_fields = {
 
 @parser.command(
     argument("query", help="Search query in simple query syntax (see below)", nargs="*", default=None),
+    description="Search billing invoices with filters",
     usage="vastai search invoices [--help] [--api-key API_KEY] [--raw] <query>",
-    help="Search for invoices using custom query",
+    help="Search billing invoices with filters",
     epilog=deindent("""
         Query syntax:
 
@@ -4327,8 +4385,9 @@ def search__invoices(args):
     argument("--storage", type=float, default=5.0, help="Amount of storage to use for pricing, in GiB. default=5.0GiB"),
     argument("-o", "--order", type=str, help="Comma-separated list of fields to sort on. postfix field with - to sort desc. ex: -o 'num_gpus,total_flops-'.  default='score-'", default='score-'),
     argument("query", help="Query to search for. default: 'external=false rentable=true verified=true', pass -n to ignore default", nargs="*", default=None),
+    description="Search available GPU offers with filters",
     usage="vastai search offers [--help] [--api-key API_KEY] [--raw] <query>",
-    help="Search for instance types using custom query",
+    help="Search available GPU offers with filters",
     epilog=deindent("""
         Query syntax:
 
@@ -4557,8 +4616,9 @@ templates_fields = {
 
 @parser.command(
     argument("query", help="Search query in simple query syntax (see below)", nargs="*", default=None),
+    description="Search available templates with filters",
     usage="vastai search templates [--help] [--api-key API_KEY] [--raw] <query>",
-    help="Search for template results using custom query",
+    help="Search available templates with filters",
     epilog=deindent("""
         Query syntax:
 
@@ -4633,8 +4693,9 @@ def search__templates(args):
     argument("--storage", type=float, default=1.0, help="Amount of storage to use for pricing, in GiB. default=1.0GiB"),
     argument("-o", "--order", type=str, help="Comma-separated list of fields to sort on. postfix field with - to sort desc. ex: -o 'disk_space,inet_up-'.  default='score-'", default='score-'),
     argument("query", help="Query to search for. default: 'external=false verified=true disk_space>=1', pass -n to ignore default", nargs="*", default=None),
+    description="Search available volume offers with filters",
     usage="vastai search volumes [--help] [--api-key API_KEY] [--raw] <query>",
-    help="Search for volume offers using custom query",
+    help="Search available volume offers with filters",
     epilog=deindent("""
         Query syntax:
 
@@ -4746,8 +4807,9 @@ def search__volumes(args: argparse.Namespace):
     argument("--storage", type=float, default=1.0, help="Amount of storage to use for pricing, in GiB. default=1.0GiB"),
     argument("-o", "--order", type=str, help="Comma-separated list of fields to sort on. postfix field with - to sort desc. ex: -o 'disk_space,inet_up-'.  default='score-'", default='score-'),
     argument("query", help="Query to search for. default: 'external=false verified=true disk_space>=1', pass -n to ignore default", nargs="*", default=None),
+    description="[Host] [Beta] Search available network volume offers with filters",
     usage="vastai search network volumes [--help] [--api-key API_KEY] [--raw] <query>",
-    help="Search for network volume offers using custom query",
+    help="[Host] [Beta] Search available network volume offers with filters",
     epilog=deindent("""
         Query syntax:
 
@@ -4838,8 +4900,9 @@ def search__network_volumes(args: argparse.Namespace):
 
 @parser.command(
     argument("new_api_key", help="Api key to set as currently logged in user"),
+    description="Set the API key for CLI and SDK authentication",
     usage="vastai set api-key APIKEY",
-    help="Set api-key (get your api-key from the console/CLI)",
+    help="Set the API key for CLI and SDK authentication",
     epilog=deindent("""
         Stores your Vast.ai API key locally for authentication with all CLI commands.
         Get your API key from the Vast.ai console: https://console.vast.ai/account/
@@ -4874,8 +4937,9 @@ def set__api_key(args):
 
 @parser.command(
     argument("--file", help="file path for params in json format", type=str),
+    description="Update account settings from a JSON file",
     usage="vastai set user --file FILE",
-    help="Update user data from json file",
+    help="Update account settings from a JSON file",
     epilog=deindent("""
 
     Available fields:
@@ -4918,8 +4982,9 @@ def set__user(args):
 
 @parser.command(
     argument("id", help="id of instance", type=int),
+    description="Generate SSH connection URL for an instance",
     usage="vastai ssh-url ID",
-    help="ssh url helper",
+    help="Generate SSH connection URL for an instance",
     epilog=deindent("""
         Retrieves the SSH connection URL for an instance. Use this to get the host and port
         information needed to connect via SSH.
@@ -4947,8 +5012,9 @@ def ssh_url(args):
 
 @parser.command(
     argument("id",   help="id", type=int),
+    description="Generate SCP file transfer URL for an instance",
     usage="vastai scp-url ID",
-    help="scp url helper",
+    help="Generate SCP file transfer URL for an instance",
     epilog=deindent("""
         Retrieves the SCP connection URL for an instance. Use this to get the host and port
         information needed to transfer files via SCP.
@@ -5044,16 +5110,18 @@ def _ssh_url(args, protocol):
 
 @parser.command(
     argument("id", help="id of apikey to get", type=int),
+    description="Show details for a specific API key",
     usage="vastai show api-key",
-    help="Show an api-key",
+    help="Show details for a specific API key",
 )
 def show__api_key(args):
     result = api_call(args, "GET", f"/auth/apikeys/{args.id}/")
     return output_result(args, result)
 
 @parser.command(
+    description="List all API keys for your account",
     usage="vastai show api-keys",
-    help="List your api-keys associated with your account",
+    help="List all API keys for your account",
 )
 def show__api_keys(args):
     url = apiurl(args, "/auth/apikeys/")
@@ -5066,8 +5134,9 @@ def show__api_keys(args):
 
 
 @parser.command(
+    description="Show account activity and audit logs",
     usage="vastai show audit-logs [--api-key API_KEY] [--raw]",
-    help="Display account's history of important actions"
+    help="Show account activity and audit logs"
 )
 def show__audit_logs(args):
     """
@@ -5113,8 +5182,9 @@ def normalize_jobs(jobs):
 
 
 @parser.command(
+    description="List all scheduled automation jobs",
     usage="vastai show scheduled-jobs [--api-key API_KEY] [--raw]",
-    help="Display the list of scheduled jobs"
+    help="List all scheduled automation jobs"
 )
 def show__scheduled_jobs(args):
     """
@@ -5131,8 +5201,9 @@ def show__scheduled_jobs(args):
         display_table(rows, scheduled_jobs_fields)
 
 @parser.command(
+    description="List all SSH keys registered to your account",
     usage="vastai show ssh-keys",
-    help="List your ssh keys associated with your account",
+    help="List all SSH keys registered to your account",
 )
 def show__ssh_keys(args):
     url = apiurl(args, "/ssh/")
@@ -5144,8 +5215,9 @@ def show__ssh_keys(args):
         print(r.json())
 
 @parser.command(
+    description="List all your autoscaling worker groups",
     usage="vastai show workergroups [--api-key API_KEY]",
-    help="Display user's current workergroups",
+    help="List all your autoscaling worker groups",
     epilog=deindent("""
         Example: vastai show workergroups 
     """),
@@ -5172,8 +5244,9 @@ def show__workergroups(args):
         print(rj.get("msg", "Unknown error"));
 
 @parser.command(
+    description="List all your serverless endpoints",
     usage="vastai show endpoints [--api-key API_KEY]",
-    help="Display user's current endpoint groups",
+    help="List all your serverless endpoints",
     epilog=deindent("""
         Example: vastai show endpoints
     """),
@@ -5201,8 +5274,9 @@ def show__endpoints(args):
 
 
 @parser.command(
+    description="[Beta] Show network connections between instances",
     usage="vastai show connections [--api-key API_KEY] [--raw]",
-    help="Display user's cloud connections"
+    help="[Beta] Show network connections between instances"
 )
 def show__connections(args):
     """
@@ -5219,8 +5293,9 @@ def show__connections(args):
 
 @parser.command(
     argument("id", help="id of instance to get info for", type=int),
+    description="Show prepaid deposit balance for a reserved instance",
     usage="vastai show deposit ID [options]",
-    help="Display reserve deposit info for an instance"
+    help="Show prepaid deposit balance for a reserved instance"
 )
 def show__deposit(args):
     """
@@ -5238,8 +5313,9 @@ def show__deposit(args):
     argument("-s", "--start_date", help="start date and time for report. Many formats accepted", type=str),
     argument("-e", "--end_date", help="end date and time for report. Many formats accepted ", type=str),
     argument("-m", "--machine_id", help="Machine id (optional)", type=int),
+    description="[Host] Show rental income history for your machines",
     usage="vastai show earnings [OPTIONS]",
-    help="Get machine earning history reports",
+    help="[Host] Show rental income history for your machines",
 )
 def show__earnings(args):
     """
@@ -5302,8 +5378,9 @@ def select(X,k):
 
 @parser.command(
     argument("-s", "--show-values", action="store_true", help="Show the values of environment variables"),
+    description="List environment variables set for your account",
     usage="vastai show env-vars [-s]",
-    help="Show user environment variables",
+    help="List environment variables set for your account",
 )
 def show__env_vars(args):
     """Show the environment variables for the current user."""
@@ -5340,8 +5417,9 @@ def show__env_vars(args):
     argument("-c", "--only_charges", action="store_true", help="Show only charge items"),
     argument("-p", "--only_credits", action="store_true", help="Show only credit items"),
     argument("--instance_label", help="Filter charges on a particular instance label (useful for autoscaler groups)"),
+    description="[Deprecated] Get billing history - use show invoices-v1 instead",
     usage="(DEPRECATED) vastai show invoices [OPTIONS]",
-    help="(DEPRECATED) Get billing history reports",
+    help="[Deprecated] Get billing history - use show invoices-v1 instead",
 )
 def show__invoices(args):
     """
@@ -5451,7 +5529,9 @@ invoice_types = {
     argument('-f', '--format', choices=['table', 'tree'], default='table', help='Output format for charges (default: table)'),
     argument('-v', '--verbose', action='store_true', help='Include full Instance Charge details and Invoice Metadata (tree view only)'),
     argument('--latest-first', action='store_true', help='Sort by latest first'),
+    description="Get billing history with invoices and charges",
     usage="vastai show invoices-v1 [OPTIONS]",
+    help="Get billing history with invoices and charges",
     epilog=deindent("""
         This command supports colored output and rich formatting if the 'rich' python module is installed!
 
@@ -5735,8 +5815,9 @@ def create_rich_table_from_rows(rows, headers=None, title='', sort_key=None):
 
 @parser.command(
     argument("id", help="id of instance to get", type=int),
+    description="Show details for a specific instance",
     usage="vastai show instance [--api-key API_KEY] [--raw]",
-    help="Display user's current instances"
+    help="Show details for a specific instance"
 )
 def show__instance(args):
     """
@@ -5756,8 +5837,9 @@ def show__instance(args):
 
 @parser.command(
     argument("-q", "--quiet", action="store_true", help="only display numeric ids"),
+    description="List all your running and stopped instances",
     usage="vastai show instances [OPTIONS] [--api-key API_KEY] [--raw]",
-    help="Display user's current instances",
+    help="List all your running and stopped instances",
     epilog=deindent("""
         Lists all instances owned by the authenticated user, including running, pending, and stopped instances.
 
@@ -5810,8 +5892,9 @@ def show__instances(args = {}, extra = {}):
 
 
 @parser.command(
+    description="Show history of IP addresses used by your instances",
     usage="vastai show ipaddrs [--api-key API_KEY] [--raw]",
-    help="Display user's history of ip addresses"
+    help="Show history of IP addresses used by your instances"
 )
 def show__ipaddrs(args):
     """
@@ -5826,8 +5909,9 @@ def show__ipaddrs(args):
 
 
 @parser.command(
+    description="[Beta] List all your machine clusters",
     usage="vastai show clusters",
-    help="Show clusters associated with your account.",
+    help="[Beta] List all your machine clusters",
     epilog=deindent("""
         Show clusters associated with your account.
     """)
@@ -5865,8 +5949,9 @@ def show__clusters(args: argparse.Namespace):
 
 
 @parser.command(
+    description="[Beta] List all your overlay networks",
     usage="vastai show overlays",
-    help="Show overlays associated with your account.",
+    help="[Beta] List all your overlay networks",
     epilog=deindent("""
         Show overlays associated with your account.
     """)
@@ -5893,8 +5978,9 @@ def show__overlays(args: argparse.Namespace):
 
 @parser.command(
     argument("-q", "--quiet", action="store_true", help="display subaccounts from current user"),
+    description="List all subaccounts under your account",
     usage="vastai show subaccounts [OPTIONS]",
-    help="Get current subaccounts"
+    help="List all subaccounts under your account"
 )
 def show__subaccounts(args):
     """
@@ -5908,8 +5994,9 @@ def show__subaccounts(args):
     return output_result(args, rows, user_fields)
 
 @parser.command(
+    description="List all members in your team",
     usage="vastai show members",
-    help="Show your team members",
+    help="List all members in your team",
 )
 def show__members(args):
     result = api_call(args, "GET", "/team/members/")
@@ -5917,16 +6004,18 @@ def show__members(args):
 
 @parser.command(
     argument("NAME", help="name of the role", type=str),
+    description="Show details for a specific team role",
     usage="vastai show team-role NAME",
-    help="Show your team role",
+    help="Show details for a specific team role",
 )
 def show__team_role(args):
     result = api_call(args, "GET", f"/team/roles/{args.NAME}/")
     return output_result(args, result)
 
 @parser.command(
+    description="List all roles defined for your team",
     usage="vastai show team-roles",
-    help="Show roles for a team"
+    help="List all roles defined for your team"
 )
 def show__team_roles(args):
     result = api_call(args, "GET", "/team/roles-full/")
@@ -5934,8 +6023,9 @@ def show__team_roles(args):
 
 @parser.command(
     argument("-q", "--quiet", action="store_true", help="display information about user"),
+    description="Show your account information and balance",
     usage="vastai show user [OPTIONS]",
-    help="Get current user data",
+    help="Show your account information and balance",
     epilog=deindent("""
         Displays account information for the authenticated user.
 
@@ -5967,8 +6057,9 @@ def show__user(args):
 
 @parser.command(
     argument("-t", "--type", help="volume type to display. Default to all. Possible values are \"local\", \"all\", \"network\"", type=str, default="all"),
+    description="List all your storage volumes and their status",
     usage="vastai show volumes [OPTIONS]",
-    help="Show stats on owned volumes.",
+    help="List all your storage volumes and their status",
     epilog=deindent("""
         Show stats on owned volumes
     """)
@@ -5997,8 +6088,9 @@ def show__volumes(args: argparse.Namespace):
     argument("cluster_id", help="ID of cluster you want to remove machine from.", type=int),
     argument("machine_id", help="ID of machine to remove from cluster.", type=int),
     argument("new_manager_id", help="ID of machine to promote to manager. Must already be in cluster", type=int, nargs="?"),
+    description="[Host] [Beta] Remove a machine from a cluster",
     usage="vastai remove-machine-from-cluster CLUSTER_ID MACHINE_ID NEW_MANAGER_ID",
-    help="Removes machine from cluster",
+    help="[Host] [Beta] Remove a machine from a cluster",
     epilog=deindent("""Removes machine from cluster and also reassigns manager ID, 
     if we're removing the manager node""")
 )
@@ -6035,6 +6127,7 @@ def remove_machine_from_cluster(args: argparse.Namespace):
     argument("recipient", help="email (or id) of recipient account", type=str),
     argument("amount",    help="$dollars of credit to transfer ", type=float),
     argument("--skip",    help="skip confirmation", action="store_true", default=False),
+    description="Transfer credits to another account",
     usage="vastai transfer credit RECIPIENT AMOUNT",
     help="Transfer credits to another account",
     epilog=deindent("""
@@ -6083,6 +6176,7 @@ def transfer__credit(args: argparse.Namespace):
     argument("--launch_args",   help="launch args  string for create instance  ex: \"--onstart onstart_wget.sh  --env '-e ONSTART_PATH=https://s3.amazonaws.com/public.vast.ai/onstart_OOBA.sh' --image atinoda/text-generation-webui:default-nightly --disk 64\"", type=str),
     argument("--endpoint_name",   help="deployment endpoint name (allows multiple workergroups to share same deployment endpoint)", type=str),
     argument("--endpoint_id",   help="deployment endpoint id (allows multiple workergroups to share same deployment endpoint)", type=int),
+    description="Update an existing autoscale group",
     usage="vastai update workergroup WORKERGROUP_ID --endpoint_id ENDPOINT_ID [options]",
     help="Update an existing autoscale group",
     epilog=deindent("""
@@ -6129,6 +6223,7 @@ def update__workergroup(args):
     argument("--cold_workers", help="min number of workers to keep 'cold' when you have no load (default 5)", type=int),
     argument("--max_workers", help="max number of workers your endpoint group can have (default 20)", type=int),
     argument("--endpoint_name",   help="deployment endpoint name (allows multiple workergroups to share same deployment endpoint)", type=str),
+    description="Update an existing endpoint group",
     usage="vastai update endpoint ID [OPTIONS]",
     help="Update an existing endpoint group",
     epilog=deindent("""
@@ -6161,6 +6256,7 @@ def update__endpoint(args):
 @parser.command(
     argument("name", help="Environment variable name to update", type=str),
     argument("value", help="New environment variable value", type=str),
+    description="Update an existing user environment variable",
     usage="vastai update env-var <name> <value>",
     help="Update an existing user environment variable",
 )
@@ -6187,8 +6283,9 @@ def update__env_var(args):
     argument("--args", help="new arguments for the instance", type=str),
     argument("--env", help="new environment variables for the instance", type=json.loads),
     argument("--onstart", help="new onstart script for the instance", type=str),
+    description="Update an instance configuration or recreate from a template",
     usage="vastai update instance ID [OPTIONS]",
-    help="Update recreate an instance from a new/updated template",
+    help="Update an instance configuration or recreate from a template",
     epilog=deindent("""
         Example: vastai update instance 1234 --template_hash_id 661d064bbda1f2a133816b6d55da07c3
     """),
@@ -6238,6 +6335,7 @@ def update__instance(args):
     argument("id", help="id of the role", type=int),
     argument("--name", help="name of the template", type=str),
     argument("--permissions", help="file path for json encoded permissions, look in the docs for more information", type=str),
+    description="Update an existing team role",
     usage="vastai update team-role ID --name NAME --permissions PERMISSIONS",
     help="Update an existing team role",
 )
@@ -6254,6 +6352,7 @@ def update__team_role(args):
 @parser.command(
     argument("HASH_ID", help="hash id of the template", type=str),
     *get_template_arguments(),
+    description="Update an existing template",
     usage="vastai update template HASH_ID",
     help="Update an existing template",
     epilog=deindent("""
@@ -6328,8 +6427,9 @@ def update__template(args):
 @parser.command(
     argument("id", help="id of the ssh key to update", type=int),
     argument("ssh_key", help="new public key value", type=str),
+    description="Update an SSH key's label or properties",
     usage="vastai update ssh-key ID SSH_KEY",
-    help="Update an existing SSH key",
+    help="Update an SSH key's label or properties",
 )
 def update__ssh_key(args):
     """Updates an existing SSH key for the authenticated user."""
@@ -6532,8 +6632,9 @@ def filter_invoice_items(args: argparse.Namespace, rows: List) -> Dict:
     argument("machines", help="ids of machines to add disk to, that is networked to be on the same LAN as machine", type=int, nargs='+'),
     argument("mount_point", help="mount path of disk to add", type=str),
     argument("-d", "--disk_id", help="id of network disk to attach to machines in the cluster", type=int, nargs='?'),
+    description="[Host] [Beta] Attach a network disk to a machine cluster",
     usage="vastai add network-disk MACHINES MOUNT_PATH [options]",
-    help="[Host] Add Network Disk to Physical Cluster.",
+    help="[Host] [Beta] Attach a network disk to a machine cluster",
     epilog=deindent("""
         This variant can be used to add a network disk to a physical cluster.
         When you add a network disk for the first time, you just need to specify the machine(s) and mount_path.
@@ -6572,8 +6673,9 @@ def add__network_disk(args):
 
 @parser.command(
     argument("id", help="id of machine to cancel maintenance(s) for", type=int),
+    description="[Host] Cancel a scheduled maintenance window",
     usage="vastai cancel maint id",
-    help="[Host] Cancel maint window",
+    help="[Host] Cancel a scheduled maintenance window",
     epilog=deindent("""
         For deleting a machine's scheduled maintenance window(s), use this cancel maint command.    
         Example: vastai cancel maint 8207
@@ -6628,8 +6730,9 @@ def cleanup_machine(args, machine_id):
 
 @parser.command(
     argument("id", help="id of machine to cleanup", type=int),
+    description="[Host] Clean up expired storage to free disk space",
     usage="vastai cleanup machine ID [options]",
-    help="[Host] Remove all expired storage instances from the machine, freeing up space",
+    help="[Host] Clean up expired storage to free disk space",
     epilog=deindent("""
         Instances expire on their end date. Expired instances still pay storage fees, but can not start.
         Since hosts are still paid storage fees for expired instances, we do not auto delete them.
@@ -6647,8 +6750,9 @@ def cleanup__machine(args):
 
 @parser.command(
     argument("IDs", help="ids of machines", type=int, nargs='+'),
+    description="[Host] Rebuild larger GPU offers from orphaned single GPUs when possible",
     usage="vastai defragment machines IDs ",
-    help="[Host] Defragment machines",
+    help="[Host] Rebuild larger GPU offers from orphaned single GPUs when possible",
     epilog=deindent("""
         Defragment some of your machines. This will rearrange GPU assignments to try and make more multi-gpu offers available.
     """),
@@ -6677,8 +6781,9 @@ def defrag__machines(args):
 
 @parser.command(
    argument("id", help="id of machine to delete", type=int),
+    description="[Host] Remove a machine from your host account",
     usage="vastai delete machine <id>",
-    help="[Host] Delete machine if the machine is not being used by clients. host jobs on their own machines are disregarded and machine is force deleted.",
+    help="[Host] Remove a machine from your host account",
 ) 
 def delete__machine(args):
     """
@@ -6764,8 +6869,9 @@ def list_machine(args, id):
     argument("-l", "--duration", help="Updates end_date daily to be duration from current date. Cannot be combined with end_date. Format is: `n days`, `n weeks`, `n months`, `n years`, or total intended duration in seconds."),
     argument("-v", "--vol_size", help="Size for volume contract offer. Defaults to half of available disk. Set 0 to not create a volume contract offer.", type=int),
     argument("-z", "--vol_price", help="Price for disk on volume contract offer. Defaults to price_disk. Invalid if vol_size is 0.", type=float),
+    description="[Host] List a single machine for rent on the marketplace",
     usage="vastai list machine ID [options]",
-    help="[Host] list a machine for rent",
+    help="[Host] List a single machine for rent on the marketplace",
     epilog=deindent("""
         Performs the same action as pressing the "LIST" button on the site https://cloud.vast.ai/host/machines.
         On the end date the listing will expire and your machine will unlist. However any existing client jobs will still remain until ended by their owners.
@@ -6796,8 +6902,9 @@ def list__machine(args):
     argument("-l", "--duration", help="Updates end_date daily to be duration from current date. Cannot be combined with end_date. Format is: `n days`, `n weeks`, `n months`, `n years`, or total intended duration in seconds."),
     argument("-v", "--vol_size", help="Size for volume contract offer. Defaults to half of available disk. Set 0 to not create a volume contract offer.", type=int),
     argument("-z", "--vol_price", help="Price for disk on volume contract offer. Defaults to price_disk. Invalid if vol_size is 0.", type=float),
+    description="[Host] List multiple machines for rent on the marketplace",
     usage="vastai list machines IDs [options]",
-    help="[Host] list machines for rent",
+    help="[Host] List multiple machines for rent on the marketplace",
     epilog=deindent("""
         This variant can be used to list or update the listings for multiple machines at once with the same args.
         You could extend the end dates of all your machines using a command combo like this:
@@ -6818,8 +6925,9 @@ def list__machines(args):
     argument("-p", "--price_disk", help="storage price in $/GB/month, default: $%(default).2f/GB/month", default=.15, type=float),
     argument("-e", "--end_date", help="contract offer expiration - the available until date (optional, in unix float timestamp or MM/DD/YYYY format), default 1 month", type=str, default=None),
     argument("-s", "--size", help="size of disk space allocated to offer in GB, default %(default)s GB", default=15, type=int),
+    description="[Host] [Beta] List disk space as a rentable network volume",
     usage="vastai list network volume DISK_ID [options]",
-    help="[Host] list disk space for rent as a network volume"
+    help="[Host] [Beta] List disk space as a rentable network volume"
 )
 def list__network_volume(args):
     json_blob = {
@@ -6852,8 +6960,9 @@ def list__network_volume(args):
              help="storage price in $/GB/month, default: $%(default).2f/GB/month", default=.10, type=float),
     argument("-e", "--end_date", help="contract offer expiration - the available until date (optional, in unix float timestamp or MM/DD/YYYY format), default 3 months", type=str),
     argument("-s", "--size", help="size of disk space allocated to offer in GB, default %(default)s GB", default=15),
+    description="[Host] List disk space as a rentable volume",
     usage="vastai list volume ID [options]",
-    help="[Host] list disk space for rent as a volume on a machine",
+    help="[Host] List disk space as a rentable volume",
     epilog=deindent("""
         Allocates a section of disk on a machine to be used for volumes.  
     """)
@@ -6887,8 +6996,9 @@ def list__volume(args):
              help="storage price in $/GB/month, default: $%(default).2f/GB/month", default=.10, type=float),
     argument("-e", "--end_date", help="contract offer expiration - the available until date (optional, in unix float timestamp or MM/DD/YYYY format), default 3 months", type=str),
     argument("-s", "--size", help="size of disk space allocated to offer in GB, default %(default)s GB", default=15),
+    description="[Host] List disk space on multiple machines as rentable volumes",
     usage="vastai list volume IDs [options]",
-    help="[Host] list disk space for rent as a volume on machines",
+    help="[Host] List disk space on multiple machines as rentable volumes",
     epilog=deindent("""
         Allocates a section of disk on machines to be used for volumes.  
     """)
@@ -6921,8 +7031,9 @@ def list__volumes(args):
 
 @parser.command(
     argument("id", help="id of machine to remove default instance from", type=int),
+    description="[Host] Remove default background jobs from a machine",
     usage="vastai remove defjob id",
-    help="[Host] Delete default jobs",
+    help="[Host] Remove default background jobs from a machine",
 )
 def remove__defjob(args):
     """
@@ -6957,8 +7068,9 @@ def remove__defjob(args):
     argument("--url", help="Server REST API URL", default="https://console.vast.ai"),
     argument("--retry", help="Retry limit", type=int, default=3),
     argument("--ignore-requirements", action="store_true", help="Ignore the minimum system requirements and run the self test regardless"),
+    description="[Host] Run diagnostics on a hosted machine",
     usage="vastai self-test machine <machine_id> [--debugging] [--explain] [--api_key API_KEY] [--url URL] [--retry RETRY] [--raw] [--ignore-requirements]",
-    help="[Host] Perform a self-test on the specified machine",
+    help="[Host] Run diagnostics on a hosted machine",
     epilog=deindent("""
         This command tests if a machine meets specific requirements and 
         runs a series of tests to ensure it's functioning correctly.
@@ -7228,8 +7340,9 @@ def set_ask(args):
     argument("--price_inetd", help="price for internet download bandwidth in $/GB", type=float),
     argument("--image", help="docker container image to launch", type=str),
     argument("--args", nargs=argparse.REMAINDER, help="list of arguments passed to container launch"),
+    description="[Host] Configure default background jobs for a machine",
     usage="vastai set defjob id [--api-key API_KEY] [--price_gpu PRICE_GPU] [--price_inetu PRICE_INETU] [--price_inetd PRICE_INETD] [--image IMAGE] [--args ...]",
-    help="[Host] Create default jobs for a machine",
+    help="[Host] Configure default background jobs for a machine",
     epilog=deindent("""
         Performs the same action as creating a background job at https://cloud.vast.ai/host/create.       
                     
@@ -7341,8 +7454,9 @@ def pretty_print_POST(req):
 @parser.command(
     argument("id", help="id of machine to set min bid price for", type=int),
     argument("--price", help="per gpu min bid price in $/hour", type=float),
+    description="[Host] Set minimum price for interruptible/spot instance rentals",
     usage="vastai set min_bid id [--price PRICE]",
-    help="[Host] Set the minimum bid/rental price for a machine",
+    help="[Host] Set minimum price for interruptible/spot instance rentals",
     epilog=deindent("""
         Change the current min bid price of machine id to PRICE.
     """),
@@ -7371,8 +7485,9 @@ def set__min_bid(args):
     argument("--sdate",      help="maintenance start date in unix epoch time (UTC seconds)", type=float),
     argument("--duration",   help="maintenance duration in hours", type=float),
     argument("--maintenance_category",   help="(optional) can be one of [power, internet, disk, gpu, software, other]", type=str, default="not provided"),
+    description="[Host] Schedule a maintenance window for a machine",
     usage="vastai schedule maintenance id [--sdate START_DATE --duration DURATION --maintenance_category MAINTENANCE_CATEGORY]",
-    help="[Host] Schedule upcoming maint window",
+    help="[Host] Schedule a maintenance window for a machine",
     epilog=deindent("""
         The proper way to perform maintenance on your machine is to wait until all active contracts have expired or the machine is vacant.
         For unplanned or unscheduled maintenance, use this schedule maint command. That will notify the client that you have to take the machine down and that they should save their work. 
@@ -7409,8 +7524,9 @@ def schedule__maint(args):
 @parser.command(
     argument("Machine", help="id of machine to display", type=int),
     argument("-q", "--quiet", action="store_true", help="only display numeric ids"),
+    description="[Host] Show details for a specific hosted machine",
     usage="vastai show machine ID [OPTIONS]",
-    help="[Host] Show hosted machines",
+    help="[Host] Show details for a specific hosted machine",
 )
 def show__machine(args):
     """
@@ -7434,8 +7550,9 @@ def show__machine(args):
 
 @parser.command(
     argument("-q", "--quiet", action="store_true", help="only display numeric ids"),
+    description="[Host] List all your hosted machines",
     usage="vastai show machines [OPTIONS]",
-    help="[Host] Show hosted machines",
+    help="[Host] List all your hosted machines",
 )
 def show__machines(args):
     """
@@ -7459,8 +7576,9 @@ def show__machines(args):
 @parser.command(
     argument("-ids", help="comma seperated string of machine_ids for which to get maintenance information", type=str),
     argument("-q", "--quiet", action="store_true", help="only display numeric ids of the machines in maintenance"),
+    description="[Host] List scheduled maintenance windows",
     usage="\nvastai show maints -ids 'machine_id_1' [OPTIONS]\nvastai show maints -ids 'machine_id_1, machine_id_2' [OPTIONS]",
-    help="[Host] Show maintenance information for host machines",
+    help="[Host] List scheduled maintenance windows",
 )
 def show__maints(args):
     """
@@ -7484,8 +7602,9 @@ def show__maints(args):
 
 
 @parser.command(
+    description="[Host] [Beta] List network disks attached to your machines",
     usage="vastai show network-disks",
-    help="[Host] Show network disks associated with your account.",
+    help="[Host] [Beta] List network disks attached to your machines",
     epilog=deindent("""
         Show network disks associated with your account.
     """)
@@ -7522,8 +7641,9 @@ def show__network_disks(args: argparse.Namespace):
 
 @parser.command(
     argument("id", help="id of machine to unlist", type=int),
+    description="[Host] Remove a machine from the rental marketplace",
     usage="vastai unlist machine <id>",
-    help="[Host] Unlist a listed machine",
+    help="[Host] Remove a machine from the rental marketplace",
 )
 
 def unlist__machine(args):
@@ -7549,8 +7669,9 @@ def unlist__machine(args):
 
 @parser.command(
     argument("id", help="id of network volume offer to unlist", type=int),
+    description="[Host] [Beta] Remove a network volume offer from the marketplace",
     usage="vastai unlist network volume OFFER_ID",
-    help="[Host] Unlists network volume offer",
+    help="[Host] [Beta] Remove a network volume offer from the marketplace",
 )
 def unlist__network_volume(args):
     json_blob = {
@@ -7572,8 +7693,9 @@ def unlist__network_volume(args):
 
 @parser.command(
     argument("id", help="volume ID you want to unlist", type=int),
+    description="[Host] Remove a volume offer from the marketplace",
     usage="vastai unlist volume ID",
-    help="[Host] unlist volume offer"
+    help="[Host] Remove a volume offer from the marketplace",
 )
 def unlist__volume(args):
     volume_id = args.id
