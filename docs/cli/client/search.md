@@ -2,6 +2,26 @@
 
 Commands for searching offers, templates, and other resources.
 
+
+## Query Syntax for String Values
+
+When searching for values that contain spaces (like GPU names), you have two options:
+
+1. **Underscores (recommended)** - most portable across shells:
+   ```bash
+   vastai search offers "gpu_name=RTX_4090"
+   ```
+
+2. **Escaped double quotes** - wrap query in single quotes, escape inner double quotes:
+   ```bash
+   vastai search offers 'gpu_name=\"RTX 4090\"'
+   ```
+
+!!! warning
+    Single quotes around values do NOT work: `gpu_name='RTX 4090'` will fail.
+
+---
+
 ## search offers
 
 Search available GPU offers with filters

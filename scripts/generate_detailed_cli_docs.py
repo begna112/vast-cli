@@ -34,6 +34,26 @@ CLIENT_CATEGORIES = {
     "search": {
         "title": "Search Commands",
         "description": "Commands for searching offers, templates, and other resources.",
+        "extra_content": """
+## Query Syntax for String Values
+
+When searching for values that contain spaces (like GPU names), you have two options:
+
+1. **Underscores (recommended)** - most portable across shells:
+   ```bash
+   vastai search offers "gpu_name=RTX_4090"
+   ```
+
+2. **Escaped double quotes** - wrap query in single quotes, escape inner double quotes:
+   ```bash
+   vastai search offers 'gpu_name=\\"RTX 4090\\"'
+   ```
+
+!!! warning
+    Single quotes around values do NOT work: `gpu_name='RTX 4090'` will fail.
+
+---
+""",
         "commands": [
             "search offers", "search templates", "search volumes",
             "search network-volumes", "search benchmarks", "search invoices"
@@ -466,6 +486,10 @@ def generate_category_page(category_info: dict, commands_help: dict) -> str:
     output.append("")
     output.append(category_info['description'])
     output.append("")
+
+    # Add extra content if present (e.g., query syntax notes for search)
+    if "extra_content" in category_info:
+        output.append(category_info["extra_content"])
 
     for cmd in category_info["commands"]:
         if cmd in commands_help:
