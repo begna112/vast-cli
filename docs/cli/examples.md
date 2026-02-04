@@ -34,11 +34,14 @@ vastai search offers 'num_gpus >= 4 gpu_ram >= 24 dph_total < 2.0'
 
 | Operator | Example | Description |
 |----------|---------|-------------|
-| `=` | `gpu_name = RTX_4090` | Exact match |
+| `=`, `==` | `gpu_name = RTX_4090` | Exact match |
+| `!=` | `verified != False` | Not equal |
 | `>=` | `num_gpus >= 4` | Greater or equal |
 | `<=` | `dph_total <= 1.0` | Less or equal |
 | `>` | `reliability > 0.99` | Greater than |
 | `<` | `gpu_ram < 16` | Less than |
+| `in` | `gpu_name in [RTX_4090,RTX_3090]` | Value in list |
+| `notin` | `geolocation notin [CN,RU]` | Value not in list |
 
 ## Creating Instances
 

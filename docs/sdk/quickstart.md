@@ -81,6 +81,7 @@ offers = client.search_offers(
 | `<` | Less than | `dph_total < 1.0` |
 | `<=` | Less or equal | `reliability <= 0.99` |
 | `in` | In list | `geolocation in ["US", "CA"]` |
+| `notin` | Not in list | `geolocation notin ["CN", "RU"]` |
 
 ### Common Query Fields
 
