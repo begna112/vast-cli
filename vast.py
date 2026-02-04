@@ -3310,9 +3310,9 @@ def destroy__instance(args):
     destroy_instance(args.id,args)
 
 @parser.command(
-    argument("ids", help="ids of instance to destroy", type=int, nargs='+'),
+    argument("ids", help="ids of instances to destroy", type=int, nargs='+'),
     description="Destroy a list of instances (irreversible, deletes data)",
-    usage="vastai destroy instances [--raw] <id>",
+    usage="vastai destroy instances IDS [OPTIONS]",
     help="Destroy a list of instances (irreversible, deletes data)",
 )
 def destroy__instances(args):
@@ -4136,16 +4136,15 @@ def start__instance(args):
 
 
 @parser.command(
-    argument("ids", help="ids of instance to start", type=int, nargs='+'),
+    argument("ids", help="ids of instances to start", type=int, nargs='+'),
     description="Start multiple stopped instances",
-    usage="vastai start instances [OPTIONS] ID0 ID1 ID2...",
+    usage="vastai start instances IDS [OPTIONS]",
     help="Start multiple stopped instances",
 )
 def start__instances(args):
-    """
-    for id in args.IDs:
+    """Start multiple instances."""
+    for id in args.ids:
         start_instance(id, args)
-    """
 
     #start_instance(args.IDs, args)
     #exec_with_threads(lambda id : start_instance(id, args), args.IDs)
@@ -4197,21 +4196,20 @@ def stop__instance(args):
     stop_instance(args.id,args)
 
 @parser.command(
-    argument("ids", help="ids of instance to stop", type=int, nargs='+'),
+    argument("ids", help="ids of instances to stop", type=int, nargs='+'),
     description="Stop multiple running instances",
-    usage="vastai stop instances [OPTIONS] ID0 ID1 ID2...",
+    usage="vastai stop instances IDS [OPTIONS]",
     help="Stop multiple running instances",
     epilog=deindent("""
-        Examples: 
+        Examples:
             vastai stop instances $(vastai show instances -q)
             vastai stop instances 329838 984849
     """),
 )
 def stop__instances(args):
-    """
-    for id in args.IDs:
+    """Stop multiple instances."""
+    for id in args.ids:
         stop_instance(id, args)
-    """
 
     idlist = split_list(args.ids, 64)
     #stop_instance(args.IDs, args)
@@ -5732,9 +5730,9 @@ def search__network_volumes(args: argparse.Namespace):
 
 
 @parser.command(
-    argument("new_api_key", help="Api key to set as currently logged in user"),
+    argument("api_key", help="API key to set as currently logged in user"),
     description="Set the API key for CLI and SDK authentication",
-    usage="vastai set api-key APIKEY",
+    usage="vastai set api-key API_KEY",
     help="Set the API key for CLI and SDK authentication",
     epilog=deindent("""
         Stores your Vast.ai API key locally for authentication with all CLI commands.
@@ -5758,7 +5756,7 @@ def set__api_key(args):
     :param argparse.Namespace args: should supply all the command-line options
     """
     with open(APIKEY_FILE, "w") as writer:
-        writer.write(args.new_api_key)
+        writer.write(args.api_key)
     print("Your api key has been saved in {}".format(APIKEY_FILE))
     
     APIKEY_FILE_HOME = os.path.expanduser("~/.vast_api_key") # Legacy
@@ -5942,9 +5940,9 @@ def _ssh_url(args, protocol):
         pass
 
 @parser.command(
-    argument("id", help="id of apikey to get", type=int),
+    argument("id", help="id of API key to show", type=int),
     description="Show details for a specific API key",
-    usage="vastai show api-key",
+    usage="vastai show api-key ID",
     help="Show details for a specific API key",
 )
 def show__api_key(args):
@@ -6647,9 +6645,9 @@ def create_rich_table_from_rows(rows, headers=None, title='', sort_key=None):
 
 
 @parser.command(
-    argument("id", help="id of instance to get", type=int),
+    argument("id", help="id of instance to show", type=int),
     description="Show details for a specific instance",
-    usage="vastai show instance [--api-key API_KEY] [--raw]",
+    usage="vastai show instance ID [OPTIONS]",
     help="Show details for a specific instance"
 )
 def show__instance(args):
@@ -6957,29 +6955,50 @@ def remove_machine_from_cluster(args: argparse.Namespace):
 
 
 @parser.command(
-    argument("recipient", help="email (or id) of recipient account", type=str),
-    argument("amount",    help="$dollars of credit to transfer ", type=float),
+    argument("recipient_pos", help=argparse.SUPPRESS, type=str, nargs='?', default=None),
+    argument("amount_pos",    help=argparse.SUPPRESS, type=float, nargs='?', default=None),
+    argument("--recipient", "-r", help="email (or id) of recipient account", type=str, default=None),
+    argument("--amount", "-a",    help="dollars of credit to transfer", type=float, default=None),
     argument("--skip",    help="skip confirmation", action="store_true", default=False),
     description="Transfer credits to another account",
-    usage="vastai transfer credit RECIPIENT AMOUNT",
+    usage="vastai transfer credit [--recipient EMAIL] [--amount DOLLARS] [RECIPIENT AMOUNT]",
     help="Transfer credits to another account",
     epilog=deindent("""
-        Transfer (amount) credits to account with email (recipient).
+        Transfer credits to another account. This action is irreversible.
+
+        Supports two syntax styles (named flags recommended):
+          vastai transfer credit --recipient user@example.com --amount 10.00
+          vastai transfer credit user@example.com 10.00  (legacy positional)
+
+        Examples:
+          vastai transfer credit --recipient user@example.com --amount 25.50
+          vastai transfer credit -r user@example.com -a 25.50
+          vastai transfer credit user@example.com 25.50
     """),
 )
 def transfer__credit(args: argparse.Namespace):
     url = apiurl(args, "/commands/transfer_credit/")
 
+    # Resolve arguments - prefer named flags over positional for clarity
+    recipient = args.recipient if args.recipient is not None else args.recipient_pos
+    amount = args.amount if args.amount is not None else args.amount_pos
+
+    if not recipient or amount is None:
+        print("Error: Both recipient and amount are required.")
+        print("Usage: vastai transfer credit --recipient EMAIL --amount DOLLARS")
+        print("   or: vastai transfer credit EMAIL AMOUNT (legacy)")
+        return
+
     if not args.skip:
-        print(f"Transfer ${args.amount} credit to account {args.recipient}?  This is irreversible.")
+        print(f"Transfer ${amount} credit to account {recipient}?  This is irreversible.")
         ok = input("Continue? [y/n] ")
         if ok.strip().lower() != "y":
             return
 
     json_blob = {
         "sender":    "me",
-        "recipient": args.recipient,
-        "amount":    args.amount,
+        "recipient": recipient,
+        "amount":    amount,
     }
     if (args.explain):
         print("request json: ")
@@ -6990,7 +7009,7 @@ def transfer__credit(args: argparse.Namespace):
     if args.raw:
         return rj
     if rj.get("success"):
-        print(f"Sent {args.amount} to {args.recipient} ".format(r.json()))
+        print(f"Sent ${amount} to {recipient}")
     else:
         print(rj.get("msg", "Unknown error"));
 
@@ -7722,7 +7741,7 @@ def list__machine(args):
 
 
 @parser.command(
-    argument("ids", help="ids of instance to list", type=int, nargs='+'),
+    argument("ids", help="ids of machines to list", type=int, nargs='+'),
     argument("-g", "--price_gpu", help="per gpu on-demand rental price in $/hour (base price for active instances)", type=float),
     argument("-s", "--price_disk",
              help="storage price in $/GB/month (price for inactive instances), default: $0.10/GB/month", type=float),
@@ -7736,7 +7755,7 @@ def list__machine(args):
     argument("-v", "--vol_size", help="Size for volume contract offer. Defaults to half of available disk. Set 0 to not create a volume contract offer.", type=int),
     argument("-z", "--vol_price", help="Price for disk on volume contract offer. Defaults to price_disk. Invalid if vol_size is 0.", type=float),
     description="[Host] List multiple machines for rent on the marketplace",
-    usage="vastai list machines IDs [options]",
+    usage="vastai list machines IDS [OPTIONS]",
     help="[Host] List multiple machines for rent on the marketplace",
     epilog=deindent("""
         This variant can be used to list or update the listings for multiple machines at once with the same args.
@@ -7824,13 +7843,13 @@ def list__volume(args):
 
 
 @parser.command(
-    argument("ids", help="id of machines list", type=int, nargs='+'),
+    argument("ids", help="ids of machines to list volumes on", type=int, nargs='+'),
     argument("-p", "--price_disk",
              help="storage price in $/GB/month, default: $%(default).2f/GB/month", default=.10, type=float),
     argument("-e", "--end_date", help="contract offer expiration - the available until date (optional, in unix float timestamp or MM/DD/YYYY format), default 3 months", type=str),
     argument("-s", "--size", help="size of disk space allocated to offer in GB, default %(default)s GB", default=15),
     description="[Host] List disk space on multiple machines as rentable volumes",
-    usage="vastai list volume IDs [options]",
+    usage="vastai list volumes IDS [OPTIONS]",
     help="[Host] List disk space on multiple machines as rentable volumes",
     epilog=deindent("""
         Allocates a section of disk on machines to be used for volumes.  
@@ -8355,7 +8374,7 @@ def schedule__maint(args):
     print(f"Maintenance window scheduled for {dt} success".format(rj))
 
 @parser.command(
-    argument("Machine", help="id of machine to display", type=int),
+    argument("id", help="id of machine to display", type=int),
     argument("-q", "--quiet", action="store_true", help="only display numeric ids"),
     description="[Host] Show details for a specific hosted machine",
     usage="vastai show machine ID [OPTIONS]",
@@ -8368,7 +8387,7 @@ def show__machine(args):
     :param argparse.Namespace args: should supply all the command-line options
     :rtype:
     """
-    rows = api_call(args, "GET", f"/machines/{args.Machine}", query_args={"owner": "me"})
+    rows = api_call(args, "GET", f"/machines/{args.id}", query_args={"owner": "me"})
     if isinstance(rows, dict):
         rows = [rows]
     if args.raw:
