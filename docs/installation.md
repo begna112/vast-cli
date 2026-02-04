@@ -95,7 +95,7 @@ After installation, set your API key:
 vastai set api-key YOUR_API_KEY
 ```
 
-Get your API key from [https://vast.ai/console/cli/](https://vast.ai/console/cli/).
+Get your API key from [https://cloud.vast.ai/manage-keys/](https://cloud.vast.ai/manage-keys/).
 
 The key is stored in `~/.config/vastai/vast_api_key` (XDG spec) or `~/.vast_api_key` (legacy).
 

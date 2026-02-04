@@ -41,7 +41,7 @@ Vast.ai is a GPU cloud marketplace that connects users with low-cost GPU compute
 
 ## Features
 
-- **120+ Commands**: Full coverage of the Vast.ai REST API
+- **130+ Commands**: Full coverage of the Vast.ai REST API
 - **Type Hints**: Complete type annotations for IDE support
 - **Retry Logic**: Automatic retry with exponential backoff for transient failures
 - **Raw Mode**: JSON output for scripting (`--raw` flag)
@@ -58,4 +58,4 @@ Vast.ai is a GPU cloud marketplace that connects users with low-cost GPU compute
 
 - [GitHub Repository](https://github.com/vast-ai/vast-python)
 - [Vast.ai Console](https://vast.ai/console/)
-- [API Key](https://vast.ai/console/cli/) - Get your API key
+- [API Key](https://cloud.vast.ai/manage-keys/) - Get your API key

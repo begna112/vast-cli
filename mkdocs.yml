@@ -66,12 +66,29 @@ nav:
   - Installation: installation.md
   - CLI:
     - Overview: cli/index.md
-    - Command Reference: cli/commands.md
+    - Client Commands:
+      - Overview: cli/client/index.md
+      - Instances: cli/client/instances.md
+      - Search: cli/client/search.md
+      - SSH & Files: cli/client/ssh.md
+      - Billing: cli/client/billing.md
+      - Volumes: cli/client/volumes.md
+      - Teams: cli/client/teams.md
+      - Autoscaling: cli/client/autoscaling.md
+      - Keys: cli/client/keys.md
+    - Host Commands:
+      - Overview: cli/host/index.md
+      - Machines: cli/host/machines.md
+      - Maintenance: cli/host/maintenance.md
+      - Reports: cli/host/reports.md
+      - Clusters: cli/host/clusters.md
+    - Full Reference: cli/commands.md
     - Examples: cli/examples.md
   - SDK:
     - Overview: sdk/index.md
     - Quick Start: sdk/quickstart.md
     - API Reference: sdk/reference/vastai.md
+    - Method Reference: sdk/reference/methods.md
   - Serverless:
     - Overview: serverless/index.md
   - Guides:

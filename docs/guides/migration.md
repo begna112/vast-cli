@@ -56,12 +56,6 @@ The merger was designed to be backwards compatible. Existing code should work wi
 
 The old method names (`autogroup_*`, `autoscaler_*`) remain as aliases. New code should use `workergroup_*`.
 
-### Class Aliases
-
-| Old Class | New Class | Notes |
-|-----------|-----------|-------|
-| `VastClient` | `VastAI` | Legacy name still works |
-
 ## New Features
 
 The unified package includes several improvements:
