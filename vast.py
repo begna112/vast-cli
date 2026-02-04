@@ -8330,12 +8330,13 @@ def main():
     ARGS = args = parser.parse_args()
     #print(args.api_key)
     if args.api_key is api_key_guard:
+        key_file = TFAKEY_FILE if os.path.exists(TFAKEY_FILE) else APIKEY_FILE
         if args.explain:
-            print(f'checking {APIKEY_FILE}')
-        if os.path.exists(APIKEY_FILE):
+            print(f'checking {key_file}')
+        if os.path.exists(key_file):
             if args.explain:
-                print(f'reading key from {APIKEY_FILE}')
-            with open(APIKEY_FILE, "r") as reader:
+                print(f'reading key from {key_file}')
+            with open(key_file, "r") as reader:
                 args.api_key = reader.read().strip()
         else:
             args.api_key = None
@@ -8353,33 +8354,55 @@ def main():
         myautocc = MyAutocomplete()
         myautocc(parser.parser)
 
-    try:
-        res = args.func(args)
-        if args.raw and res is not None:
-            print(json.dumps(res, indent=1, sort_keys=True))
-            sys.exit(0)
-        sys.exit(res)
-    except requests.exceptions.HTTPError as e:
+    while True:
         try:
-            errmsg = e.response.json().get("msg")
-        except JSONDecodeError:
-            if e.response.status_code == 401:
-                errmsg = "Please log in or sign up"
+            res = args.func(args)
+            if args.raw and res is not None:
+                try:
+                    print(json.dumps(res, indent=1, sort_keys=True))
+                except:
+                    print(json.dumps(res.json(), indent=1, sort_keys=True))
+                sys.exit(0)
+            sys.exit(res)
+
+        except requests.exceptions.HTTPError as e:
+            try:
+                errmsg = e.response.json().get("msg")
+            except JSONDecodeError:
+                if e.response.status_code == 401:
+                    errmsg = "Please log in or sign up"
+                else:
+                    errmsg = "(no detail message supplied)"
+
+            # 2FA Session Key Expired
+            if e.response.status_code == 401 and errmsg == "Invalid user key":
+                if os.path.exists(TFAKEY_FILE):
+                    print(f"Failed with error {e.response.status_code}: Your 2FA session has expired.")
+                    os.remove(TFAKEY_FILE)
+                    if os.path.exists(APIKEY_FILE):
+                        with open(APIKEY_FILE, "r") as reader:
+                            args.api_key = reader.read().strip()
+                            headers["Authorization"] = "Bearer " + args.api_key
+                            print(f"Trying again with your normal API Key from {APIKEY_FILE}...")
+                            continue
+                    else:
+                        print("Please log in using the `tfa login` command and try again.")
+                        break
+
+            if hasattr(args, 'raw') and args.raw:
+                error = {"error": True, "status_code": e.response.status_code, "msg": errmsg}
+                print(json.dumps(error, indent=1))
             else:
-                errmsg = "(no detail message supplied)"
-        if hasattr(args, 'raw') and args.raw:
-            error = {"error": True, "status_code": e.response.status_code, "msg": errmsg}
-            print(json.dumps(error, indent=1))
-        else:
-            print("failed with error {e.response.status_code}: {errmsg}".format(**locals()))
-        sys.exit(1)
-    except ValueError as e:
-        if hasattr(args, 'raw') and args.raw:
-            error = {"error": True, "msg": str(e)}
-            print(json.dumps(error, indent=1))
-        else:
-            print(e)
-        sys.exit(1)
+                print(f"Failed with error {e.response.status_code}: {errmsg}")
+            break
+
+        except ValueError as e:
+            if hasattr(args, 'raw') and args.raw:
+                error = {"error": True, "msg": str(e)}
+                print(json.dumps(error, indent=1))
+            else:
+                print(e)
+            break
 
 
 if __name__ == "__main__":
