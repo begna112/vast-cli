@@ -15,127 +15,136 @@ usage: vast.py [-h] [--url URL] [--retry RETRY] [--explain] [--raw] [--full] [--
 positional arguments:
  command                       command to run. one of:
   help                         print this help message
-  attach ssh                   Attach an ssh key to an instance. This will allow you to connect to the instance with the ssh key
-  cancel copy                  Cancel a remote copy in progress, specified by DST id
-  cancel sync                  Cancel a remote copy in progress, specified by DST id
+  attach ssh                   Attach an SSH key to an instance for remote access
+  cancel copy                  Cancel an in-progress file copy operation
+  cancel sync                  Cancel an in-progress file sync operation
   change bid                   Change the bid price for a spot/interruptible instance
-  clone volume                 Clone an existing volume
-  copy                         Copy directories between instances and/or local
-  cloud copy                   Copy files/folders to and from cloud providers
-  take snapshot                Schedule a snapshot of a running container and push it to your repo in a container registry
-  create api-key               Create a new api-key with restricted permissions. Can be sent to other users and teammates
-  create cluster               [Beta] Create Vast cluster
-  create env-var               Create a new user environment variable
-  create ssh-key               Create a new ssh-key
-  create workergroup           Create a new autoscale group
-  create endpoint              Create a new endpoint group
-  create instance              Create a new instance
-  create subaccount            Create a subaccount
+  clone volume                 Create a copy of an existing volume
+  copy                         Copy files/directories between instances or between local and instance
+  cloud copy                   Copy files between instances and cloud storage (S3, GCS, Azure)
+  take snapshot                Create a snapshot of a running container and push to registry
+  create api-key               Create a new API key with custom permissions
+  create cluster               [Beta] Create a new machine cluster
+  create env-var               Create a new account-level environment variable
+  create ssh-key               Add an SSH public key to your account
+  create workergroup           Create an autoscaling worker group for serverless inference
+  create endpoint              Create a serverless inference endpoint
+  create instance              Create a new GPU instance from an offer
+  create subaccount            Create a subaccount for delegated access
   create team                  Create a new team
-  create team-role             Add a new role to your team
-  create template              Create a new template
-  create volume                Create a new volume
-  create network-volume        Create a new network volume
-  create overlay               [Beta] Creates overlay network on top of a physical cluster
-  delete api-key               Remove an api-key
-  delete ssh-key               Remove an ssh-key
+  create team-role             Create a custom role with specific permissions
+  create template              Create a reusable instance configuration template
+  create volume                Create a new persistent storage volume
+  create network-volume        [Host] [Beta] Create a new network-attached storage volume
+  create overlay               [Beta] Create a virtual overlay network on a cluster
+  delete api-key               Delete an API key
+  delete ssh-key               Remove an SSH key from your account
   delete scheduled-job         Delete a scheduled job
-  delete cluster               [Beta] Delete Cluster
-  delete workergroup           Delete a workergroup group
-  delete endpoint              Delete an endpoint group
+  delete cluster               [Beta] Delete a machine cluster
+  delete workergroup           Delete an autoscaling worker group
+  delete endpoint              Delete a serverless inference endpoint
   delete env-var               Delete a user environment variable
-  delete overlay               Deletes overlay and removes all of its associated instances
-  delete template              Delete a Template
-  delete volume                Delete a volume
+  delete overlay               [Beta] Delete an overlay network and its instances
+  delete template              Delete a template
+  delete volume                Delete a persistent storage volume
   destroy instance             Destroy an instance (irreversible, deletes data)
   destroy instances            Destroy a list of instances (irreversible, deletes data)
-  destroy team                 Destroy your team
-  detach ssh                   Detach an ssh key from an instance
-  execute                      Execute a (constrained) remote command on a machine
-  get endpt-logs               Fetch logs for a specific serverless endpoint group
-  get wrkgrp-logs              Fetch logs for a specific serverless worker group group
-  invite member                Invite a team member
-  join cluster                 [Beta] Join Machine to Cluster
-  join overlay                 Adds instance to an overlay network
+  destroy team                 Delete your team and remove all members
+  detach ssh                   Remove an SSH key from an instance
+  execute                      Execute a command on a running instance
+  get endpt-logs               Get logs for a serverless endpoint
+  get wrkgrp-logs              Get logs for an autoscaling worker group
+  invite member                Invite a user to join your team
+  join cluster                 [Beta] Add a machine to an existing cluster
+  join overlay                 [Beta] Connect an instance to an overlay network
   label instance               Assign a string label to an instance
-  launch instance              Launch the top instance from the search offers based on the given parameters
+  launch instance              Launch a new instance using search parameters to auto-select the best offer
   logs                         Get the logs for an instance
-  prepay instance              Deposit credits into reserved instance
+  prepay instance              Prepay credits for a reserved instance to prevent interruption
   reboot instance              Reboot (stop/start) an instance
-  recycle instance             Recycle (destroy/create) an instance
+  recycle instance             Destroy and recreate an instance with the same configuration
   remove member                Remove a team member
-  remove team-role             Remove a role from your team
-  reports                      Get the user reports for a given machine
-  reset api-key                Reset your api-key (get new key from website)
+  remove team-role             Delete a custom role from your team
+  reports                      [Host] Get usage and performance reports for a machine
+  reset api-key                Invalidate current API key and generate a new one
   start instance               Start a stopped instance
-  start instances              Start a list of instances
+  start instances              Start multiple stopped instances
   stop instance                Stop a running instance
-  stop instances               Stop a list of instances
-  search benchmarks            Search for benchmark results using custom query
-  search invoices              Search for invoices using custom query
-  search offers                Search for instance types using custom query
-  search templates             Search for template results using custom query
-  search volumes               Search for volume offers using custom query
-  search network-volumes       Search for network volume offers using custom query
-  set api-key                  Set api-key (get your api-key from the console/CLI)
-  set user                     Update user data from json file
-  ssh-url                      ssh url helper
-  scp-url                      scp url helper
-  show api-key                 Show an api-key
-  show api-keys                List your api-keys associated with your account
-  show audit-logs              Display account's history of important actions
-  show scheduled-jobs          Display the list of scheduled jobs
-  show ssh-keys                List your ssh keys associated with your account
-  show workergroups            Display user's current workergroups
-  show endpoints               Display user's current endpoint groups
-  show connections             Display user's cloud connections
-  show deposit                 Display reserve deposit info for an instance
-  show earnings                Get machine earning history reports
-  show env-vars                Show user environment variables
-  show invoices                (DEPRECATED) Get billing history reports
-  show invoices-v1
-  show instance                Display user's current instances
-  show instances               Display user's current instances
-  show ipaddrs                 Display user's history of ip addresses
-  show clusters                [Beta] Show clusters associated with your account.
-  show overlays                Show overlays associated with your account.
-  show subaccounts             Get current subaccounts
-  show members                 Show your team members
-  show team-role               Show your team role
-  show team-roles              Show roles for a team
-  show user                    Get current user data
-  show volumes                 Show stats on owned volumes.
-  remove-machine-from-cluster  [Beta] Removes machine from cluster
+  stop instances               Stop multiple running instances
+  tfa activate                 Activate a new 2FA method by verifying the code
+  tfa delete                   Remove a 2FA method from your account
+  tfa login                    Complete 2FA login by verifying code
+  tfa regen-codes              Regenerate backup codes for 2FA
+  tfa resend-sms               Resend SMS 2FA code
+  tfa send-sms                 Request a 2FA SMS verification code
+  tfa status                   Shows the current 2FA status and configured methods
+  tfa totp-setup               Generate TOTP secret and QR code for Authenticator app setup
+  tfa update                   Update a 2FA method's settings
+  search benchmarks            Search machine benchmark results with filters
+  search invoices              Search billing invoices with filters
+  search offers                Search available GPU offers with filters
+  search templates             Search available templates with filters
+  search volumes               Search available volume offers with filters
+  search network-volumes       [Host] [Beta] Search available network volume offers with filters
+  set api-key                  Set the API key for CLI and SDK authentication
+  set user                     Update account settings from a JSON file
+  ssh-url                      Generate SSH connection URL for an instance
+  scp-url                      Generate SCP file transfer URL for an instance
+  show api-key                 Show details for a specific API key
+  show api-keys                List all API keys for your account
+  show audit-logs              Show account activity and audit logs
+  show scheduled-jobs          List all scheduled automation jobs
+  show ssh-keys                List all SSH keys registered to your account
+  show workergroups            List all your autoscaling worker groups
+  show endpoints               List all your serverless endpoints
+  show connections             [Beta] Show network connections between instances
+  show deposit                 Show prepaid deposit balance for a reserved instance
+  show earnings                [Host] Show rental income history for your machines
+  show env-vars                List environment variables set for your account
+  show invoices                [Deprecated] Get billing history - use show invoices-v1 instead
+  show invoices-v1             Get billing history with invoices and charges
+  show instance                Show details for a specific instance
+  show instances               List all your running and stopped instances
+  show ipaddrs                 Show history of IP addresses used by your instances
+  show clusters                [Beta] List all your machine clusters
+  show overlays                [Beta] List all your overlay networks
+  show subaccounts             List all subaccounts under your account
+  show members                 List all members in your team
+  show team-role               Show details for a specific team role
+  show team-roles              List all roles defined for your team
+  show user                    Show your account information and balance
+  show volumes                 List all your storage volumes and their status
+  remove-machine-from-cluster  [Host] [Beta] Remove a machine from a cluster
   transfer credit              Transfer credits to another account
   update workergroup           Update an existing autoscale group
   update endpoint              Update an existing endpoint group
   update env-var               Update an existing user environment variable
-  update instance              Update recreate an instance from a new/updated template
+  update instance              Update an instance configuration or recreate from a template
   update team-role             Update an existing team role
   update template              Update an existing template
-  update ssh-key               Update an existing SSH key
-  add network-disk             [Host] Add Network Disk to Physical Cluster.
-  cancel maint                 [Host] Cancel maint window
-  cleanup machine              [Host] Remove all expired storage instances from the machine, freeing up space
-  defrag machines              [Host] Defragment machines
-  delete machine               [Host] Delete machine if the machine is not being used by clients. host jobs on their own machines are disregarded and machine is force deleted.
-  list machine                 [Host] list a machine for rent
-  list machines                [Host] list machines for rent
-  list network-volume          [Host] list disk space for rent as a network volume
-  list volume                  [Host] list disk space for rent as a volume on a machine
-  list volumes                 [Host] list disk space for rent as a volume on machines
-  remove defjob                [Host] Delete default jobs
-  self-test machine            [Host] Perform a self-test on the specified machine
-  set defjob                   [Host] Create default jobs for a machine
-  set min-bid                  [Host] Set the minimum bid/rental price for a machine
-  schedule maint               [Host] Schedule upcoming maint window
-  show machine                 [Host] Show hosted machines
-  show machines                [Host] Show hosted machines
-  show maints                  [Host] Show maintenance information for host machines
-  show network-disks           [Host] Show network disks associated with your account.
-  unlist machine               [Host] Unlist a listed machine
-  unlist network-volume        [Host] Unlists network volume offer
-  unlist volume                [Host] unlist volume offer
+  update ssh-key               Update an SSH key's label or properties
+  add network-disk             [Host] [Beta] Attach a network disk to a machine cluster
+  cancel maint                 [Host] Cancel a scheduled maintenance window
+  cleanup machine              [Host] Clean up expired storage to free disk space
+  defrag machines              [Host] Rebuild larger GPU offers from orphaned single GPUs when possible
+  delete machine               [Host] Remove a machine from your host account
+  list machine                 [Host] List a single machine for rent on the marketplace
+  list machines                [Host] List multiple machines for rent on the marketplace
+  list network-volume          [Host] [Beta] List disk space as a rentable network volume
+  list volume                  [Host] List disk space as a rentable volume
+  list volumes                 [Host] List disk space on multiple machines as rentable volumes
+  remove defjob                [Host] Remove default background jobs from a machine
+  self-test machine            [Host] Run diagnostics on a hosted machine
+  set defjob                   [Host] Configure default background jobs for a machine
+  set min-bid                  [Host] Set minimum price for interruptible/spot instance rentals
+  schedule maint               [Host] Schedule a maintenance window for a machine
+  show machine                 [Host] Show details for a specific hosted machine
+  show machines                [Host] List all your hosted machines
+  show maints                  [Host] List scheduled maintenance windows
+  show network-disks           [Host] [Beta] List network disks attached to your machines
+  unlist machine               [Host] Remove a machine from the rental marketplace
+  unlist network-volume        [Host] [Beta] Remove a network volume offer from the marketplace
+  unlist volume                [Host] Remove a volume offer from the marketplace
 
 options:
  -h, --help                    show this help message and exit
@@ -158,10 +167,12 @@ Commands for renting and managing GPU instances.
 
 ### attach ssh
 
-Attach an ssh key to an instance. This will allow you to connect to the instance with the ssh key
+Attach an SSH key to an instance for remote access
 
 ```
 usage: vastai attach ssh instance_id ssh_key
+
+Attach an SSH key to an instance for remote access
 
 positional arguments:
  instance_id        id of instance to attach to
@@ -192,10 +203,12 @@ Examples:
 
 ### cancel copy
 
-Cancel a remote copy in progress, specified by DST id
+Cancel an in-progress file copy operation
 
 ```
 usage: vastai cancel copy DST
+
+Cancel an in-progress file copy operation
 
 positional arguments:
  dst                instance_id:/path to target of copy operation
@@ -226,10 +239,12 @@ The first example cancels all copy operations currently copying data into instan
 
 ### cancel sync
 
-Cancel a remote copy in progress, specified by DST id
+Cancel an in-progress file sync operation
 
 ```
 usage: vastai cancel sync DST
+
+Cancel an in-progress file sync operation
 
 positional arguments:
  dst                instance_id:/path to target of sync operation
@@ -265,6 +280,8 @@ Change the bid price for a spot/interruptible instance
 ```
 usage: vastai change bid id [--price PRICE]
 
+Change the bid price for a spot/interruptible instance
+
 positional arguments:
  id                                id of instance type to change bid
 
@@ -296,10 +313,12 @@ If PRICE is not specified, then a winning bid price is used as the default.
 
 ### clone volume
 
-Clone an existing volume
+Create a copy of an existing volume
 
 ```
 usage: vastai copy volume <source_id> <dest_id> [options]
+
+Create a copy of an existing volume
 
 positional arguments:
  source                     id of volume contract being cloned
@@ -329,10 +348,12 @@ Size defaults to the size of the existing volume, but can be increased if there 
 
 ### cloud copy
 
-Copy files/folders to and from cloud providers
+Copy files between instances and cloud storage (S3, GCS, Azure)
 
 ```
 usage: vastai cloud copy --src SRC --dst DST --instance INSTANCE_ID -connection CONNECTION_ID --transfer TRANSFER_TYPE
+
+Copy files between instances and cloud storage (S3, GCS, Azure)
 
 options:
  -h, --help                        show this help message and exit
@@ -383,10 +404,12 @@ The example copies all contents of /folder into /workspace on instance 6003036 f
 
 ### copy
 
-Copy directories between instances and/or local
+Copy files/directories between instances or between local and instance
 
 ```
 usage: vastai copy SRC DST
+
+Copy files/directories between instances or between local and instance
 
 positional arguments:
  src                      Source location for copy operation (supports multiple formats)
@@ -442,10 +465,12 @@ The fifth example copy syncs files from S3 bucket with id 101 to an instance.
 
 ### create api-key
 
-Create a new api-key with restricted permissions. Can be sent to other users and teammates
+Create a new API key with custom permissions
 
 ```
 usage: vastai create api-key --name NAME --permission_file PERMISSIONS
+
+Create a new API key with custom permissions
 
 options:
  -h, --help                         show this help message and exit
@@ -472,10 +497,12 @@ You can find more information about permissions here: https://vast.ai/docs/cli/r
 
 ### create cluster
 
-[Beta] Create Vast cluster
+[Beta] Create a new machine cluster
 
 ```
 usage: vastai create cluster SUBNET MANAGER_ID
+
+[Beta] Create a new machine cluster
 
 positional arguments:
  subnet             local subnet for cluster, ex: '0.0.0.0/24'
@@ -502,10 +529,12 @@ Create Vast Cluster by defining a local subnet and manager id.
 
 ### create endpoint
 
-Create a new endpoint group
+Create a serverless inference endpoint
 
 ```
 usage: vastai create endpoint [OPTIONS]
+
+Create a serverless inference endpoint
 
 options:
  -h, --help                     show this help message and exit
@@ -537,10 +566,12 @@ Example: vastai create endpoint --target_util 0.9 --cold_mult 2.0 --endpoint_nam
 
 ### create env-var
 
-Create a new user environment variable
+Create a new account-level environment variable
 
 ```
 usage: vastai create env-var <name> <value>
+
+Create a new account-level environment variable
 
 positional arguments:
  name               Environment variable name
@@ -565,10 +596,12 @@ Global options (available for all commands):
 
 ### create instance
 
-Create a new instance
+Create a new GPU instance from an offer
 
 ```
 usage: vastai create instance ID [OPTIONS] [--args ...]
+
+Create a new GPU instance from an offer
 
 positional arguments:
  id                                id of instance type to launch (returned from search offers)
@@ -646,44 +679,14 @@ Returns a json reporting the instance ID of the newly created instance:
 
 ---
 
-### create network-volume
-
-Create a new network volume
-
-```
-usage: vastai create network volume ID [options]
-
-positional arguments:
- id                 id of network volume offer
-
-options:
- -h, --help         show this help message and exit
- -s, --size SIZE    size in GB of network volume. Default 15 GB.
- -n, --name NAME    Optional name of network volume.
-
-Global options (available for all commands):
- --url URL          Server REST API URL
- --retry RETRY      Retry limit
- --explain          Output verbose explanation of mapping of CLI calls to HTTPS API endpoints
- --raw              Output machine-readable json
- --full             Print full results instead of paging with `less` for commands that support it
- --curl             Show a curl equivalency to the call
- --api-key API_KEY  API Key to use. defaults to using the one stored in C:\Users\begna112\.config\vastai\vast_api_key
- --version          Show CLI version
- --no-color         Disable colored output for commands that support it (Note: the 'rich' python module is required for colored output)
-
-Creates a network volume from an offer ID (which is returned from "search network volumes"). Each offer ID can be used to create multiple volumes,
-provided the size of all volumes does not exceed the size of the offer.
-```
-
----
-
 ### create overlay
 
-[Beta] Creates overlay network on top of a physical cluster
+[Beta] Create a virtual overlay network on a cluster
 
 ```
 usage: vastai create overlay CLUSTER_ID OVERLAY_NAME
+
+[Beta] Create a virtual overlay network on a cluster
 
 positional arguments:
  cluster_id         ID of cluster to create overlay on top of
@@ -710,10 +713,12 @@ Creates an overlay network to allow local networking between instances on a phys
 
 ### create ssh-key
 
-Create a new ssh-key
+Add an SSH public key to your account
 
 ```
 usage: vastai create ssh-key [ssh_public_key] [-y]
+
+Add an SSH public key to your account
 
 positional arguments:
  ssh_key            add your existing ssh public key to your account (from the .pub file). If no public key is provided, a new key pair will be generated.
@@ -753,10 +758,12 @@ All ssh public keys are stored in your Vast account and can be used to connect t
 
 ### create subaccount
 
-Create a subaccount
+Create a subaccount for delegated access
 
 ```
 usage: vastai create subaccount --email EMAIL --username USERNAME --password PASSWORD --type TYPE
+
+Create a subaccount for delegated access
 
 options:
  -h, --help           show this help message and exit
@@ -791,6 +798,8 @@ Create a new team
 
 ```
 usage: vastai create-team --team_name TEAM_NAME
+
+Create a new team
 
 options:
  -h, --help             show this help message and exit
@@ -830,10 +839,12 @@ https://vast.ai/docs/teams-quickstart
 
 ### create team-role
 
-Add a new role to your team
+Create a custom role with specific permissions
 
 ```
 usage: vastai create team-role --name NAME --permissions PERMISSIONS
+
+Create a custom role with specific permissions
 
 options:
  -h, --help                 show this help message and exit
@@ -859,10 +870,12 @@ You can find more information about permissions here: https://vast.ai/docs/cli/r
 
 ### create template
 
-Create a new template
+Create a reusable instance configuration template
 
 ```
 usage: vastai create template
+
+Create a reusable instance configuration template
 
 options:
  -h, --help                     show this help message and exit
@@ -912,10 +925,12 @@ Example:
 
 ### create volume
 
-Create a new volume
+Create a new persistent storage volume
 
 ```
 usage: vastai create volume ID [options]
+
+Create a new persistent storage volume
 
 positional arguments:
  id                 id of volume offer
@@ -944,10 +959,12 @@ provided the size of all volumes does not exceed the size of the offer.
 
 ### create workergroup
 
-Create a new autoscale group
+Create an autoscaling worker group for serverless inference
 
 ```
 usage: vastai workergroup create [OPTIONS]
+
+Create an autoscaling worker group for serverless inference
 
 options:
  -h, --help                     show this help message and exit
@@ -985,10 +1002,12 @@ Example: vastai create workergroup --template_hash HASH  --endpoint_name "LLama"
 
 ### delete api-key
 
-Remove an api-key
+Delete an API key
 
 ```
 usage: vastai delete api-key ID
+
+Delete an API key
 
 positional arguments:
  id                 id of apikey to remove
@@ -1012,10 +1031,12 @@ Global options (available for all commands):
 
 ### delete cluster
 
-[Beta] Delete Cluster
+[Beta] Delete a machine cluster
 
 ```
 usage: vastai delete cluster CLUSTER_ID
+
+[Beta] Delete a machine cluster
 
 positional arguments:
  cluster_id         ID of cluster to delete
@@ -1041,10 +1062,12 @@ Delete Vast Cluster
 
 ### delete endpoint
 
-Delete an endpoint group
+Delete a serverless inference endpoint
 
 ```
 usage: vastai delete endpoint ID 
+
+Delete a serverless inference endpoint
 
 positional arguments:
  id                 id of endpoint group to delete
@@ -1075,6 +1098,8 @@ Delete a user environment variable
 ```
 usage: vastai delete env-var <name>
 
+Delete a user environment variable
+
 positional arguments:
  name               Environment variable name to delete
 
@@ -1097,10 +1122,12 @@ Global options (available for all commands):
 
 ### delete overlay
 
-Deletes overlay and removes all of its associated instances
+[Beta] Delete an overlay network and its instances
 
 ```
 usage: vastai delete overlay OVERLAY_IDENTIFIER
+
+[Beta] Delete an overlay network and its instances
 
 positional arguments:
  overlay_identifier  ID (int) or name (str) of overlay to delete
@@ -1129,6 +1156,8 @@ Delete a scheduled job
 ```
 usage: vastai delete scheduled-job ID
 
+Delete a scheduled job
+
 positional arguments:
  id                 id of scheduled job to remove
 
@@ -1151,10 +1180,12 @@ Global options (available for all commands):
 
 ### delete ssh-key
 
-Remove an ssh-key
+Remove an SSH key from your account
 
 ```
 usage: vastai delete ssh-key ID
+
+Remove an SSH key from your account
 
 positional arguments:
  id                 id ssh key to delete
@@ -1178,10 +1209,12 @@ Global options (available for all commands):
 
 ### delete template
 
-Delete a Template
+Delete a template
 
 ```
 usage: vastai delete template [--template-id <id> | --hash-id <hash_id>]
+
+Delete a template
 
 options:
  -h, --help                 show this help message and exit
@@ -1208,10 +1241,12 @@ Example: vastai delete template --hash-id 49c538d097ad6437413b83711c9f61e8
 
 ### delete volume
 
-Delete a volume
+Delete a persistent storage volume
 
 ```
 usage: vastai delete volume ID
+
+Delete a persistent storage volume
 
 positional arguments:
  id                 id of volume contract
@@ -1237,10 +1272,12 @@ Deletes volume with the given ID. All instances using the volume must be destroy
 
 ### delete workergroup
 
-Delete a workergroup group
+Delete an autoscaling worker group
 
 ```
 usage: vastai delete workergroup ID 
+
+Delete an autoscaling worker group
 
 positional arguments:
  id                 id of group to delete
@@ -1271,6 +1308,8 @@ Destroy an instance (irreversible, deletes data)
 
 ```
 usage: vastai destroy instance id [-h] [--api-key API_KEY] [--raw]
+
+Destroy an instance (irreversible, deletes data)
 
 positional arguments:
  id                 id of instance to delete
@@ -1312,6 +1351,8 @@ Destroy a list of instances (irreversible, deletes data)
 ```
 usage: vastai destroy instances [--raw] <id>
 
+Destroy a list of instances (irreversible, deletes data)
+
 positional arguments:
  ids                ids of instance to destroy
 
@@ -1334,10 +1375,12 @@ Global options (available for all commands):
 
 ### destroy team
 
-Destroy your team
+Delete your team and remove all members
 
 ```
 usage: vastai destroy team
+
+Delete your team and remove all members
 
 options:
  -h, --help         show this help message and exit
@@ -1358,10 +1401,12 @@ Global options (available for all commands):
 
 ### detach ssh
 
-Detach an ssh key from an instance
+Remove an SSH key from an instance
 
 ```
 usage: vastai detach instance_id ssh_key_id
+
+Remove an SSH key from an instance
 
 positional arguments:
  instance_id        id of the instance
@@ -1388,10 +1433,12 @@ Example: vastai detach 99999 12345
 
 ### execute
 
-Execute a (constrained) remote command on a machine
+Execute a command on a running instance
 
 ```
 usage: vastai execute id COMMAND
+
+Execute a command on a running instance
 
 positional arguments:
  id                                id of instance to execute on
@@ -1434,10 +1481,12 @@ Returns the output of the command which was executed on the instance, if success
 
 ### get endpt-logs
 
-Fetch logs for a specific serverless endpoint group
+Get logs for a serverless endpoint
 
 ```
 usage: vastai get endpt-logs ID [--api-key API_KEY]
+
+Get logs for a serverless endpoint
 
 positional arguments:
  id                 id of endpoint group to fetch logs from
@@ -1465,10 +1514,12 @@ Example: vastai get endpt-logs 382
 
 ### get wrkgrp-logs
 
-Fetch logs for a specific serverless worker group group
+Get logs for an autoscaling worker group
 
 ```
 usage: vastai get wrkgrp-logs ID [--api-key API_KEY]
+
+Get logs for an autoscaling worker group
 
 positional arguments:
  id                 id of endpoint group to fetch logs from
@@ -1525,10 +1576,12 @@ Global options (available for all commands):
 
 ### invite member
 
-Invite a team member
+Invite a user to join your team
 
 ```
 usage: vastai invite member --email EMAIL --role ROLE
+
+Invite a user to join your team
 
 options:
  -h, --help         show this help message and exit
@@ -1551,10 +1604,12 @@ Global options (available for all commands):
 
 ### join cluster
 
-[Beta] Join Machine to Cluster
+[Beta] Add a machine to an existing cluster
 
 ```
 usage: vastai join cluster CLUSTER_ID MACHINE_IDS
+
+[Beta] Add a machine to an existing cluster
 
 positional arguments:
  cluster_id         ID of cluster to add machine to
@@ -1581,10 +1636,12 @@ Join's Machine to Vast Cluster
 
 ### join overlay
 
-Adds instance to an overlay network
+[Beta] Connect an instance to an overlay network
 
 ```
 usage: vastai join overlay OVERLAY_NAME INSTANCE_ID
+
+[Beta] Connect an instance to an overlay network
 
 positional arguments:
  name               Overlay network name to join instance to.
@@ -1616,6 +1673,8 @@ Assign a string label to an instance
 ```
 usage: vastai label instance <id> <label>
 
+Assign a string label to an instance
+
 positional arguments:
  id                 id of instance to label
  label              label to set
@@ -1639,10 +1698,12 @@ Global options (available for all commands):
 
 ### launch instance
 
-Launch the top instance from the search offers based on the given parameters
+Launch a new instance using search parameters to auto-select the best offer
 
 ```
 usage: vastai launch instance [--help] [--api-key API_KEY] <gpu_name> <num_gpus> <image> [geolocation] [disk_space]
+
+Launch a new instance using search parameters to auto-select the best offer
 
 options:
  -h, --help                                       show this help message and exit
@@ -1722,6 +1783,8 @@ Get the logs for an instance
 ```
 usage: vastai logs INSTANCE_ID [OPTIONS] 
 
+Get the logs for an instance
+
 positional arguments:
  INSTANCE_ID        id of instance
 
@@ -1747,10 +1810,12 @@ Global options (available for all commands):
 
 ### prepay instance
 
-Deposit credits into reserved instance
+Prepay credits for a reserved instance to prevent interruption
 
 ```
 usage: vastai prepay instance ID AMOUNT
+
+Prepay credits for a reserved instance to prevent interruption
 
 positional arguments:
  id                 id of instance to prepay for
@@ -1779,6 +1844,8 @@ Reboot (stop/start) an instance
 
 ```
 usage: vastai reboot instance ID [OPTIONS]
+
+Reboot (stop/start) an instance
 
 positional arguments:
  id                                id of instance to reboot
@@ -1809,10 +1876,12 @@ Stops and starts container without any risk of losing GPU priority.
 
 ### recycle instance
 
-Recycle (destroy/create) an instance
+Destroy and recreate an instance with the same configuration
 
 ```
 usage: vastai recycle instance ID [OPTIONS]
+
+Destroy and recreate an instance with the same configuration
 
 positional arguments:
  id                 id of instance to recycle
@@ -1843,6 +1912,8 @@ Remove a team member
 ```
 usage: vastai remove member ID
 
+Remove a team member
+
 positional arguments:
  id                 id of user to remove
 
@@ -1865,10 +1936,12 @@ Global options (available for all commands):
 
 ### remove team-role
 
-Remove a role from your team
+Delete a custom role from your team
 
 ```
 usage: vastai remove team-role NAME
+
+Delete a custom role from your team
 
 positional arguments:
  NAME               name of the role
@@ -1890,71 +1963,14 @@ Global options (available for all commands):
 
 ---
 
-### remove-machine-from-cluster
-
-[Beta] Removes machine from cluster
-
-```
-usage: vastai remove-machine-from-cluster CLUSTER_ID MACHINE_ID NEW_MANAGER_ID
-
-positional arguments:
- cluster_id         ID of cluster you want to remove machine from.
- machine_id         ID of machine to remove from cluster.
- new_manager_id     ID of machine to promote to manager. Must already be in cluster
-
-options:
- -h, --help         show this help message and exit
-
-Global options (available for all commands):
- --url URL          Server REST API URL
- --retry RETRY      Retry limit
- --explain          Output verbose explanation of mapping of CLI calls to HTTPS API endpoints
- --raw              Output machine-readable json
- --full             Print full results instead of paging with `less` for commands that support it
- --curl             Show a curl equivalency to the call
- --api-key API_KEY  API Key to use. defaults to using the one stored in C:\Users\begna112\.config\vastai\vast_api_key
- --version          Show CLI version
- --no-color         Disable colored output for commands that support it (Note: the 'rich' python module is required for colored output)
-
-Removes machine from cluster and also reassigns manager ID,
-if we're removing the manager node
-```
-
----
-
-### reports
-
-Get the user reports for a given machine
-
-```
-usage: vastai reports ID
-
-positional arguments:
- id                 machine id
-
-options:
- -h, --help         show this help message and exit
-
-Global options (available for all commands):
- --url URL          Server REST API URL
- --retry RETRY      Retry limit
- --explain          Output verbose explanation of mapping of CLI calls to HTTPS API endpoints
- --raw              Output machine-readable json
- --full             Print full results instead of paging with `less` for commands that support it
- --curl             Show a curl equivalency to the call
- --api-key API_KEY  API Key to use. defaults to using the one stored in C:\Users\begna112\.config\vastai\vast_api_key
- --version          Show CLI version
- --no-color         Disable colored output for commands that support it (Note: the 'rich' python module is required for colored output)
-```
-
----
-
 ### reset api-key
 
-Reset your api-key (get new key from website)
+Invalidate current API key and generate a new one
 
 ```
 usage: vastai reset api-key
+
+Invalidate current API key and generate a new one
 
 options:
  -h, --help         show this help message and exit
@@ -1975,10 +1991,12 @@ Global options (available for all commands):
 
 ### scp-url
 
-scp url helper
+Generate SCP file transfer URL for an instance
 
 ```
 usage: vastai scp-url ID
+
+Generate SCP file transfer URL for an instance
 
 positional arguments:
  id                 id
@@ -2017,10 +2035,12 @@ See also: 'vastai ssh-url' for SSH connection URLs, 'vastai copy' for simplified
 
 ### search benchmarks
 
-Search for benchmark results using custom query
+Search machine benchmark results with filters
 
 ```
 usage: vastai search benchmarks [--help] [--api-key API_KEY] [--raw] <query>
+
+Search machine benchmark results with filters
 
 positional arguments:
  query              Search query in simple query syntax (see below)
@@ -2075,10 +2095,12 @@ Available fields:
 
 ### search invoices
 
-Search for invoices using custom query
+Search billing invoices with filters
 
 ```
 usage: vastai search invoices [--help] [--api-key API_KEY] [--raw] <query>
+
+Search billing invoices with filters
 
 positional arguments:
  query              Search query in simple query syntax (see below)
@@ -2147,72 +2169,14 @@ is_check            bool,
 
 ---
 
-### search network-volumes
-
-Search for network volume offers using custom query
-
-```
-usage: vastai search network volumes [--help] [--api-key API_KEY] [--raw] <query>
-
-positional arguments:
- query              Query to search for. default: 'external=false verified=true disk_space>=1', pass -n to ignore default
-
-options:
- -h, --help         show this help message and exit
- -n, --no-default   Disable default query
- --limit LIMIT
- --storage STORAGE  Amount of storage to use for pricing, in GiB. default=1.0GiB
- -o, --order ORDER  Comma-separated list of fields to sort on. postfix field with - to sort desc. ex: -o 'disk_space,inet_up-'.  default='score-'
-
-Global options (available for all commands):
- --url URL          Server REST API URL
- --retry RETRY      Retry limit
- --explain          Output verbose explanation of mapping of CLI calls to HTTPS API endpoints
- --raw              Output machine-readable json
- --full             Print full results instead of paging with `less` for commands that support it
- --curl             Show a curl equivalency to the call
- --api-key API_KEY  API Key to use. defaults to using the one stored in C:\Users\begna112\.config\vastai\vast_api_key
- --version          Show CLI version
- --no-color         Disable colored output for commands that support it (Note: the 'rich' python module is required for colored output)
-
-Query syntax:
-
-    query = comparison comparison...
-    comparison = field op value
-    field = <name of a field>
-    op = one of: <, <=, ==, !=, >=, >, in, notin
-    value = <bool, int, float, string> | 'any' | [value0, value1, ...]
-    bool: True, False
-
-note: to pass '>' and '<' on the command line, make sure to use quotes
-note: to encode a string query value (ie for gpu_name), replace any spaces ' ' with underscore '_'
-
-Examples:
-
-    # search for volumes with greater than 50GB of available storage and greater than 500 Mb/s upload and download speed
-    vastai search volumes "disk_space>50 inet_up>500 inet_down>500"
-
-Available fields:
-
-      Name                  Type       Description
-    duration:               float     max rental duration in days
-    geolocation:            string    Two letter country code. Works with operators =, !=, in, notin (e.g. geolocation not in ['XV','XZ'])
-    id:                     int       volume offer unique ID
-    inet_down:              float     internet download speed in Mb/s
-    inet_up:                float     internet upload speed in Mb/s
-    reliability:            float     machine reliability score (see FAQ for explanation)
-    storage_cost:           float     storage cost in $/GB/month
-    verified:               bool      is the machine verified
-```
-
----
-
 ### search offers
 
-Search for instance types using custom query
+Search available GPU offers with filters
 
 ```
 usage: vastai search offers [--help] [--api-key API_KEY] [--raw] <query>
+
+Search available GPU offers with filters
 
 positional arguments:
  query                Query to search for. default: 'external=false rentable=true verified=true', pass -n to ignore default
@@ -2336,10 +2300,12 @@ Available fields:
 
 ### search templates
 
-Search for template results using custom query
+Search available templates with filters
 
 ```
 usage: vastai search templates [--help] [--api-key API_KEY] [--raw] <query>
+
+Search available templates with filters
 
 positional arguments:
  query              Search query in simple query syntax (see below)
@@ -2401,10 +2367,12 @@ use_ssh                 bool       supports ssh (direct or proxy)
 
 ### search volumes
 
-Search for volume offers using custom query
+Search available volume offers with filters
 
 ```
 usage: vastai search volumes [--help] [--api-key API_KEY] [--raw] <query>
+
+Search available volume offers with filters
 
 positional arguments:
  query              Query to search for. default: 'external=false verified=true disk_space>=1', pass -n to ignore default
@@ -2477,10 +2445,12 @@ Available fields:
 
 ### set api-key
 
-Set api-key (get your api-key from the console/CLI)
+Set the API key for CLI and SDK authentication
 
 ```
 usage: vastai set api-key APIKEY
+
+Set the API key for CLI and SDK authentication
 
 positional arguments:
  new_api_key        Api key to set as currently logged in user
@@ -2500,7 +2470,7 @@ Global options (available for all commands):
  --no-color         Disable colored output for commands that support it (Note: the 'rich' python module is required for colored output)
 
 Stores your Vast.ai API key locally for authentication with all CLI commands.
-Get your API key from the Vast.ai console: https://cloud.vast.ai/manage-keys/
+Get your API key from the Vast.ai console: https://console.vast.ai/account/
 
 Examples:
     vastai set api-key abc123def456...         # Set your API key
@@ -2509,7 +2479,7 @@ Security notes:
   - API key is stored in ~/.config/vastai/vast_api_key
   - Permissions are set to user-read-only (600)
   - Do NOT share your API key or commit it to version control
-  - Regenerate your key at https://cloud.vast.ai/manage-keys/ if compromised
+  - Regenerate your key at https://console.vast.ai/account/ if compromised
   - You can also use the VAST_API_KEY environment variable instead
 
 The legacy location ~/.vast_api_key is automatically removed when you set a new key.
@@ -2519,10 +2489,12 @@ The legacy location ~/.vast_api_key is automatically removed when you set a new 
 
 ### set user
 
-Update user data from json file
+Update account settings from a JSON file
 
 ```
 usage: vastai set user --file FILE
+
+Update account settings from a JSON file
 
 options:
  -h, --help         show this help message and exit
@@ -2567,10 +2539,12 @@ tfa_enabled                     bool
 
 ### show api-key
 
-Show an api-key
+Show details for a specific API key
 
 ```
 usage: vastai show api-key
+
+Show details for a specific API key
 
 positional arguments:
  id                 id of apikey to get
@@ -2594,10 +2568,12 @@ Global options (available for all commands):
 
 ### show api-keys
 
-List your api-keys associated with your account
+List all API keys for your account
 
 ```
 usage: vastai show api-keys
+
+List all API keys for your account
 
 options:
  -h, --help         show this help message and exit
@@ -2618,10 +2594,12 @@ Global options (available for all commands):
 
 ### show audit-logs
 
-Display account's history of important actions
+Show account activity and audit logs
 
 ```
 usage: vastai show audit-logs [--api-key API_KEY] [--raw]
+
+Show account activity and audit logs
 
 options:
  -h, --help         show this help message and exit
@@ -2642,10 +2620,12 @@ Global options (available for all commands):
 
 ### show clusters
 
-[Beta] Show clusters associated with your account.
+[Beta] List all your machine clusters
 
 ```
 usage: vastai show clusters
+
+[Beta] List all your machine clusters
 
 options:
  -h, --help         show this help message and exit
@@ -2668,10 +2648,12 @@ Show clusters associated with your account.
 
 ### show connections
 
-Display user's cloud connections
+[Beta] Show network connections between instances
 
 ```
 usage: vastai show connections [--api-key API_KEY] [--raw]
+
+[Beta] Show network connections between instances
 
 options:
  -h, --help         show this help message and exit
@@ -2692,10 +2674,12 @@ Global options (available for all commands):
 
 ### show deposit
 
-Display reserve deposit info for an instance
+Show prepaid deposit balance for a reserved instance
 
 ```
 usage: vastai show deposit ID [options]
+
+Show prepaid deposit balance for a reserved instance
 
 positional arguments:
  id                 id of instance to get info for
@@ -2717,40 +2701,14 @@ Global options (available for all commands):
 
 ---
 
-### show earnings
-
-Get machine earning history reports
-
-```
-usage: vastai show earnings [OPTIONS]
-
-options:
- -h, --help                   show this help message and exit
- -q, --quiet                  only display numeric ids
- -s, --start_date START_DATE  start date and time for report. Many formats accepted
- -e, --end_date END_DATE      end date and time for report. Many formats accepted 
- -m, --machine_id MACHINE_ID  Machine id (optional)
-
-Global options (available for all commands):
- --url URL                    Server REST API URL
- --retry RETRY                Retry limit
- --explain                    Output verbose explanation of mapping of CLI calls to HTTPS API endpoints
- --raw                        Output machine-readable json
- --full                       Print full results instead of paging with `less` for commands that support it
- --curl                       Show a curl equivalency to the call
- --api-key API_KEY            API Key to use. defaults to using the one stored in C:\Users\begna112\.config\vastai\vast_api_key
- --version                    Show CLI version
- --no-color                   Disable colored output for commands that support it (Note: the 'rich' python module is required for colored output)
-```
-
----
-
 ### show endpoints
 
-Display user's current endpoint groups
+List all your serverless endpoints
 
 ```
 usage: vastai show endpoints [--api-key API_KEY]
+
+List all your serverless endpoints
 
 options:
  -h, --help         show this help message and exit
@@ -2773,10 +2731,12 @@ Example: vastai show endpoints
 
 ### show env-vars
 
-Show user environment variables
+List environment variables set for your account
 
 ```
 usage: vastai show env-vars [-s]
+
+List environment variables set for your account
 
 options:
  -h, --help         show this help message and exit
@@ -2798,10 +2758,12 @@ Global options (available for all commands):
 
 ### show instance
 
-Display user's current instances
+Show details for a specific instance
 
 ```
 usage: vastai show instance [--api-key API_KEY] [--raw]
+
+Show details for a specific instance
 
 positional arguments:
  id                 id of instance to get
@@ -2825,10 +2787,12 @@ Global options (available for all commands):
 
 ### show instances
 
-Display user's current instances
+List all your running and stopped instances
 
 ```
 usage: vastai show instances [OPTIONS] [--api-key API_KEY] [--raw]
+
+List all your running and stopped instances
 
 options:
  -h, --help         show this help message and exit
@@ -2860,10 +2824,12 @@ Output includes: instance ID, machine ID, status, GPU info, rental cost, duratio
 
 ### show invoices
 
-(DEPRECATED) Get billing history reports
+[Deprecated] Get billing history - use show invoices-v1 instead
 
 ```
 usage: (DEPRECATED) vastai show invoices [OPTIONS]
+
+[Deprecated] Get billing history - use show invoices-v1 instead
 
 options:
  -h, --help                       show this help message and exit
@@ -2890,10 +2856,12 @@ Global options (available for all commands):
 
 ### show invoices-v1
 
-*No description*
+Get billing history with invoices and charges
 
 ```
 usage: vastai show invoices-v1 [OPTIONS]
+
+Get billing history with invoices and charges
 
 options:
  -h, --help                           show this help message and exit
@@ -2946,10 +2914,12 @@ Examples:
 
 ### show ipaddrs
 
-Display user's history of ip addresses
+Show history of IP addresses used by your instances
 
 ```
 usage: vastai show ipaddrs [--api-key API_KEY] [--raw]
+
+Show history of IP addresses used by your instances
 
 options:
  -h, --help         show this help message and exit
@@ -2970,10 +2940,12 @@ Global options (available for all commands):
 
 ### show members
 
-Show your team members
+List all members in your team
 
 ```
 usage: vastai show members
+
+List all members in your team
 
 options:
  -h, --help         show this help message and exit
@@ -2994,10 +2966,12 @@ Global options (available for all commands):
 
 ### show overlays
 
-Show overlays associated with your account.
+[Beta] List all your overlay networks
 
 ```
 usage: vastai show overlays
+
+[Beta] List all your overlay networks
 
 options:
  -h, --help         show this help message and exit
@@ -3020,10 +2994,12 @@ Show overlays associated with your account.
 
 ### show scheduled-jobs
 
-Display the list of scheduled jobs
+List all scheduled automation jobs
 
 ```
 usage: vastai show scheduled-jobs [--api-key API_KEY] [--raw]
+
+List all scheduled automation jobs
 
 options:
  -h, --help         show this help message and exit
@@ -3044,10 +3020,12 @@ Global options (available for all commands):
 
 ### show ssh-keys
 
-List your ssh keys associated with your account
+List all SSH keys registered to your account
 
 ```
 usage: vastai show ssh-keys
+
+List all SSH keys registered to your account
 
 options:
  -h, --help         show this help message and exit
@@ -3068,10 +3046,12 @@ Global options (available for all commands):
 
 ### show subaccounts
 
-Get current subaccounts
+List all subaccounts under your account
 
 ```
 usage: vastai show subaccounts [OPTIONS]
+
+List all subaccounts under your account
 
 options:
  -h, --help         show this help message and exit
@@ -3093,10 +3073,12 @@ Global options (available for all commands):
 
 ### show team-role
 
-Show your team role
+Show details for a specific team role
 
 ```
 usage: vastai show team-role NAME
+
+Show details for a specific team role
 
 positional arguments:
  NAME               name of the role
@@ -3120,10 +3102,12 @@ Global options (available for all commands):
 
 ### show team-roles
 
-Show roles for a team
+List all roles defined for your team
 
 ```
 usage: vastai show team-roles
+
+List all roles defined for your team
 
 options:
  -h, --help         show this help message and exit
@@ -3144,10 +3128,12 @@ Global options (available for all commands):
 
 ### show user
 
-Get current user data
+Show your account information and balance
 
 ```
 usage: vastai show user [OPTIONS]
+
+Show your account information and balance
 
 options:
  -h, --help         show this help message and exit
@@ -3185,10 +3171,12 @@ Use 'vastai set api-key' to update your stored API key.
 
 ### show volumes
 
-Show stats on owned volumes.
+List all your storage volumes and their status
 
 ```
 usage: vastai show volumes [OPTIONS]
+
+List all your storage volumes and their status
 
 options:
  -h, --help         show this help message and exit
@@ -3212,10 +3200,12 @@ Show stats on owned volumes
 
 ### show workergroups
 
-Display user's current workergroups
+List all your autoscaling worker groups
 
 ```
 usage: vastai show workergroups [--api-key API_KEY]
+
+List all your autoscaling worker groups
 
 options:
  -h, --help         show this help message and exit
@@ -3238,10 +3228,12 @@ Example: vastai show workergroups
 
 ### ssh-url
 
-ssh url helper
+Generate SSH connection URL for an instance
 
 ```
 usage: vastai ssh-url ID
+
+Generate SSH connection URL for an instance
 
 positional arguments:
  id                 id of instance
@@ -3284,6 +3276,8 @@ Start a stopped instance
 ```
 usage: vastai start instance ID [OPTIONS]
 
+Start a stopped instance
+
 positional arguments:
  id                 ID of instance to start/restart
 
@@ -3312,10 +3306,12 @@ Examples:
 
 ### start instances
 
-Start a list of instances
+Start multiple stopped instances
 
 ```
 usage: vastai start instances [OPTIONS] ID0 ID1 ID2...
+
+Start multiple stopped instances
 
 positional arguments:
  ids                ids of instance to start
@@ -3344,6 +3340,8 @@ Stop a running instance
 ```
 usage: vastai stop instance ID [OPTIONS]
 
+Stop a running instance
+
 positional arguments:
  id                 id of instance to stop
 
@@ -3370,10 +3368,12 @@ There are ways to move data off of a stopped instance, which are described here:
 
 ### stop instances
 
-Stop a list of instances
+Stop multiple running instances
 
 ```
 usage: vastai stop instances [OPTIONS] ID0 ID1 ID2...
+
+Stop multiple running instances
 
 positional arguments:
  ids                ids of instance to stop
@@ -3401,10 +3401,12 @@ Examples:
 
 ### take snapshot
 
-Schedule a snapshot of a running container and push it to your repo in a container registry
+Create a snapshot of a running container and push to registry
 
 ```
 usage: vastai take snapshot INSTANCE_ID --repo REPO --docker_login_user USER --docker_login_pass PASS[--container_registry REGISTRY] [--pause true|false]
+
+Create a snapshot of a running container and push to registry
 
 positional arguments:
  instance_id                              instance_id of the container instance to snapshot
@@ -3437,12 +3439,423 @@ or pause=false to leave it running (faster but may produce a filesystem-
 
 ---
 
+### tfa activate
+
+Activate a new 2FA method by verifying the code
+
+```
+usage: vastai tfa activate CODE --secret SECRET [--sms] [--phone-number PHONE_NUMBER] [--label LABEL]
+
+Activate a new 2FA method by verifying the setup code
+
+positional arguments:
+ code                         6-digit verification code from SMS or Authenticator app
+
+options:
+ -h, --help                   show this help message and exit
+ --sms                        Use SMS 2FA method instead of TOTP
+ --secret SECRET              Secret token from setup process (required)
+ --phone-number PHONE_NUMBER  Phone number for SMS method (E.164 format)
+ -l, --label LABEL            Label for the new 2FA method
+
+Global options (available for all commands):
+ --url URL                    Server REST API URL
+ --retry RETRY                Retry limit
+ --explain                    Output verbose explanation of mapping of CLI calls to HTTPS API endpoints
+ --raw                        Output machine-readable json
+ --full                       Print full results instead of paging with `less` for commands that support it
+ --curl                       Show a curl equivalency to the call
+ --api-key API_KEY            API Key to use. defaults to using the one stored in C:\Users\begna112\.config\vastai\vast_api_key
+ --version                    Show CLI version
+ --no-color                   Disable colored output for commands that support it (Note: the 'rich' python module is required for colored output)
+
+Complete the 2FA setup process by verifying your code.
+
+For TOTP (Authenticator app):
+ 1. Run 'vastai tfa totp-setup' to get the manual key/QR code and secret
+ 2. Enter the manual key or scan the QR code with your Authenticator app
+ 3. Run this command with the 6-digit code from your app and the secret token from step 1
+
+For SMS:
+ 1. Run 'vastai tfa send-sms --phone-number <PHONE_NUMBER>' to receive SMS and get secret token
+ 2. Run this command with the code you received via SMS and the phone number it was sent to
+
+If this is your first 2FA method, backup codes will be generated and displayed.
+Save these backup codes in a secure location!
+
+Examples:
+ vastai tfa activate --secret abc123def456 123456
+ vastai tfa activate --secret abc123def456 --sms --phone-number +12345678901 123456
+ vastai tfa activate --secret abc123def456 --sms --phone-number +12345678901 --label "Work Phone" 123456
+```
+
+---
+
+### tfa delete
+
+Remove a 2FA method from your account
+
+```
+usage: vastai tfa delete [--id-to-delete ID] [--code CODE] [--sms] [--secret SECRET] [--backup-code BACKUP_CODE] [--method-id ID]
+
+Remove a 2FA method from your account
+
+options:
+ -h, --help                        show this help message and exit
+ -id, --id-to-delete ID_TO_DELETE  ID of the 2FA method to delete (see `vastai tfa status`)
+ -c, --code CODE                   2FA code from your Authenticator app or SMS to authorize deletion
+ --sms                             Use SMS 2FA method instead of TOTP
+ -s, --secret SECRET               Secret token (required for SMS authorization)
+ -bc, --backup-code BACKUP_CODE    One-time backup code (alternative to regular 2FA code)
+ --method-id METHOD_ID             2FA Method ID if you have more than one of the same type ('id' from `tfa status`)
+
+Global options (available for all commands):
+ --url URL                         Server REST API URL
+ --retry RETRY                     Retry limit
+ --explain                         Output verbose explanation of mapping of CLI calls to HTTPS API endpoints
+ --raw                             Output machine-readable json
+ --full                            Print full results instead of paging with `less` for commands that support it
+ --curl                            Show a curl equivalency to the call
+ --api-key API_KEY                 API Key to use. defaults to using the one stored in C:\Users\begna112\.config\vastai\vast_api_key
+ --version                         Show CLI version
+ --no-color                        Disable colored output for commands that support it (Note: the 'rich' python module is required for colored output)
+
+Remove a 2FA method from your account.
+
+This action requires 2FA verification to prevent unauthorized removals.
+
+NOTE: If you do not specify --id-to-delete, the system will attempt to delete the method
+you are using to authenticate. However, it is much safer to specify the ID to avoid
+confusion if you have multiple methods.
+
+Use `vastai tfa status` to see your active methods and their IDs.
+
+Examples:
+ # Delete method #123, authorize with TOTP/Authenticator code
+ vastai tfa delete --id-to-delete 123 --code 456789
+
+ # Delete method #123, authorize with SMS and secret from `tfa send-sms`
+ vastai tfa delete -id 123 --sms --secret abc123def456 -c 456789
+
+ # Delete method #123, authorize with backup code
+ vastai tfa delete --id-to-delete 123 --backup-code ABCD-EFGH-IJKL
+
+ # Delete method #123, specify which TOTP method to use if you have multiple
+ vastai tfa delete -id 123 --method-id 456 -c 456789
+
+ # Delete the TOTP method you are using to authenticate (use with caution)
+ vastai tfa delete -c 456789
+```
+
+---
+
+### tfa login
+
+Complete 2FA login by verifying code
+
+```
+usage: vastai tfa login [--code CODE] [--sms] [--secret SECRET] [--backup-code BACKUP_CODE]
+
+Complete 2FA login by verifying code and obtaining session key
+
+options:
+ -h, --help                      show this help message and exit
+ -c, --code CODE                 2FA code from Authenticator app (default) or SMS
+ --sms                           Use SMS 2FA method instead of TOTP
+ -s, --secret SECRET             Secret token from previous login step (required for SMS)
+ -bc, --backup-code BACKUP_CODE  One-time backup code (alternative to regular 2FA code)
+ -id, --method-id METHOD_ID      2FA Method ID if you have more than one of the same type ('id' from `tfa status`)
+
+Global options (available for all commands):
+ --url URL                       Server REST API URL
+ --retry RETRY                   Retry limit
+ --explain                       Output verbose explanation of mapping of CLI calls to HTTPS API endpoints
+ --raw                           Output machine-readable json
+ --full                          Print full results instead of paging with `less` for commands that support it
+ --curl                          Show a curl equivalency to the call
+ --api-key API_KEY               API Key to use. defaults to using the one stored in C:\Users\begna112\.config\vastai\vast_api_key
+ --version                       Show CLI version
+ --no-color                      Disable colored output for commands that support it (Note: the 'rich' python module is required for colored output)
+
+Complete Two-Factor Authentication login by providing the 2FA code.
+
+For TOTP (default): Provide the 6-digit code from your Authenticator app
+For SMS: Include the --sms flag and provide -s/--secret from the `tfa send-sms` command response
+For backup code: Use --backup-code instead of code (codes may only be used once)
+
+Examples:
+ vastai tfa login -c 123456
+ vastai tfa login --code 123456 --sms --secret abc123def456
+ vastai tfa login --backup-code ABCD-EFGH-IJKL
+```
+
+---
+
+### tfa regen-codes
+
+Regenerate backup codes for 2FA
+
+```
+usage: vastai tfa regen-codes [--code CODE] [--sms] [--secret SECRET] [--backup-code BACKUP_CODE] [--method-id ID]
+
+Regenerate backup codes for 2FA recovery
+
+options:
+ -h, --help                      show this help message and exit
+ -c, --code CODE                 2FA code from Authenticator app (default) or SMS
+ --sms                           Use SMS 2FA method instead of TOTP
+ -s, --secret SECRET             Secret token from previous login step (required for SMS)
+ -bc, --backup-code BACKUP_CODE  One-time backup code (alternative to regular 2FA code)
+ -id, --method-id METHOD_ID      2FA Method ID if you have more than one of the same type ('id' from `tfa status`)
+
+Global options (available for all commands):
+ --url URL                       Server REST API URL
+ --retry RETRY                   Retry limit
+ --explain                       Output verbose explanation of mapping of CLI calls to HTTPS API endpoints
+ --raw                           Output machine-readable json
+ --full                          Print full results instead of paging with `less` for commands that support it
+ --curl                          Show a curl equivalency to the call
+ --api-key API_KEY               API Key to use. defaults to using the one stored in C:\Users\begna112\.config\vastai\vast_api_key
+ --version                       Show CLI version
+ --no-color                      Disable colored output for commands that support it (Note: the 'rich' python module is required for colored output)
+
+Generate a new set of backup codes for your account.
+
+This action requires 2FA verification to prevent unauthorized regeneration.
+
+WARNING: This will invalidate all existing backup codes!
+Any previously generated codes will no longer work.
+
+Backup codes are one-time use codes that allow you to log in
+if you lose access to your primary 2FA method (lost phone, etc).
+
+You should regenerate your backup codes if:
+- You've used several codes and are running low
+- You think your codes may have been compromised
+- You lost your saved codes and need new ones
+
+Important: Save the new codes in a secure location immediately!
+They will not be shown again.
+
+Examples:
+ vastai tfa regen-codes --code 123456
+ vastai tfa regen-codes -c 123456 --sms --secret abc123def456
+ vastai tfa regen-codes --backup-code ABCD-EFGH-IJKL
+```
+
+---
+
+### tfa resend-sms
+
+Resend SMS 2FA code
+
+```
+usage: vastai tfa resend-sms --secret SECRET [--phone-number PHONE_NUMBER]
+
+Resend SMS 2FA verification code
+
+options:
+ -h, --help                       show this help message and exit
+ -p, --phone-number PHONE_NUMBER  Phone number to receive SMS code (E.164 format, e.g., +1234567890)
+ -s, --secret SECRET              Secret token from the original 2FA login attempt
+
+Global options (available for all commands):
+ --url URL                        Server REST API URL
+ --retry RETRY                    Retry limit
+ --explain                        Output verbose explanation of mapping of CLI calls to HTTPS API endpoints
+ --raw                            Output machine-readable json
+ --full                           Print full results instead of paging with `less` for commands that support it
+ --curl                           Show a curl equivalency to the call
+ --api-key API_KEY                API Key to use. defaults to using the one stored in C:\Users\begna112\.config\vastai\vast_api_key
+ --version                        Show CLI version
+ --no-color                       Disable colored output for commands that support it (Note: the 'rich' python module is required for colored output)
+
+Resend the SMS verification code to your phone.
+
+This is useful if:
+- You didn't receive the original SMS
+- The code expired before you could use it
+- You accidentally deleted the message
+
+You must provide the same secret token from the original request.
+
+Example:
+ vastai tfa resend-sms --secret abc123def456
+```
+
+---
+
+### tfa send-sms
+
+Request a 2FA SMS verification code
+
+```
+usage: vastai tfa send-sms [--phone-number PHONE_NUMBER]
+
+Request a 2FA SMS verification code to be sent
+
+options:
+ -h, --help                       show this help message and exit
+ -p, --phone-number PHONE_NUMBER  Phone number to receive SMS code (E.164 format, e.g., +1234567890)
+
+Global options (available for all commands):
+ --url URL                        Server REST API URL
+ --retry RETRY                    Retry limit
+ --explain                        Output verbose explanation of mapping of CLI calls to HTTPS API endpoints
+ --raw                            Output machine-readable json
+ --full                           Print full results instead of paging with `less` for commands that support it
+ --curl                           Show a curl equivalency to the call
+ --api-key API_KEY                API Key to use. defaults to using the one stored in C:\Users\begna112\.config\vastai\vast_api_key
+ --version                        Show CLI version
+ --no-color                       Disable colored output for commands that support it (Note: the 'rich' python module is required for colored output)
+
+Request a two-factor authentication code to be sent via SMS.
+
+If --phone-number is not provided, uses the phone number on your account.
+The secret token will be returned and must be used with 'vastai tfa activate'.
+
+Examples:
+ vastai tfa send-sms
+ vastai tfa send-sms --phone-number +12345678901
+```
+
+---
+
+### tfa status
+
+Shows the current 2FA status and configured methods
+
+```
+usage: vast.py tfa status [-h] [--url URL] [--retry RETRY] [--explain] [--raw] [--full] [--curl] [--api-key API_KEY] [--version]
+                          [--no-color]
+
+Show the current 2FA status and configured methods for your account
+
+options:
+ -h, --help         show this help message and exit
+
+Global options (available for all commands):
+ --url URL          Server REST API URL
+ --retry RETRY      Retry limit
+ --explain          Output verbose explanation of mapping of CLI calls to HTTPS API endpoints
+ --raw              Output machine-readable json
+ --full             Print full results instead of paging with `less` for commands that support it
+ --curl             Show a curl equivalency to the call
+ --api-key API_KEY  API Key to use. defaults to using the one stored in C:\Users\begna112\.config\vastai\vast_api_key
+ --version          Show CLI version
+ --no-color         Disable colored output for commands that support it (Note: the 'rich' python module is required for colored output)
+
+Show the current 2FA status for your account, including:
+ - Whether or not 2FA is enabled
+ - A list of active 2FA methods
+ - The number of backup codes remaining (if 2FA is enabled)
+```
+
+---
+
+### tfa totp-setup
+
+Generate TOTP secret and QR code for Authenticator app setup
+
+```
+usage: vastai tfa totp-setup
+
+Generate TOTP secret and QR code for Authenticator app setup
+
+options:
+ -h, --help         show this help message and exit
+
+Global options (available for all commands):
+ --url URL          Server REST API URL
+ --retry RETRY      Retry limit
+ --explain          Output verbose explanation of mapping of CLI calls to HTTPS API endpoints
+ --raw              Output machine-readable json
+ --full             Print full results instead of paging with `less` for commands that support it
+ --curl             Show a curl equivalency to the call
+ --api-key API_KEY  API Key to use. defaults to using the one stored in C:\Users\begna112\.config\vastai\vast_api_key
+ --version          Show CLI version
+ --no-color         Disable colored output for commands that support it (Note: the 'rich' python module is required for colored output)
+
+Set up TOTP (Time-based One-Time Password) 2FA using an Authenticator app.
+
+This command generates a new TOTP secret and displays:
+- A QR code (for scanning with your app)
+- A manual entry key (for typing into your app)
+- A secret token (needed for the next step)
+
+Workflow:
+ 1. Run this command to generate the TOTP secret
+ 2. Add the account to your Authenticator app by either:
+    - Scanning the displayed QR code, OR
+    - Manually entering the key shown
+ 3. Once added, your app will display a 6-digit code
+ 4. Complete setup by running:
+    vastai tfa activate --secret <SECRET> <CODE>
+
+Supported Authenticator Apps:
+ - Google Authenticator
+ - Microsoft Authenticator
+ - Authy
+ - 1Password
+ - Any TOTP-compatible app
+
+Example:
+ vastai tfa totp-setup
+```
+
+---
+
+### tfa update
+
+Update a 2FA method's settings
+
+```
+usage: vastai tfa update METHOD_ID [--label LABEL] [--set-primary]
+
+Update a 2FA method's settings (label or primary status)
+
+positional arguments:
+ METHOD_ID                      ID of the 2FA method to update (see `vastai tfa status`)
+
+options:
+ -h, --help                     show this help message and exit
+ -l, --label LABEL              New label/name for this 2FA method
+ -p, --set-primary SET_PRIMARY  Set this method as the primary/default 2FA method
+
+Global options (available for all commands):
+ --url URL                      Server REST API URL
+ --retry RETRY                  Retry limit
+ --explain                      Output verbose explanation of mapping of CLI calls to HTTPS API endpoints
+ --raw                          Output machine-readable json
+ --full                         Print full results instead of paging with `less` for commands that support it
+ --curl                         Show a curl equivalency to the call
+ --api-key API_KEY              API Key to use. defaults to using the one stored in C:\Users\begna112\.config\vastai\vast_api_key
+ --version                      Show CLI version
+ --no-color                     Disable colored output for commands that support it (Note: the 'rich' python module is required for colored output)
+
+Update the label or primary status of a 2FA method.
+
+The label is a friendly name to help you identify different methods
+(e.g. "Work Phone", "Personal Authenticator").
+
+The primary method is your preferred/default 2FA method.
+
+Examples:
+ vastai tfa update 123 --label "Work Phone"
+ vastai tfa update 456 --set-primary
+ vastai tfa update 789 --label "Backup Authenticator" --set-primary
+```
+
+---
+
 ### transfer credit
 
 Transfer credits to another account
 
 ```
 usage: vastai transfer credit RECIPIENT AMOUNT
+
+Transfer credits to another account
 
 positional arguments:
  recipient          email (or id) of recipient account
@@ -3474,6 +3887,8 @@ Update an existing endpoint group
 
 ```
 usage: vastai update endpoint ID [OPTIONS]
+
+Update an existing endpoint group
 
 positional arguments:
  id                               id of endpoint group to update
@@ -3512,6 +3927,8 @@ Update an existing user environment variable
 ```
 usage: vastai update env-var <name> <value>
 
+Update an existing user environment variable
+
 positional arguments:
  name               Environment variable name to update
  value              New environment variable value
@@ -3535,10 +3952,12 @@ Global options (available for all commands):
 
 ### update instance
 
-Update recreate an instance from a new/updated template
+Update an instance configuration or recreate from a template
 
 ```
 usage: vastai update instance ID [OPTIONS]
+
+Update an instance configuration or recreate from a template
 
 positional arguments:
  id                                   id of instance to update
@@ -3570,10 +3989,12 @@ Example: vastai update instance 1234 --template_hash_id 661d064bbda1f2a133816b6d
 
 ### update ssh-key
 
-Update an existing SSH key
+Update an SSH key's label or properties
 
 ```
 usage: vastai update ssh-key ID SSH_KEY
+
+Update an SSH key's label or properties
 
 positional arguments:
  id                 id of the ssh key to update
@@ -3603,6 +4024,8 @@ Update an existing team role
 ```
 usage: vastai update team-role ID --name NAME --permissions PERMISSIONS
 
+Update an existing team role
+
 positional arguments:
  id                         id of the role
 
@@ -3631,6 +4054,8 @@ Update an existing template
 
 ```
 usage: vastai update template HASH_ID
+
+Update an existing template
 
 positional arguments:
  HASH_ID                        hash id of the template
@@ -3688,6 +4113,8 @@ Update an existing autoscale group
 ```
 usage: vastai update workergroup WORKERGROUP_ID --endpoint_id ENDPOINT_ID [options]
 
+Update an existing autoscale group
+
 positional arguments:
  id                             id of autoscale group to update
 
@@ -3729,10 +4156,12 @@ Commands for GPU providers hosting machines on Vast.ai.
 
 ### add network-disk
 
-Add Network Disk to Physical Cluster.
+[Beta] Attach a network disk to a machine cluster
 
 ```
 usage: vastai add network-disk MACHINES MOUNT_PATH [options]
+
+[Host] [Beta] Attach a network disk to a machine cluster
 
 positional arguments:
  machines                 ids of machines to add disk to, that is networked to be on the same LAN as machine
@@ -3765,10 +4194,12 @@ vastai add network-disk 1 /mnt/disk1 -d 12345
 
 ### cancel maint
 
-Cancel maint window
+Cancel a scheduled maintenance window
 
 ```
 usage: vastai cancel maint id
+
+[Host] Cancel a scheduled maintenance window
 
 positional arguments:
  id                 id of machine to cancel maintenance(s) for
@@ -3795,10 +4226,12 @@ Example: vastai cancel maint 8207
 
 ### cleanup machine
 
-Remove all expired storage instances from the machine, freeing up space
+Clean up expired storage to free disk space
 
 ```
 usage: vastai cleanup machine ID [options]
+
+[Host] Clean up expired storage to free disk space
 
 positional arguments:
  id                 id of machine to cleanup
@@ -3825,12 +4258,48 @@ This is useful if you are running low on storage, want to do maintenance, or are
 
 ---
 
+### create network-volume
+
+[Beta] Create a new network-attached storage volume
+
+```
+usage: vastai create network volume ID [options]
+
+[Host] [Beta] Create a new network-attached storage volume
+
+positional arguments:
+ id                 id of network volume offer
+
+options:
+ -h, --help         show this help message and exit
+ -s, --size SIZE    size in GB of network volume. Default 15 GB.
+ -n, --name NAME    Optional name of network volume.
+
+Global options (available for all commands):
+ --url URL          Server REST API URL
+ --retry RETRY      Retry limit
+ --explain          Output verbose explanation of mapping of CLI calls to HTTPS API endpoints
+ --raw              Output machine-readable json
+ --full             Print full results instead of paging with `less` for commands that support it
+ --curl             Show a curl equivalency to the call
+ --api-key API_KEY  API Key to use. defaults to using the one stored in C:\Users\begna112\.config\vastai\vast_api_key
+ --version          Show CLI version
+ --no-color         Disable colored output for commands that support it (Note: the 'rich' python module is required for colored output)
+
+Creates a network volume from an offer ID (which is returned from "search network volumes"). Each offer ID can be used to create multiple volumes,
+provided the size of all volumes does not exceed the size of the offer.
+```
+
+---
+
 ### defrag machines
 
-Defragment machines
+Rebuild larger GPU offers from orphaned single GPUs when possible
 
 ```
 usage: vastai defragment machines IDs 
+
+[Host] Rebuild larger GPU offers from orphaned single GPUs when possible
 
 positional arguments:
  IDs                ids of machines
@@ -3856,10 +4325,12 @@ Defragment some of your machines. This will rearrange GPU assignments to try and
 
 ### delete machine
 
-Delete machine if the machine is not being used by clients. host jobs on their own machines are disregarded and machine is force deleted.
+Remove a machine from your host account
 
 ```
 usage: vastai delete machine <id>
+
+[Host] Remove a machine from your host account
 
 positional arguments:
  id                 id of machine to delete
@@ -3883,10 +4354,12 @@ Global options (available for all commands):
 
 ### list machine
 
-list a machine for rent
+List a single machine for rent on the marketplace
 
 ```
 usage: vastai list machine ID [options]
+
+[Host] List a single machine for rent on the marketplace
 
 positional arguments:
  id                                 id of machine to list
@@ -3927,10 +4400,12 @@ We strongly recommend you test the machine first and only list when ready.
 
 ### list machines
 
-list machines for rent
+List multiple machines for rent on the marketplace
 
 ```
 usage: vastai list machines IDs [options]
+
+[Host] List multiple machines for rent on the marketplace
 
 positional arguments:
  ids                                ids of instance to list
@@ -3969,10 +4444,12 @@ You could extend the end dates of all your machines using a command combo like t
 
 ### list network-volume
 
-list disk space for rent as a network volume
+[Beta] List disk space as a rentable network volume
 
 ```
 usage: vastai list network volume DISK_ID [options]
+
+[Host] [Beta] List disk space as a rentable network volume
 
 positional arguments:
  disk_id                      id of network disk to list
@@ -3999,10 +4476,12 @@ Global options (available for all commands):
 
 ### list volume
 
-list disk space for rent as a volume on a machine
+List disk space as a rentable volume
 
 ```
 usage: vastai list volume ID [options]
+
+[Host] List disk space as a rentable volume
 
 positional arguments:
  id                           id of machine to list
@@ -4031,10 +4510,12 @@ Allocates a section of disk on a machine to be used for volumes.
 
 ### list volumes
 
-list disk space for rent as a volume on machines
+List disk space on multiple machines as rentable volumes
 
 ```
 usage: vastai list volume IDs [options]
+
+[Host] List disk space on multiple machines as rentable volumes
 
 positional arguments:
  ids                          id of machines list
@@ -4063,10 +4544,12 @@ Allocates a section of disk on machines to be used for volumes.
 
 ### remove defjob
 
-Delete default jobs
+Remove default background jobs from a machine
 
 ```
 usage: vastai remove defjob id
+
+[Host] Remove default background jobs from a machine
 
 positional arguments:
  id                 id of machine to remove default instance from
@@ -4088,12 +4571,77 @@ Global options (available for all commands):
 
 ---
 
+### remove-machine-from-cluster
+
+[Beta] Remove a machine from a cluster
+
+```
+usage: vastai remove-machine-from-cluster CLUSTER_ID MACHINE_ID NEW_MANAGER_ID
+
+[Host] [Beta] Remove a machine from a cluster
+
+positional arguments:
+ cluster_id         ID of cluster you want to remove machine from.
+ machine_id         ID of machine to remove from cluster.
+ new_manager_id     ID of machine to promote to manager. Must already be in cluster
+
+options:
+ -h, --help         show this help message and exit
+
+Global options (available for all commands):
+ --url URL          Server REST API URL
+ --retry RETRY      Retry limit
+ --explain          Output verbose explanation of mapping of CLI calls to HTTPS API endpoints
+ --raw              Output machine-readable json
+ --full             Print full results instead of paging with `less` for commands that support it
+ --curl             Show a curl equivalency to the call
+ --api-key API_KEY  API Key to use. defaults to using the one stored in C:\Users\begna112\.config\vastai\vast_api_key
+ --version          Show CLI version
+ --no-color         Disable colored output for commands that support it (Note: the 'rich' python module is required for colored output)
+
+Removes machine from cluster and also reassigns manager ID,
+if we're removing the manager node
+```
+
+---
+
+### reports
+
+Get usage and performance reports for a machine
+
+```
+usage: vastai reports ID
+
+[Host] Get usage and performance reports for a machine
+
+positional arguments:
+ id                 machine id
+
+options:
+ -h, --help         show this help message and exit
+
+Global options (available for all commands):
+ --url URL          Server REST API URL
+ --retry RETRY      Retry limit
+ --explain          Output verbose explanation of mapping of CLI calls to HTTPS API endpoints
+ --raw              Output machine-readable json
+ --full             Print full results instead of paging with `less` for commands that support it
+ --curl             Show a curl equivalency to the call
+ --api-key API_KEY  API Key to use. defaults to using the one stored in C:\Users\begna112\.config\vastai\vast_api_key
+ --version          Show CLI version
+ --no-color         Disable colored output for commands that support it (Note: the 'rich' python module is required for colored output)
+```
+
+---
+
 ### schedule maint
 
-Schedule upcoming maint window
+Schedule a maintenance window for a machine
 
 ```
 usage: vastai schedule maintenance id [--sdate START_DATE --duration DURATION --maintenance_category MAINTENANCE_CATEGORY]
+
+[Host] Schedule a maintenance window for a machine
 
 positional arguments:
  id                                           id of machine to schedule maintenance for
@@ -4124,12 +4672,76 @@ Example: vastai schedule maint 8207 --sdate 1677562671 --duration 0.5 --maintena
 
 ---
 
+### search network-volumes
+
+[Beta] Search available network volume offers with filters
+
+```
+usage: vastai search network volumes [--help] [--api-key API_KEY] [--raw] <query>
+
+[Host] [Beta] Search available network volume offers with filters
+
+positional arguments:
+ query              Query to search for. default: 'external=false verified=true disk_space>=1', pass -n to ignore default
+
+options:
+ -h, --help         show this help message and exit
+ -n, --no-default   Disable default query
+ --limit LIMIT
+ --storage STORAGE  Amount of storage to use for pricing, in GiB. default=1.0GiB
+ -o, --order ORDER  Comma-separated list of fields to sort on. postfix field with - to sort desc. ex: -o 'disk_space,inet_up-'.  default='score-'
+
+Global options (available for all commands):
+ --url URL          Server REST API URL
+ --retry RETRY      Retry limit
+ --explain          Output verbose explanation of mapping of CLI calls to HTTPS API endpoints
+ --raw              Output machine-readable json
+ --full             Print full results instead of paging with `less` for commands that support it
+ --curl             Show a curl equivalency to the call
+ --api-key API_KEY  API Key to use. defaults to using the one stored in C:\Users\begna112\.config\vastai\vast_api_key
+ --version          Show CLI version
+ --no-color         Disable colored output for commands that support it (Note: the 'rich' python module is required for colored output)
+
+Query syntax:
+
+    query = comparison comparison...
+    comparison = field op value
+    field = <name of a field>
+    op = one of: <, <=, ==, !=, >=, >, in, notin
+    value = <bool, int, float, string> | 'any' | [value0, value1, ...]
+    bool: True, False
+
+note: to pass '>' and '<' on the command line, make sure to use quotes
+note: to encode a string query value (ie for gpu_name), replace any spaces ' ' with underscore '_'
+
+Examples:
+
+    # search for volumes with greater than 50GB of available storage and greater than 500 Mb/s upload and download speed
+    vastai search volumes "disk_space>50 inet_up>500 inet_down>500"
+
+Available fields:
+
+      Name                  Type       Description
+    duration:               float     max rental duration in days
+    geolocation:            string    Two letter country code. Works with operators =, !=, in, notin (e.g. geolocation not in ['XV','XZ'])
+    id:                     int       volume offer unique ID
+    inet_down:              float     internet download speed in Mb/s
+    inet_up:                float     internet upload speed in Mb/s
+    reliability:            float     machine reliability score (see FAQ for explanation)
+    storage_cost:           float     storage cost in $/GB/month
+    verified:               bool      is the machine verified
+```
+
+---
+
 ### self-test machine
 
-Perform a self-test on the specified machine
+Run diagnostics on a hosted machine
 
 ```
 usage: vastai self-test machine <machine_id> [--debugging] [--explain] [--api_key API_KEY] [--url URL] [--retry RETRY] [--raw] [--ignore-requirements]
+
+[Host] Run diagnostics on a hosted machine
 
 positional arguments:
  machine_id             Machine ID
@@ -4164,10 +4776,12 @@ Examples:
 
 ### set defjob
 
-Create default jobs for a machine
+Configure default background jobs for a machine
 
 ```
 usage: vastai set defjob id [--api-key API_KEY] [--price_gpu PRICE_GPU] [--price_inetu PRICE_INETU] [--price_inetd PRICE_INETD] [--image IMAGE] [--args ...]
+
+[Host] Configure default background jobs for a machine
 
 positional arguments:
  id                         id of machine to launch default instance on
@@ -4198,10 +4812,12 @@ Performs the same action as creating a background job at https://cloud.vast.ai/h
 
 ### set min-bid
 
-Set the minimum bid/rental price for a machine
+Set minimum price for interruptible/spot instance rentals
 
 ```
 usage: vastai set min_bid id [--price PRICE]
+
+[Host] Set minimum price for interruptible/spot instance rentals
 
 positional arguments:
  id                 id of machine to set min bid price for
@@ -4226,12 +4842,44 @@ Change the current min bid price of machine id to PRICE.
 
 ---
 
+### show earnings
+
+Show rental income history for your machines
+
+```
+usage: vastai show earnings [OPTIONS]
+
+[Host] Show rental income history for your machines
+
+options:
+ -h, --help                   show this help message and exit
+ -q, --quiet                  only display numeric ids
+ -s, --start_date START_DATE  start date and time for report. Many formats accepted
+ -e, --end_date END_DATE      end date and time for report. Many formats accepted 
+ -m, --machine_id MACHINE_ID  Machine id (optional)
+
+Global options (available for all commands):
+ --url URL                    Server REST API URL
+ --retry RETRY                Retry limit
+ --explain                    Output verbose explanation of mapping of CLI calls to HTTPS API endpoints
+ --raw                        Output machine-readable json
+ --full                       Print full results instead of paging with `less` for commands that support it
+ --curl                       Show a curl equivalency to the call
+ --api-key API_KEY            API Key to use. defaults to using the one stored in C:\Users\begna112\.config\vastai\vast_api_key
+ --version                    Show CLI version
+ --no-color                   Disable colored output for commands that support it (Note: the 'rich' python module is required for colored output)
+```
+
+---
+
 ### show machine
 
-Show hosted machines
+Show details for a specific hosted machine
 
 ```
 usage: vastai show machine ID [OPTIONS]
+
+[Host] Show details for a specific hosted machine
 
 positional arguments:
  Machine            id of machine to display
@@ -4256,10 +4904,12 @@ Global options (available for all commands):
 
 ### show machines
 
-Show hosted machines
+List all your hosted machines
 
 ```
 usage: vastai show machines [OPTIONS]
+
+[Host] List all your hosted machines
 
 options:
  -h, --help         show this help message and exit
@@ -4281,12 +4931,14 @@ Global options (available for all commands):
 
 ### show maints
 
-Show maintenance information for host machines
+List scheduled maintenance windows
 
 ```
 usage: 
 vastai show maints -ids 'machine_id_1' [OPTIONS]
 vastai show maints -ids 'machine_id_1, machine_id_2' [OPTIONS]
+
+[Host] List scheduled maintenance windows
 
 options:
  -h, --help         show this help message and exit
@@ -4309,10 +4961,12 @@ Global options (available for all commands):
 
 ### show network-disks
 
-Show network disks associated with your account.
+[Beta] List network disks attached to your machines
 
 ```
 usage: vastai show network-disks
+
+[Host] [Beta] List network disks attached to your machines
 
 options:
  -h, --help         show this help message and exit
@@ -4335,10 +4989,12 @@ Show network disks associated with your account.
 
 ### unlist machine
 
-Unlist a listed machine
+Remove a machine from the rental marketplace
 
 ```
 usage: vastai unlist machine <id>
+
+[Host] Remove a machine from the rental marketplace
 
 positional arguments:
  id                 id of machine to unlist
@@ -4362,10 +5018,12 @@ Global options (available for all commands):
 
 ### unlist network-volume
 
-Unlists network volume offer
+[Beta] Remove a network volume offer from the marketplace
 
 ```
 usage: vastai unlist network volume OFFER_ID
+
+[Host] [Beta] Remove a network volume offer from the marketplace
 
 positional arguments:
  id                 id of network volume offer to unlist
@@ -4389,10 +5047,12 @@ Global options (available for all commands):
 
 ### unlist volume
 
-unlist volume offer
+Remove a volume offer from the marketplace
 
 ```
 usage: vastai unlist volume ID
+
+[Host] Remove a volume offer from the marketplace
 
 positional arguments:
  id                 volume ID you want to unlist
