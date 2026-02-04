@@ -1,0 +1,2343 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://vast-ai.github.io/vast-python/cli/client/search/">
+      
+      
+        <link rel="prev" href="../instances/">
+      
+      
+        <link rel="next" href="../ssh/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Search - Vast.ai CLI & SDK</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#search-commands" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Vast.ai CLI &amp; SDK" class="md-header__button md-logo" aria-label="Vast.ai CLI & SDK" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Vast.ai CLI & SDK
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Search
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/vast-ai/vast-python" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    vast-ai/vast-python
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../installation/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Installation
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+  CLI
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../sdk/" class="md-tabs__link">
+          
+  
+  
+  SDK
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../serverless/" class="md-tabs__link">
+          
+  
+  
+  Serverless
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../guides/migration/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../changelog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Changelog
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Vast.ai CLI &amp; SDK" class="md-nav__button md-logo" aria-label="Vast.ai CLI & SDK" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Vast.ai CLI & SDK
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/vast-ai/vast-python" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    vast-ai/vast-python
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    CLI
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Client Commands
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Client Commands
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instances/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instances
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Search
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Search
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#query-syntax-for-string-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Query Syntax for String Values
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#search-offers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        search offers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#search-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        search templates
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#search-volumes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        search volumes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#search-network-volumes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        search network-volumes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#search-benchmarks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        search benchmarks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#search-invoices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        search invoices
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See Also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ssh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSH & Files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../billing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Billing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../volumes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Volumes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../teams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Teams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoscaling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Autoscaling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../keys/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Host Commands
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Host Commands
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../host/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../host/machines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../host/maintenance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Maintenance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../host/reports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reports
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../host/clusters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Clusters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../commands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Full Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SDK
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    SDK
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sdk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sdk/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sdk/reference/vastai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sdk/reference/methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Method Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Serverless
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Serverless
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../serverless/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Migration Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#query-syntax-for-string-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Query Syntax for String Values
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#search-offers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        search offers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#search-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        search templates
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#search-volumes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        search volumes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#search-network-volumes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        search network-volumes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#search-benchmarks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        search benchmarks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#search-invoices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        search invoices
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See Also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="search-commands">Search Commands<a class="headerlink" href="#search-commands" title="Permanent link">&para;</a></h1>
+<p>Commands for searching offers, templates, and other resources.</p>
+<h2 id="query-syntax-for-string-values">Query Syntax for String Values<a class="headerlink" href="#query-syntax-for-string-values" title="Permanent link">&para;</a></h2>
+<p>When searching for values that contain spaces (like GPU names), you have two options:</p>
+<ol>
+<li>
+<p><strong>Underscores (recommended)</strong> - most portable across shells:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>vastai<span class="w"> </span>search<span class="w"> </span>offers<span class="w"> </span><span class="s2">&quot;gpu_name=RTX_4090&quot;</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Escaped double quotes</strong> - wrap query in single quotes, escape inner double quotes:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>vastai<span class="w"> </span>search<span class="w"> </span>offers<span class="w"> </span><span class="s1">&#39;gpu_name=\&quot;RTX 4090\&quot;&#39;</span>
+</code></pre></div></p>
+</li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Single quotes around values do NOT work: <code>gpu_name='RTX 4090'</code> will fail.</p>
+</div>
+<hr />
+<h2 id="search-offers">search offers<a class="headerlink" href="#search-offers" title="Permanent link">&para;</a></h2>
+<p>Search available GPU offers with filters</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>vastai<span class="w"> </span>search<span class="w"> </span>offers<span class="w"> </span><span class="o">[</span>--help<span class="o">]</span><span class="w"> </span><span class="o">[</span>--api-key<span class="w"> </span>API_KEY<span class="o">]</span><span class="w"> </span><span class="o">[</span>--raw<span class="o">]</span><span class="w"> </span>&lt;query&gt;
+</code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>query</code></td>
+<td>Query to search for. default: 'external=false rentable=true verified=true', pass -n to ignore default</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Options:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-t, --type TYPE</code></td>
+<td>Show 'on-demand', 'reserved', or 'bid'(interruptible) pricing. default: on-demand</td>
+</tr>
+<tr>
+<td><code>-i, --interruptible</code></td>
+<td>Alias for --type=bid</td>
+</tr>
+<tr>
+<td><code>-b, --bid</code></td>
+<td>Alias for --type=bid</td>
+</tr>
+<tr>
+<td><code>-r, --reserved</code></td>
+<td>Alias for --type=reserved</td>
+</tr>
+<tr>
+<td><code>-d, --on-demand</code></td>
+<td>Alias for --type=on-demand</td>
+</tr>
+<tr>
+<td><code>-n, --no-default</code></td>
+<td>Disable default query</td>
+</tr>
+<tr>
+<td><code>--new</code></td>
+<td>New search exp</td>
+</tr>
+<tr>
+<td><code>--disable-bundling</code></td>
+<td>Deprecated</td>
+</tr>
+<tr>
+<td><code>--storage STORAGE</code></td>
+<td>Amount of storage to use for pricing, in GiB. default=5.0GiB</td>
+</tr>
+<tr>
+<td><code>-o, --order ORDER</code></td>
+<td>Comma-separated list of fields to sort on. postfix field with - to sort desc. ex: -o 'num_gpus,total_flops-'.  default='score-'</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong></p>
+<p>Query syntax:
+query = comparison comparison...
+comparison = field op value
+field = <name of a field>
+op = one of: &lt;, &lt;=, ==, !=, &gt;=, &gt;, in, notin
+value = <bool, int, float, string> | 'any' | [value0, value1, ...]
+bool: True, False
+note: to pass '&gt;' and '&lt;' on the command line, make sure to use quotes
+note: to encode a string query value (ie for gpu_name), replace any spaces ' ' with underscore '_'</p>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="w">    </span><span class="c1"># search for somewhat reliable single RTX 3090 instances, filter out any duplicates or offers that conflict with our existing stopped instances</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span>vastai<span class="w"> </span>search<span class="w"> </span>offers<span class="w"> </span><span class="s1">&#39;reliability &gt; 0.98 num_gpus=1 gpu_name=RTX_3090 rented=False&#39;</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="c1"># search for datacenter gpus with minimal compute_cap and total_flops</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span>vastai<span class="w"> </span>search<span class="w"> </span>offers<span class="w"> </span><span class="s1">&#39;compute_cap &gt; 610 total_flops &gt; 5 datacenter=True&#39;</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="c1"># search for reliable 4 gpu offers in Taiwan or Sweden</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span>vastai<span class="w"> </span>search<span class="w"> </span>offers<span class="w"> </span><span class="s1">&#39;reliability&gt;0.99 num_gpus=4 geolocation in [TW,SE]&#39;</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="c1"># search for reliable RTX 3090 or 4090 gpus NOT in China or Vietnam</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span>vastai<span class="w"> </span>search<span class="w"> </span>offers<span class="w"> </span><span class="s1">&#39;reliability&gt;0.99 gpu_name in [&quot;RTX 4090&quot;, &quot;RTX 3090&quot;] geolocation notin [CN,VN]&#39;</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span><span class="c1"># search for machines with nvidia drivers 535.86.05 or greater (and various other options)</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span>vastai<span class="w"> </span>search<span class="w"> </span>offers<span class="w"> </span><span class="s1">&#39;disk_space&gt;146 duration&gt;24 gpu_ram&gt;10 cuda_vers&gt;=12.1 direct_port_count&gt;=2 driver_version &gt;= 535.86.05&#39;</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">    </span><span class="c1"># search for reliable machines with at least 4 gpus, unverified, order by num_gpus, allow conflicts</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">    </span>vastai<span class="w"> </span>search<span class="w"> </span>offers<span class="w"> </span><span class="s1">&#39;reliability &gt; 0.99  num_gpus&gt;=4 verified=False rented=any&#39;</span><span class="w"> </span>-o<span class="w"> </span><span class="s1">&#39;num_gpus-&#39;</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">    </span><span class="c1"># search for arm64 cpu architecture</span>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">    </span>vastai<span class="w"> </span>search<span class="w"> </span>offers<span class="w"> </span><span class="s1">&#39;cpu_arch=arm64&#39;</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Available fields:
+Name                  Type       Description
+bw_nvlink               float     bandwidth NVLink
+compute_cap:            int       cuda compute capability*100  (ie:  650 for 6.5, 700 for 7.0)
+cpu_arch                string    host machine cpu architecture (e.g. amd64, arm64)
+cpu_cores:              int       # virtual cpus
+cpu_ghz:                Float     # cpu clock speed GHZ
+cpu_cores_effective:    float     # virtual cpus you get
+cpu_ram:                float     system RAM in gigabytes
+cuda_vers:              float     machine max supported cuda version (based on driver version)
+datacenter:             bool      show only datacenter offers
+direct_port_count       int       open ports on host's router
+disk_bw:                float     disk read bandwidth, in MB/s
+disk_space:             float     disk storage space, in GB
+dlperf:                 float     DL-perf score  (see FAQ for explanation)
+dlperf_usd:             float     DL-perf/$
+dph:                    float     $/hour rental cost
+driver_version:         string    machine's nvidia/amd driver version as 3 digit string ex. "535.86.05,"
+duration:               float     max rental duration in days
+external:               bool      show external offers in addition to datacenter offers
+flops_usd:              float     TFLOPs/$
+geolocation:            string    Two letter country code. Works with operators =, !=, in, notin (e.g. geolocation not in ['XV','XZ'])
+gpu_arch                string    host machine gpu architecture (e.g. nvidia, amd)
+gpu_max_power           float     GPU power limit (watts)
+gpu_max_temp            float     GPU temp limit (C)
+gpu_mem_bw:             float     GPU memory bandwidth in GB/s
+gpu_name:               string    GPU model name (no quotes, replace spaces with underscores, ie: RTX_3090 rather than 'RTX 3090')
+gpu_ram:                float     per GPU RAM in GB
+gpu_total_ram:          float     total GPU RAM in GB
+gpu_frac:               float     Ratio of GPUs in the offer to gpus in the system
+gpu_display_active:     bool      True if the GPU has a display attached
+has_avx:                bool      CPU supports AVX instruction set.
+id:                     int       instance unique ID
+inet_down:              float     internet download speed in Mb/s
+inet_down_cost:         float     internet download bandwidth cost in $/GB
+inet_up:                float     internet upload speed in Mb/s
+inet_up_cost:           float     internet upload bandwidth cost in $/GB
+machine_id              int       machine id of instance
+min_bid:                float     current minimum bid price in $/hr for interruptible
+num_gpus:               int       # of GPUs
+pci_gen:                float     PCIE generation
+pcie_bw:                float     PCIE bandwidth (CPU to GPU)
+reliability:            float     machine reliability score (see FAQ for explanation)
+rentable:               bool      is the instance currently rentable
+rented:                 bool      allow/disallow duplicates and potential conflicts with existing stopped instances
+storage_cost:           float     storage cost in $/GB/month
+static_ip:              bool      is the IP addr static/stable
+total_flops:            float     total TFLOPs from all GPUs
+ubuntu_version          string    host machine ubuntu OS version
+verified:               bool      is the machine verified
+vms_enabled:            bool      is the machine a VM instance</p>
+</div>
+<hr />
+<h2 id="search-templates">search templates<a class="headerlink" href="#search-templates" title="Permanent link">&para;</a></h2>
+<p>Search available templates with filters</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>vastai<span class="w"> </span>search<span class="w"> </span>templates<span class="w"> </span><span class="o">[</span>--help<span class="o">]</span><span class="w"> </span><span class="o">[</span>--api-key<span class="w"> </span>API_KEY<span class="o">]</span><span class="w"> </span><span class="o">[</span>--raw<span class="o">]</span><span class="w"> </span>&lt;query&gt;
+</code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>query</code></td>
+<td>Search query in simple query syntax (see below)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong></p>
+<p>Query syntax:
+query = comparison comparison...
+comparison = field op value
+field = <name of a field>
+op = one of: &lt;, &lt;=, ==, !=, &gt;=, &gt;, in, notin
+value = <bool, int, float, string> | 'any' | [value0, value1, ...]
+bool: True, False
+note: to pass '&gt;' and '&lt;' on the command line, make sure to use quotes
+note: to encode a string query value (ie for gpu_name), replace any spaces ' ' with underscore '_'</p>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="w">        </span><span class="c1"># search for somewhat reliable single RTX 3090 instances, filter out any duplicates or offers that conflict with our existing stopped instances</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">        </span>vastai<span class="w"> </span>search<span class="w"> </span>templates<span class="w"> </span><span class="s1">&#39;count_created &gt; 100  creator_id in [38382,48982]&#39;</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Available fields:
+Name                  Type       Description
+creator_id              int        ID of creator
+created_at              float      time of initial template creation (UTC epoch timestamp)
+count_created           int        #instances created (popularity)
+default_tag             string     image default tag
+docker_login_repo       string     image docker repository
+id                      int        template unique ID
+image                   string     image used for template
+jup_direct              bool       supports jupyter direct
+hash_id                 string     unique hash ID of template
+name                    string     displayable name
+recent_create_date      float      last time of instance creation (UTC epoch timestamp)
+recommended_disk_space  float      min disk space required
+recommended             bool       is templated on our recommended list
+ssh_direct              bool       supports ssh direct
+tag                     string     image tag
+use_ssh                 bool       supports ssh (direct or proxy)</p>
+</div>
+<hr />
+<h2 id="search-volumes">search volumes<a class="headerlink" href="#search-volumes" title="Permanent link">&para;</a></h2>
+<p>Search available volume offers with filters</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>vastai<span class="w"> </span>search<span class="w"> </span>volumes<span class="w"> </span><span class="o">[</span>--help<span class="o">]</span><span class="w"> </span><span class="o">[</span>--api-key<span class="w"> </span>API_KEY<span class="o">]</span><span class="w"> </span><span class="o">[</span>--raw<span class="o">]</span><span class="w"> </span>&lt;query&gt;
+</code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>query</code></td>
+<td>Query to search for. default: 'external=false verified=true disk_space&gt;=1', pass -n to ignore default</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Options:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-n, --no-default</code></td>
+<td>Disable default query</td>
+</tr>
+<tr>
+<td><code>--storage STORAGE</code></td>
+<td>Amount of storage to use for pricing, in GiB. default=1.0GiB</td>
+</tr>
+<tr>
+<td><code>-o, --order ORDER</code></td>
+<td>Comma-separated list of fields to sort on. postfix field with - to sort desc. ex: -o 'disk_space,inet_up-'.  default='score-'</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong></p>
+<p>Query syntax:
+query = comparison comparison...
+comparison = field op value
+field = <name of a field>
+op = one of: &lt;, &lt;=, ==, !=, &gt;=, &gt;, in, notin
+value = <bool, int, float, string> | 'any' | [value0, value1, ...]
+bool: True, False
+note: to pass '&gt;' and '&lt;' on the command line, make sure to use quotes
+note: to encode a string query value (ie for gpu_name), replace any spaces ' ' with underscore '_'</p>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="w">    </span><span class="c1"># search for volumes with greater than 50GB of available storage and greater than 500 Mb/s upload and download speed</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span>vastai<span class="w"> </span>search<span class="w"> </span>volumes<span class="w"> </span><span class="s2">&quot;disk_space&gt;50 inet_up&gt;500 inet_down&gt;500&quot;</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Available fields:
+Name                  Type       Description
+cpu_arch:               string    host machine cpu architecture (e.g. amd64, arm64)
+cuda_vers:              float     machine max supported cuda version (based on driver version)
+datacenter:             bool      show only datacenter offers
+disk_bw:                float     disk read bandwidth, in MB/s
+disk_space:             float     disk storage space, in GB
+driver_version:         string    machine's nvidia/amd driver version as 3 digit string ex. "535.86.05"
+duration:               float     max rental duration in days
+geolocation:            string    Two letter country code. Works with operators =, !=, in, notin (e.g. geolocation not in ['XV','XZ'])
+gpu_arch:               string    host machine gpu architecture (e.g. nvidia, amd)
+gpu_name:               string    GPU model name (no quotes, replace spaces with underscores, ie: RTX_3090 rather than 'RTX 3090')
+has_avx:                bool      CPU supports AVX instruction set.
+id:                     int       volume offer unique ID
+inet_down:              float     internet download speed in Mb/s
+inet_up:                float     internet upload speed in Mb/s
+machine_id:             int       machine id of volume offer
+pci_gen:                float     PCIE generation
+pcie_bw:                float     PCIE bandwidth (CPU to GPU)
+reliability:            float     machine reliability score (see FAQ for explanation)
+storage_cost:           float     storage cost in $/GB/month
+static_ip:              bool      is the IP addr static/stable
+total_flops:            float     total TFLOPs from all GPUs
+ubuntu_version:         string    host machine ubuntu OS version
+verified:               bool      is the machine verified</p>
+</div>
+<hr />
+<h2 id="search-network-volumes">search network-volumes<a class="headerlink" href="#search-network-volumes" title="Permanent link">&para;</a></h2>
+<p>[Host][Beta] Search available network volume offers with filters</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>vastai<span class="w"> </span>search<span class="w"> </span>network<span class="w"> </span>volumes<span class="w"> </span><span class="o">[</span>--help<span class="o">]</span><span class="w"> </span><span class="o">[</span>--api-key<span class="w"> </span>API_KEY<span class="o">]</span><span class="w"> </span><span class="o">[</span>--raw<span class="o">]</span><span class="w"> </span>&lt;query&gt;
+</code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>query</code></td>
+<td>Query to search for. default: 'external=false verified=true disk_space&gt;=1', pass -n to ignore default</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Options:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-n, --no-default</code></td>
+<td>Disable default query</td>
+</tr>
+<tr>
+<td><code>--storage STORAGE</code></td>
+<td>Amount of storage to use for pricing, in GiB. default=1.0GiB</td>
+</tr>
+<tr>
+<td><code>-o, --order ORDER</code></td>
+<td>Comma-separated list of fields to sort on. postfix field with - to sort desc. ex: -o 'disk_space,inet_up-'.  default='score-'</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong></p>
+<p>Query syntax:
+query = comparison comparison...
+comparison = field op value
+field = <name of a field>
+op = one of: &lt;, &lt;=, ==, !=, &gt;=, &gt;, in, notin
+value = <bool, int, float, string> | 'any' | [value0, value1, ...]
+bool: True, False
+note: to pass '&gt;' and '&lt;' on the command line, make sure to use quotes
+note: to encode a string query value (ie for gpu_name), replace any spaces ' ' with underscore '_'</p>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="w">    </span><span class="c1"># search for volumes with greater than 50GB of available storage and greater than 500 Mb/s upload and download speed</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span>vastai<span class="w"> </span>search<span class="w"> </span>volumes<span class="w"> </span><span class="s2">&quot;disk_space&gt;50 inet_up&gt;500 inet_down&gt;500&quot;</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Available fields:
+Name                  Type       Description
+duration:               float     max rental duration in days
+geolocation:            string    Two letter country code. Works with operators =, !=, in, notin (e.g. geolocation not in ['XV','XZ'])
+id:                     int       volume offer unique ID
+inet_down:              float     internet download speed in Mb/s
+inet_up:                float     internet upload speed in Mb/s
+reliability:            float     machine reliability score (see FAQ for explanation)
+storage_cost:           float     storage cost in $/GB/month
+verified:               bool      is the machine verified</p>
+</div>
+<hr />
+<h2 id="search-benchmarks">search benchmarks<a class="headerlink" href="#search-benchmarks" title="Permanent link">&para;</a></h2>
+<p>Search machine benchmark results with filters</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>vastai<span class="w"> </span>search<span class="w"> </span>benchmarks<span class="w"> </span><span class="o">[</span>--help<span class="o">]</span><span class="w"> </span><span class="o">[</span>--api-key<span class="w"> </span>API_KEY<span class="o">]</span><span class="w"> </span><span class="o">[</span>--raw<span class="o">]</span><span class="w"> </span>&lt;query&gt;
+</code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>query</code></td>
+<td>Search query in simple query syntax (see below)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong></p>
+<p>Query syntax:
+query = comparison comparison...
+comparison = field op value
+field = <name of a field>
+op = one of: &lt;, &lt;=, ==, !=, &gt;=, &gt;, in, notin
+value = <bool, int, float, string> | 'any' | [value0, value1, ...]
+bool: True, False
+note: to pass '&gt;' and '&lt;' on the command line, make sure to use quotes
+note: to encode a string query value (ie for gpu_name), replace any spaces ' ' with underscore '_'</p>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="w">    </span><span class="c1"># search for benchmarks with score &gt; 100 for llama2_70B model on 2 specific machines</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">    </span>vastai<span class="w"> </span>search<span class="w"> </span>benchmarks<span class="w"> </span><span class="s1">&#39;score &gt; 100.0  model=llama2_70B  machine_id in [302,402]&#39;</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Available fields:
+Name                  Type       Description
+contract_id             int        ID of instance/contract reporting benchmark
+id                      int        benchmark unique ID
+image                   string     image used for benchmark
+last_update             float      date of benchmark
+machine_id              int        id of machine benchmarked
+model                   string     name of model used in benchmark
+name                    string     name of benchmark
+num_gpus                int        number of gpus used in benchmark
+score                   float      benchmark score result</p>
+</div>
+<hr />
+<h2 id="search-invoices">search invoices<a class="headerlink" href="#search-invoices" title="Permanent link">&para;</a></h2>
+<p>Search billing invoices with filters</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>vastai<span class="w"> </span>search<span class="w"> </span>invoices<span class="w"> </span><span class="o">[</span>--help<span class="o">]</span><span class="w"> </span><span class="o">[</span>--api-key<span class="w"> </span>API_KEY<span class="o">]</span><span class="w"> </span><span class="o">[</span>--raw<span class="o">]</span><span class="w"> </span>&lt;query&gt;
+</code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>query</code></td>
+<td>Search query in simple query syntax (see below)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong></p>
+<p>Query syntax:
+query = comparison comparison...
+comparison = field op value
+field = <name of a field>
+op = one of: &lt;, &lt;=, ==, !=, &gt;=, &gt;, in, notin
+value = <bool, int, float, string> | 'any' | [value0, value1, ...]
+bool: True, False
+note: to pass '&gt;' and '&lt;' on the command line, make sure to use quotes
+note: to encode a string query value (ie for gpu_name), replace any spaces ' ' with underscore '_'</p>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="w">        </span><span class="c1"># search for somewhat reliable single RTX 3090 instances, filter out any duplicates or offers that conflict with our existing stopped instances</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">        </span>vastai<span class="w"> </span>search<span class="w"> </span>invoices<span class="w"> </span><span class="s1">&#39;amount_cents&gt;3000  &#39;</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Available fields:
+Name                  Type       Description
+id                  int,
+user_id             int,
+when                float,          utc epoch timestamp of initial invoice creation
+paid_on             float,          actual payment date (utc epoch timestamp )
+payment_expected    float,          expected payment date (utc epoch timestamp )
+amount_cents        int,            amount of payment in cents
+is_credit           bool,           is a credit purchase
+is_delayed          bool,           is not yet paid
+balance_before      float,          balance before
+balance_after       float,          balance after
+original_amount     int,            original amount of payment
+event_id            string,
+cut_amount          int,
+cut_percent         float,
+extra               json,
+service             string,         type of payment
+stripe_charge       json,
+stripe_refund       json,
+stripe_payout       json,
+error               json,
+paypal_email        string,         email for paypal/wise payments
+transfer_group      string,
+failed              bool,
+refunded            bool,
+is_check            bool,</p>
+</div>
+<hr />
+<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../commands/">Full Command Reference</a> - Complete help text for all commands</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.top", "navigation.instant", "content.code.copy", "content.code.annotate"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

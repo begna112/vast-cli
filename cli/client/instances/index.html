@@ -1,0 +1,2932 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://vast-ai.github.io/vast-python/cli/client/instances/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../search/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Instances - Vast.ai CLI & SDK</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#instance-commands" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Vast.ai CLI &amp; SDK" class="md-header__button md-logo" aria-label="Vast.ai CLI & SDK" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Vast.ai CLI & SDK
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Instances
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/vast-ai/vast-python" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    vast-ai/vast-python
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../installation/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Installation
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+  CLI
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../sdk/" class="md-tabs__link">
+          
+  
+  
+  SDK
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../serverless/" class="md-tabs__link">
+          
+  
+  
+  Serverless
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../guides/migration/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../changelog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Changelog
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Vast.ai CLI &amp; SDK" class="md-nav__button md-logo" aria-label="Vast.ai CLI & SDK" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Vast.ai CLI & SDK
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/vast-ai/vast-python" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    vast-ai/vast-python
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    CLI
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Client Commands
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Client Commands
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instances
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instances
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#create-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#launch-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        launch instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#destroy-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        destroy instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#destroy-instances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        destroy instances
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        start instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-instances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        start instances
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stop-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        stop instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stop-instances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        stop instances
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reboot-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        reboot instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recycle-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        recycle instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#label-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        label instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#update-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prepay-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        prepay instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#change-bid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        change bid
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#show-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        show instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#show-instances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        show instances
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        logs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#execute" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        execute
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See Also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Search
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ssh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSH & Files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../billing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Billing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../volumes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Volumes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../teams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Teams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoscaling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Autoscaling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../keys/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Host Commands
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Host Commands
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../host/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../host/machines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../host/maintenance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Maintenance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../host/reports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reports
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../host/clusters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Clusters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../commands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Full Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SDK
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    SDK
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sdk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sdk/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sdk/reference/vastai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sdk/reference/methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Method Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Serverless
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Serverless
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../serverless/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Migration Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#create-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#launch-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        launch instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#destroy-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        destroy instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#destroy-instances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        destroy instances
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        start instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-instances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        start instances
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stop-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        stop instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stop-instances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        stop instances
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reboot-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        reboot instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recycle-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        recycle instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#label-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        label instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#update-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prepay-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        prepay instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#change-bid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        change bid
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#show-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        show instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#show-instances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        show instances
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        logs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#execute" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        execute
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See Also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="instance-commands">Instance Commands<a class="headerlink" href="#instance-commands" title="Permanent link">&para;</a></h1>
+<p>Commands for creating and managing GPU instances.</p>
+<h2 id="create-instance">create instance<a class="headerlink" href="#create-instance" title="Permanent link">&para;</a></h2>
+<p>Create a new GPU instance from an offer</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>vastai<span class="w"> </span>create<span class="w"> </span>instance<span class="w"> </span>ID<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span><span class="o">[</span>--args<span class="w"> </span>...<span class="o">]</span>
+</code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>id of instance type to launch (returned from search offers)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Options:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--template_hash TEMPLATE_HASH</code></td>
+<td>Create instance from template info</td>
+</tr>
+<tr>
+<td><code>--user USER</code></td>
+<td>User to use with docker create. This breaks some images, so only use this if you are certain you need it.</td>
+</tr>
+<tr>
+<td><code>--disk DISK</code></td>
+<td>size of local disk partition in GB</td>
+</tr>
+<tr>
+<td><code>--image IMAGE</code></td>
+<td>docker container image to launch</td>
+</tr>
+<tr>
+<td><code>--login LOGIN</code></td>
+<td>docker login arguments for private repo authentication, surround with ''</td>
+</tr>
+<tr>
+<td><code>--label LABEL</code></td>
+<td>label to set on the instance</td>
+</tr>
+<tr>
+<td><code>--onstart ONSTART</code></td>
+<td>filename to use as onstart script</td>
+</tr>
+<tr>
+<td><code>--onstart-cmd ONSTART_CMD</code></td>
+<td>contents of onstart script as single argument</td>
+</tr>
+<tr>
+<td><code>--entrypoint ENTRYPOINT</code></td>
+<td>override entrypoint for args launch instance</td>
+</tr>
+<tr>
+<td><code>--ssh</code></td>
+<td>Launch as an ssh instance type</td>
+</tr>
+<tr>
+<td><code>--jupyter</code></td>
+<td>Launch as a jupyter instance instead of an ssh instance</td>
+</tr>
+<tr>
+<td><code>--direct</code></td>
+<td>Use (faster) direct connections for jupyter &amp; ssh</td>
+</tr>
+<tr>
+<td><code>--jupyter-dir JUPYTER_DIR</code></td>
+<td>For runtype 'jupyter', directory in instance to use to launch jupyter. Defaults to image's working directory</td>
+</tr>
+<tr>
+<td><code>--jupyter-lab</code></td>
+<td>For runtype 'jupyter', Launch instance with jupyter lab</td>
+</tr>
+<tr>
+<td><code>--lang-utf8</code></td>
+<td>Workaround for images with locale problems: install and generate locales before instance launch, and set locale to C.UTF-8</td>
+</tr>
+<tr>
+<td><code>--python-utf8</code></td>
+<td>Workaround for images with locale problems: set python's locale to C.UTF-8</td>
+</tr>
+<tr>
+<td><code>--env ENV</code></td>
+<td>env variables and port mapping options, surround with ''</td>
+</tr>
+<tr>
+<td><code>--args ...</code></td>
+<td>list of arguments passed to container ENTRYPOINT. Onstart is recommended for this purpose. (must be last argument)</td>
+</tr>
+<tr>
+<td><code>--force</code></td>
+<td>Skip sanity checks when creating from an existing instance</td>
+</tr>
+<tr>
+<td><code>--cancel-unavail</code></td>
+<td>Return error if scheduling fails (rather than creating a stopped instance)</td>
+</tr>
+<tr>
+<td><code>--bid_price BID_PRICE</code></td>
+<td>(OPTIONAL) create an INTERRUPTIBLE instance with per machine bid price in $/hour</td>
+</tr>
+<tr>
+<td><code>--create-volume VOLUME_ASK_ID</code></td>
+<td>Create a new local volume using an ID returned from the "search volumes" command and link it to the new instance</td>
+</tr>
+<tr>
+<td><code>--link-volume EXISTING_VOLUME_ID</code></td>
+<td>ID of an existing rented volume to link to the instance during creation. (returned from "show volumes" cmd)</td>
+</tr>
+<tr>
+<td><code>--volume-size VOLUME_SIZE</code></td>
+<td>Size of the volume to create in GB. Only usable with --create-volume (default 15GB)</td>
+</tr>
+<tr>
+<td><code>--mount-path MOUNT_PATH</code></td>
+<td>The path to the volume from within the new instance container. e.g. /root/volume</td>
+</tr>
+<tr>
+<td><code>--volume-label VOLUME_LABEL</code></td>
+<td>(optional) A name to give the new volume. Only usable with --create-volume</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong></p>
+<p>Performs the same action as pressing the "RENT" button on the website at https://console.vast.ai/create/
+Creates an instance from an offer ID (which is returned from "search offers"). Each offer ID can only be used to create one instance.
+Besides the offer ID, you must pass in an '--image' argument as a minimum.
+If you use args/entrypoint launch mode, we create a container from your image as is, without attempting to inject ssh and or jupyter.
+If you use the args launch mode, you can override the entrypoint with --entrypoint, and pass arguments to the entrypoint with --args.
+If you use --args, that must be the last argument, as any following tokens are consumed into the args string.
+For ssh/jupyter launch types, use --onstart-cmd to pass in startup script, instead of --entrypoint and --args.</p>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># create an on-demand instance with the PyTorch (cuDNN Devel) template and 64GB of disk</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>vastai<span class="w"> </span>create<span class="w"> </span>instance<span class="w"> </span><span class="m">384826</span><span class="w"> </span>--template_hash<span class="w"> </span>661d064bbda1f2a133816b6d55da07c3<span class="w"> </span>--disk<span class="w"> </span><span class="m">64</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># create an on-demand instance with the pytorch/pytorch image, 40GB of disk, open 8081 udp, direct ssh, set hostname to billybob, and a small onstart script</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>vastai<span class="w"> </span>create<span class="w"> </span>instance<span class="w"> </span><span class="m">6995713</span><span class="w"> </span>--image<span class="w"> </span>pytorch/pytorch<span class="w"> </span>--disk<span class="w"> </span><span class="m">40</span><span class="w"> </span>--env<span class="w"> </span><span class="s1">&#39;-p 8081:8081/udp -h billybob&#39;</span><span class="w"> </span>--ssh<span class="w"> </span>--direct<span class="w"> </span>--onstart-cmd<span class="w"> </span><span class="s2">&quot;env | grep _ &gt;&gt; /etc/environment; echo &#39;starting up&#39;&quot;</span><span class="p">;</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># create an on-demand instance with the bobsrepo/pytorch:latest image, 20GB of disk, open 22, 8080, jupyter ssh, and set some env variables</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>vastai<span class="w"> </span>create<span class="w"> </span>instance<span class="w"> </span><span class="m">384827</span><span class="w">  </span>--image<span class="w"> </span>bobsrepo/pytorch:latest<span class="w"> </span>--login<span class="w"> </span><span class="s1">&#39;-u bob -p 9d8df!fd89ufZ docker.io&#39;</span><span class="w"> </span>--jupyter<span class="w"> </span>--direct<span class="w"> </span>--env<span class="w"> </span><span class="s1">&#39;-e TZ=PDT -e XNAME=XX4 -p 22:22 -p 8080:8080&#39;</span><span class="w"> </span>--disk<span class="w"> </span><span class="m">20</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># create an on-demand instance with the pytorch/pytorch image, 40GB of disk, override the entrypoint to bash and pass bash a simple command to keep the instance running. (args launch without ssh/jupyter)</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>vastai<span class="w"> </span>create<span class="w"> </span>instance<span class="w"> </span><span class="m">5801802</span><span class="w"> </span>--image<span class="w"> </span>pytorch/pytorch<span class="w"> </span>--disk<span class="w"> </span><span class="m">40</span><span class="w"> </span>--onstart-cmd<span class="w"> </span><span class="s1">&#39;bash&#39;</span><span class="w"> </span>--args<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;echo hello; sleep infinity;&#39;</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="c1"># create an interruptible (spot) instance with the PyTorch (cuDNN Devel) template, 64GB of disk, and a bid price of $0.10/hr</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>vastai<span class="w"> </span>create<span class="w"> </span>instance<span class="w"> </span><span class="m">384826</span><span class="w"> </span>--template_hash<span class="w"> </span>661d064bbda1f2a133816b6d55da07c3<span class="w"> </span>--disk<span class="w"> </span><span class="m">64</span><span class="w"> </span>--bid_price<span class="w"> </span><span class="m">0</span>.1
+</code></pre></div>
+<p><strong>Return Value:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="err">Re</span><span class="kc">turns</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">jso</span><span class="kc">n</span><span class="w"> </span><span class="err">repor</span><span class="kc">t</span><span class="err">i</span><span class="kc">n</span><span class="err">g</span><span class="w"> </span><span class="kc">t</span><span class="err">he</span><span class="w"> </span><span class="err">i</span><span class="kc">nstan</span><span class="err">ce</span><span class="w"> </span><span class="err">ID</span><span class="w"> </span><span class="err">o</span><span class="kc">f</span><span class="w"> </span><span class="kc">t</span><span class="err">he</span><span class="w"> </span><span class="kc">ne</span><span class="err">wly</span><span class="w"> </span><span class="err">crea</span><span class="kc">te</span><span class="err">d</span><span class="w"> </span><span class="err">i</span><span class="kc">nstan</span><span class="err">ce</span><span class="p">:</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="p">{</span><span class="err">&#39;success&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">True</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">ne</span><span class="err">w_co</span><span class="kc">ntra</span><span class="err">c</span><span class="kc">t</span><span class="err">&#39;</span><span class="p">:</span><span class="w"> </span><span class="mi">7835610</span><span class="p">}</span>
+</code></pre></div>
+<hr />
+<h2 id="launch-instance">launch instance<a class="headerlink" href="#launch-instance" title="Permanent link">&para;</a></h2>
+<p>Launch a new instance using search parameters to auto-select the best offer</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>vastai<span class="w"> </span>launch<span class="w"> </span>instance<span class="w"> </span><span class="o">[</span>--help<span class="o">]</span><span class="w"> </span><span class="o">[</span>--api-key<span class="w"> </span>API_KEY<span class="o">]</span><span class="w"> </span>&lt;gpu_name&gt;<span class="w"> </span>&lt;num_gpus&gt;<span class="w"> </span>&lt;image&gt;<span class="w"> </span><span class="o">[</span>geolocation<span class="o">]</span><span class="w"> </span><span class="o">[</span>disk_space<span class="o">]</span>
+</code></pre></div>
+<p><strong>Options:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-n, --num-gpus {1,2,4,8,12,14}</code></td>
+<td>Number of GPUs required</td>
+</tr>
+<tr>
+<td><code>-r, --region REGION</code></td>
+<td>Geographical location of the instance</td>
+</tr>
+<tr>
+<td><code>-i, --image IMAGE</code></td>
+<td>Name of the image to use for instance</td>
+</tr>
+<tr>
+<td><code>-d, --disk DISK</code></td>
+<td>Disk space required in GB</td>
+</tr>
+<tr>
+<td><code>-o, --order ORDER</code></td>
+<td>Comma-separated list of fields to sort on. postfix field with - to sort desc. ex: -o 'num_gpus,total_flops-'.  default='score-'</td>
+</tr>
+<tr>
+<td><code>--login LOGIN</code></td>
+<td>docker login arguments for private repo authentication, surround with ''</td>
+</tr>
+<tr>
+<td><code>--label LABEL</code></td>
+<td>label to set on the instance</td>
+</tr>
+<tr>
+<td><code>--onstart ONSTART</code></td>
+<td>filename to use as onstart script</td>
+</tr>
+<tr>
+<td><code>--onstart-cmd ONSTART_CMD</code></td>
+<td>contents of onstart script as single argument</td>
+</tr>
+<tr>
+<td><code>--entrypoint ENTRYPOINT</code></td>
+<td>override entrypoint for args launch instance</td>
+</tr>
+<tr>
+<td><code>--ssh</code></td>
+<td>Launch as an ssh instance type</td>
+</tr>
+<tr>
+<td><code>--jupyter</code></td>
+<td>Launch as a jupyter instance instead of an ssh instance</td>
+</tr>
+<tr>
+<td><code>--direct</code></td>
+<td>Use (faster) direct connections for jupyter &amp; ssh</td>
+</tr>
+<tr>
+<td><code>--jupyter-dir JUPYTER_DIR</code></td>
+<td>For runtype 'jupyter', directory in instance to use to launch jupyter. Defaults to image's working directory</td>
+</tr>
+<tr>
+<td><code>--jupyter-lab</code></td>
+<td>For runtype 'jupyter', Launch instance with jupyter lab</td>
+</tr>
+<tr>
+<td><code>--lang-utf8</code></td>
+<td>Workaround for images with locale problems: install and generate locales before instance launch, and set locale to C.UTF-8</td>
+</tr>
+<tr>
+<td><code>--python-utf8</code></td>
+<td>Workaround for images with locale problems: set python's locale to C.UTF-8</td>
+</tr>
+<tr>
+<td><code>--env ENV</code></td>
+<td>env variables and port mapping options, surround with ''</td>
+</tr>
+<tr>
+<td><code>--args ...</code></td>
+<td>list of arguments passed to container ENTRYPOINT. Onstart is recommended for this purpose. (must be last argument)</td>
+</tr>
+<tr>
+<td><code>--force</code></td>
+<td>Skip sanity checks when creating from an existing instance</td>
+</tr>
+<tr>
+<td><code>--cancel-unavail</code></td>
+<td>Return error if scheduling fails (rather than creating a stopped instance)</td>
+</tr>
+<tr>
+<td><code>--template_hash TEMPLATE_HASH</code></td>
+<td>template hash which contains all relevant information about an instance. This can be used as a replacement for other parameters describing the instance configuration</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong></p>
+<p>Launches an instance based on the given parameters. The instance will be created with the top offer from the search results.
+Besides the gpu_name and num_gpus, you must pass in an '--image' argument as a minimum.
+If you use args/entrypoint launch mode, we create a container from your image as is, without attempting to inject ssh and or jupyter.
+If you use the args launch mode, you can override the entrypoint with --entrypoint, and pass arguments to the entrypoint with --args.
+If you use --args, that must be the last argument, as any following tokens are consumed into the args string.
+For ssh/jupyter launch types, use --onstart-cmd to pass in startup script, instead of --entrypoint and --args.</p>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="w">    </span><span class="c1"># launch a single RTX 3090 instance with the pytorch image and 16 GB of disk space located anywhere</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="c1"># launch a 4x RTX 3090 instance with the pytorch image and 32 GB of disk space located in North America</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>python vast.py launch instance -g RTX_3090 -n 1 -i pytorch/pytorch
+python vast.py launch instance -g RTX_3090 -n 4 -i pytorch/pytorch -d 32.0 -r North_America
+Available fields:
+Name                    Type      Description
+num_gpus:               int       # of GPUs
+gpu_name:               string    GPU model name
+region:                 string    Region of the instance
+image:                  string    Docker image name
+disk_space:             float     Disk space in GB
+ssh, jupyter, direct:   bool      Flags to specify the instance type and connection method.
+env:                    str       Environment variables and port mappings, encapsulated in single quotes.
+args:                   list      Arguments passed to the container's ENTRYPOINT, used only if '--args' is specified.</p>
+</div>
+<hr />
+<h2 id="destroy-instance">destroy instance<a class="headerlink" href="#destroy-instance" title="Permanent link">&para;</a></h2>
+<p>Destroy an instance (irreversible, deletes data)</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>vastai<span class="w"> </span>destroy<span class="w"> </span>instance<span class="w"> </span>id<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--api-key<span class="w"> </span>API_KEY<span class="o">]</span><span class="w"> </span><span class="o">[</span>--raw<span class="o">]</span>
+</code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>id of instance to delete</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Performs the same action as pressing the "DESTROY" button on the website at https://console.vast.ai/instances/
+WARNING: This action is IMMEDIATE and IRREVERSIBLE. All data on the instance will be permanently
+deleted unless you have saved it to a persistent volume or external storage.</p>
+</div>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="w">    </span>vastai<span class="w"> </span>destroy<span class="w"> </span>instance<span class="w"> </span><span class="m">12345</span><span class="w">              </span><span class="c1"># Destroy instance with ID 12345</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Before destroying:
+- Save any important data using 'vastai copy' or by mounting a persistent volume
+- Check instance ID carefully with 'vastai show instances'
+- Consider using 'vastai stop instance' if you want to pause without data loss</p>
+</div>
+<hr />
+<h2 id="destroy-instances">destroy instances<a class="headerlink" href="#destroy-instances" title="Permanent link">&para;</a></h2>
+<p>Destroy a list of instances (irreversible, deletes data)</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>vastai<span class="w"> </span>destroy<span class="w"> </span>instances<span class="w"> </span>IDS<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ids</code></td>
+<td>ids of instances to destroy</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="start-instance">start instance<a class="headerlink" href="#start-instance" title="Permanent link">&para;</a></h2>
+<p>Start a stopped instance</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>vastai<span class="w"> </span>start<span class="w"> </span>instance<span class="w"> </span>ID<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>ID of instance to start/restart</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong></p>
+<p>This command attempts to bring an instance from the "stopped" state into the "running" state. This is subject to resource availability on the machine that the instance is located on.
+If your instance is stuck in the "scheduling" state for more than 30 seconds after running this, it likely means that the required resources on the machine to run your instance are currently unavailable.</p>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="w">    </span>vastai<span class="w"> </span>start<span class="w"> </span>instances<span class="w"> </span><span class="k">$(</span>vastai<span class="w"> </span>show<span class="w"> </span>instances<span class="w"> </span>-q<span class="k">)</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span>vastai<span class="w"> </span>start<span class="w"> </span>instance<span class="w"> </span><span class="m">329838</span>
+</code></pre></div>
+<hr />
+<h2 id="start-instances">start instances<a class="headerlink" href="#start-instances" title="Permanent link">&para;</a></h2>
+<p>Start multiple stopped instances</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>vastai<span class="w"> </span>start<span class="w"> </span>instances<span class="w"> </span>IDS<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ids</code></td>
+<td>ids of instances to start</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="stop-instance">stop instance<a class="headerlink" href="#stop-instance" title="Permanent link">&para;</a></h2>
+<p>Stop a running instance</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>vastai<span class="w"> </span>stop<span class="w"> </span>instance<span class="w"> </span>ID<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>id of instance to stop</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong></p>
+<p>This command brings an instance from the "running" state into the "stopped" state. When an instance is "stopped" all of your data on the instance is preserved,
+and you can resume use of your instance by starting it again. Once stopped, starting an instance is subject to resource availability on the machine that the instance is located on.
+There are ways to move data off of a stopped instance, which are described here: https://vast.ai/docs/gpu-instances/data-movement</p>
+<hr />
+<h2 id="stop-instances">stop instances<a class="headerlink" href="#stop-instances" title="Permanent link">&para;</a></h2>
+<p>Stop multiple running instances</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>vastai<span class="w"> </span>stop<span class="w"> </span>instances<span class="w"> </span>IDS<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ids</code></td>
+<td>ids of instances to stop</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="w">    </span>vastai<span class="w"> </span>stop<span class="w"> </span>instances<span class="w"> </span><span class="k">$(</span>vastai<span class="w"> </span>show<span class="w"> </span>instances<span class="w"> </span>-q<span class="k">)</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span>vastai<span class="w"> </span>stop<span class="w"> </span>instances<span class="w"> </span><span class="m">329838</span><span class="w"> </span><span class="m">984849</span>
+</code></pre></div>
+<hr />
+<h2 id="reboot-instance">reboot instance<a class="headerlink" href="#reboot-instance" title="Permanent link">&para;</a></h2>
+<p>Reboot (stop/start) an instance</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>vastai<span class="w"> </span>reboot<span class="w"> </span>instance<span class="w"> </span>ID<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>id of instance to reboot</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Options:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--schedule {HOURLY,DAILY,WEEKLY}</code></td>
+<td>try to schedule a command to run hourly, daily, or monthly. Valid values are HOURLY, DAILY, WEEKLY  For ex. --schedule DAILY</td>
+</tr>
+<tr>
+<td><code>--start_date START_DATE</code></td>
+<td>Start date/time in format 'YYYY-MM-DD HH:MM:SS PM' (UTC). Default is now. (optional)</td>
+</tr>
+<tr>
+<td><code>--end_date END_DATE</code></td>
+<td>End date/time in format 'YYYY-MM-DD HH:MM:SS PM' (UTC). Default is 7 days from now. (optional)</td>
+</tr>
+<tr>
+<td><code>--day DAY</code></td>
+<td>Day of week you want scheduled job to run on (0-6, where 0=Sunday) or "*". Default will be 0. For ex. --day 0</td>
+</tr>
+<tr>
+<td><code>--hour HOUR</code></td>
+<td>Hour of day you want scheduled job to run on (0-23) or "*" (UTC). Default will be 0. For ex. --hour 16</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong></p>
+<p>Stops and starts container without any risk of losing GPU priority.</p>
+<hr />
+<h2 id="recycle-instance">recycle instance<a class="headerlink" href="#recycle-instance" title="Permanent link">&para;</a></h2>
+<p>Destroy and recreate an instance with the same configuration</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>vastai<span class="w"> </span>recycle<span class="w"> </span>instance<span class="w"> </span>ID<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>id of instance to recycle</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong></p>
+<p>Destroys and recreates container in place (from newly pulled image) without any risk of losing GPU priority.</p>
+<hr />
+<h2 id="label-instance">label instance<a class="headerlink" href="#label-instance" title="Permanent link">&para;</a></h2>
+<p>Assign a string label to an instance</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>vastai<span class="w"> </span>label<span class="w"> </span>instance<span class="w"> </span>&lt;id&gt;<span class="w"> </span>&lt;label&gt;
+</code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>id of instance to label</td>
+</tr>
+<tr>
+<td><code>label</code></td>
+<td>label to set</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="update-instance">update instance<a class="headerlink" href="#update-instance" title="Permanent link">&para;</a></h2>
+<p>Update an instance configuration or recreate from a template</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>vastai<span class="w"> </span>update<span class="w"> </span>instance<span class="w"> </span>ID<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>id of instance to update</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Options:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--template_id TEMPLATE_ID</code></td>
+<td>new template ID to associate with the instance</td>
+</tr>
+<tr>
+<td><code>--template_hash_id TEMPLATE_HASH_ID</code></td>
+<td>new template hash ID to associate with the instance</td>
+</tr>
+<tr>
+<td><code>--image IMAGE</code></td>
+<td>new image UUID for the instance</td>
+</tr>
+<tr>
+<td><code>--args ARGS</code></td>
+<td>new arguments for the instance</td>
+</tr>
+<tr>
+<td><code>--env ENV</code></td>
+<td>new environment variables for the instance</td>
+</tr>
+<tr>
+<td><code>--onstart ONSTART</code></td>
+<td>new onstart script for the instance</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="prepay-instance">prepay instance<a class="headerlink" href="#prepay-instance" title="Permanent link">&para;</a></h2>
+<p>Prepay credits for a reserved instance to prevent interruption</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>vastai<span class="w"> </span>prepay<span class="w"> </span>instance<span class="w"> </span>ID<span class="w"> </span>AMOUNT
+</code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>id of instance to prepay for</td>
+</tr>
+<tr>
+<td><code>amount</code></td>
+<td>amount of instance credit prepayment (default discount func of 0.2 for 1 month, 0.3 for 3 months)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="change-bid">change bid<a class="headerlink" href="#change-bid" title="Permanent link">&para;</a></h2>
+<p>Change the bid price for a spot/interruptible instance</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>vastai<span class="w"> </span>change<span class="w"> </span>bid<span class="w"> </span>id<span class="w"> </span><span class="o">[</span>--price<span class="w"> </span>PRICE<span class="o">]</span>
+</code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>id of instance type to change bid</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Options:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--price PRICE</code></td>
+<td>per machine bid price in $/hour</td>
+</tr>
+<tr>
+<td><code>--schedule {HOURLY,DAILY,WEEKLY}</code></td>
+<td>try to schedule a command to run hourly, daily, or monthly. Valid values are HOURLY, DAILY, WEEKLY  For ex. --schedule DAILY</td>
+</tr>
+<tr>
+<td><code>--start_date START_DATE</code></td>
+<td>Start date/time in format 'YYYY-MM-DD HH:MM:SS PM' (UTC). Default is now. (optional)</td>
+</tr>
+<tr>
+<td><code>--end_date END_DATE</code></td>
+<td>End date/time in format 'YYYY-MM-DD HH:MM:SS PM' (UTC). Default is 7 days from now. (optional)</td>
+</tr>
+<tr>
+<td><code>--day DAY</code></td>
+<td>Day of week you want scheduled job to run on (0-6, where 0=Sunday) or "*". Default will be 0. For ex. --day 0</td>
+</tr>
+<tr>
+<td><code>--hour HOUR</code></td>
+<td>Hour of day you want scheduled job to run on (0-23) or "*" (UTC). Default will be 0. For ex. --hour 16</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong></p>
+<p>Change the current bid price of instance id to PRICE.
+If PRICE is not specified, then a winning bid price is used as the default.</p>
+<hr />
+<h2 id="show-instance">show instance<a class="headerlink" href="#show-instance" title="Permanent link">&para;</a></h2>
+<p>Show details for a specific instance</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>vastai<span class="w"> </span>show<span class="w"> </span>instance<span class="w"> </span>ID<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>id of instance to show</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="show-instances">show instances<a class="headerlink" href="#show-instances" title="Permanent link">&para;</a></h2>
+<p>List all your running and stopped instances</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>vastai<span class="w"> </span>show<span class="w"> </span>instances<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span><span class="o">[</span>--api-key<span class="w"> </span>API_KEY<span class="o">]</span><span class="w"> </span><span class="o">[</span>--raw<span class="o">]</span>
+</code></pre></div>
+<p><strong>Options:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-q, --quiet</code></td>
+<td>only display numeric ids</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong></p>
+<p>Lists all instances owned by the authenticated user, including running, pending, and stopped instances.</p>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="w">    </span>vastai<span class="w"> </span>show<span class="w"> </span>instances<span class="w">                      </span><span class="c1"># List all instances in table format</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">    </span>vastai<span class="w"> </span>show<span class="w"> </span>instances<span class="w"> </span>--raw<span class="w">                </span><span class="c1"># Output as JSON for scripting</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">    </span>vastai<span class="w"> </span>show<span class="w"> </span>instances<span class="w"> </span>--raw<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.[0]&#39;</span><span class="w">   </span><span class="c1"># Get first instance details</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">    </span>vastai<span class="w"> </span>show<span class="w"> </span>instances<span class="w"> </span>-q<span class="w">                   </span><span class="c1"># List only instance IDs</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Output includes: instance ID, machine ID, status, GPU info, rental cost, duration, and connection details.</p>
+</div>
+<hr />
+<h2 id="logs">logs<a class="headerlink" href="#logs" title="Permanent link">&para;</a></h2>
+<p>Get the logs for an instance</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>vastai<span class="w"> </span>logs<span class="w"> </span>INSTANCE_ID<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>INSTANCE_ID</code></td>
+<td>id of instance</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Options:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--tail TAIL</code></td>
+<td>Number of lines to show from the end of the logs (default '1000')</td>
+</tr>
+<tr>
+<td><code>--filter FILTER</code></td>
+<td>Grep filter for log entries</td>
+</tr>
+<tr>
+<td><code>--daemon-logs</code></td>
+<td>Fetch daemon system logs instead of container logs</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="execute">execute<a class="headerlink" href="#execute" title="Permanent link">&para;</a></h2>
+<p>Execute a command on a running instance</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>vastai<span class="w"> </span>execute<span class="w"> </span>id<span class="w"> </span>COMMAND
+</code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>id of instance to execute on</td>
+</tr>
+<tr>
+<td><code>COMMAND</code></td>
+<td>bash command surrounded by single quotes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Options:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--schedule {HOURLY,DAILY,WEEKLY}</code></td>
+<td>try to schedule a command to run hourly, daily, or monthly. Valid values are HOURLY, DAILY, WEEKLY  For ex. --schedule DAILY</td>
+</tr>
+<tr>
+<td><code>--start_date START_DATE</code></td>
+<td>Start date/time in format 'YYYY-MM-DD HH:MM:SS PM' (UTC). Default is now. (optional)</td>
+</tr>
+<tr>
+<td><code>--end_date END_DATE</code></td>
+<td>End date/time in format 'YYYY-MM-DD HH:MM:SS PM' (UTC). Default is 7 days from now. (optional)</td>
+</tr>
+<tr>
+<td><code>--day DAY</code></td>
+<td>Day of week you want scheduled job to run on (0-6, where 0=Sunday) or "*". Default will be 0. For ex. --day 0</td>
+</tr>
+<tr>
+<td><code>--hour HOUR</code></td>
+<td>Hour of day you want scheduled job to run on (0-23) or "*" (UTC). Default will be 0. For ex. --hour 16</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="w">  </span>vastai<span class="w"> </span>execute<span class="w"> </span><span class="m">99999</span><span class="w"> </span><span class="s1">&#39;ls -l -o -r&#39;</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="w">  </span>vastai<span class="w"> </span>execute<span class="w"> </span><span class="m">99999</span><span class="w"> </span><span class="s1">&#39;rm -r home/delete_this.txt&#39;</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">  </span>vastai<span class="w"> </span>execute<span class="w"> </span><span class="m">99999</span><span class="w"> </span><span class="s1">&#39;du -d2 -h&#39;</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>available commands:
+ls                 List directory contents
+rm                 Remote files or directories
+du                 Summarize device usage for a set of files</p>
+</div>
+<p><strong>Return Value:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="err">Re</span><span class="kc">turns</span><span class="w"> </span><span class="kc">t</span><span class="err">he</span><span class="w"> </span><span class="err">ou</span><span class="kc">t</span><span class="err">pu</span><span class="kc">t</span><span class="w"> </span><span class="err">o</span><span class="kc">f</span><span class="w"> </span><span class="kc">t</span><span class="err">he</span><span class="w"> </span><span class="err">comma</span><span class="kc">n</span><span class="err">d</span><span class="w"> </span><span class="err">which</span><span class="w"> </span><span class="err">was</span><span class="w"> </span><span class="err">execu</span><span class="kc">te</span><span class="err">d</span><span class="w"> </span><span class="err">o</span><span class="kc">n</span><span class="w"> </span><span class="kc">t</span><span class="err">he</span><span class="w"> </span><span class="err">i</span><span class="kc">nstan</span><span class="err">ce</span><span class="p">,</span><span class="w"> </span><span class="err">i</span><span class="kc">f</span><span class="w"> </span><span class="err">success</span><span class="kc">ful</span><span class="err">.</span><span class="w"> </span><span class="err">May</span><span class="w"> </span><span class="kc">ta</span><span class="err">ke</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="kc">fe</span><span class="err">w</span><span class="w"> </span><span class="err">seco</span><span class="kc">n</span><span class="err">ds</span><span class="w"> </span><span class="kc">t</span><span class="err">o</span><span class="w"> </span><span class="err">re</span><span class="kc">tr</span><span class="err">ieve</span><span class="w"> </span><span class="kc">t</span><span class="err">he</span><span class="w"> </span><span class="err">resul</span><span class="kc">ts</span><span class="err">.</span>
+</code></pre></div>
+<hr />
+<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../commands/">Full Command Reference</a> - Complete help text for all commands</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.top", "navigation.instant", "content.code.copy", "content.code.annotate"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

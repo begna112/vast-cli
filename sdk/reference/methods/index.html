@@ -1,0 +1,2949 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://vast-ai.github.io/vast-python/sdk/reference/methods/">
+      
+      
+        <link rel="prev" href="../vastai/">
+      
+      
+        <link rel="next" href="../../../serverless/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Method Reference - Vast.ai CLI & SDK</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sdk-method-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Vast.ai CLI &amp; SDK" class="md-header__button md-logo" aria-label="Vast.ai CLI & SDK" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Vast.ai CLI & SDK
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Method Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/vast-ai/vast-python" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    vast-ai/vast-python
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../installation/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Installation
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../cli/" class="md-tabs__link">
+          
+  
+  
+  CLI
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+  SDK
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../serverless/" class="md-tabs__link">
+          
+  
+  
+  Serverless
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../guides/migration/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../changelog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Changelog
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Vast.ai CLI &amp; SDK" class="md-nav__button md-logo" aria-label="Vast.ai CLI & SDK" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Vast.ai CLI & SDK
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/vast-ai/vast-python" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    vast-ai/vast-python
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    CLI
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Client Commands
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Client Commands
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/client/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/client/instances/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instances
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/client/search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Search
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/client/ssh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSH & Files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/client/billing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Billing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/client/volumes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Volumes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/client/teams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Teams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/client/autoscaling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Autoscaling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/client/keys/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Host Commands
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Host Commands
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/host/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/host/machines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/host/maintenance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Maintenance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/host/reports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reports
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/host/clusters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Clusters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/commands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Full Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cli/examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SDK
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    SDK
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vastai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Method Reference
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Method Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#search-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Search Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#instance-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instance Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#volume-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Volume Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ssh-file-transfer-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SSH &amp; File Transfer Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#billing-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Billing Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#team-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Team Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#autoscaling-worker-group-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Autoscaling / Worker Group Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#endpoint-methods-serverless" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Endpoint Methods (Serverless)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-key-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Key Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ssh-key-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SSH Key Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment-variable-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environment Variable Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#template-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Template Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subaccount-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subaccount Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scheduled-job-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scheduled Job Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snapshot-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snapshot Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connection-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connection Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#two-factor-authentication-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two-Factor Authentication Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#host-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Host Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-methods-beta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster Methods (Beta)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See Also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Serverless
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Serverless
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../serverless/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Migration Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#search-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Search Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#instance-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instance Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#volume-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Volume Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ssh-file-transfer-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SSH &amp; File Transfer Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#billing-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Billing Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#team-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Team Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#autoscaling-worker-group-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Autoscaling / Worker Group Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#endpoint-methods-serverless" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Endpoint Methods (Serverless)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-key-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Key Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ssh-key-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SSH Key Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment-variable-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environment Variable Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#template-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Template Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subaccount-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subaccount Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scheduled-job-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scheduled Job Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snapshot-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snapshot Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connection-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connection Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#two-factor-authentication-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two-Factor Authentication Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#host-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Host Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-methods-beta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster Methods (Beta)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See Also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="sdk-method-reference">SDK Method Reference<a class="headerlink" href="#sdk-method-reference" title="Permanent link">&para;</a></h1>
+<p>Complete mapping of SDK methods to CLI commands. Click CLI commands to see full documentation.</p>
+<h2 id="search-methods">Search Methods<a class="headerlink" href="#search-methods" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>SDK Method</th>
+<th>CLI Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>search_offers()</code></td>
+<td><a href="../../../cli/commands/#search-offers"><code>search offers</code></a></td>
+<td>Search available GPU offers</td>
+</tr>
+<tr>
+<td><code>search_templates()</code></td>
+<td><a href="../../../cli/commands/#search-templates"><code>search templates</code></a></td>
+<td>Search templates</td>
+</tr>
+<tr>
+<td><code>search_volumes()</code></td>
+<td><a href="../../../cli/commands/#search-volumes"><code>search volumes</code></a></td>
+<td>Search volume offers</td>
+</tr>
+<tr>
+<td><code>search_network_volumes()</code></td>
+<td><a href="../../../cli/commands/#search-network-volumes"><code>search network-volumes</code></a></td>
+<td>Search network volumes</td>
+</tr>
+<tr>
+<td><code>search_benchmarks()</code></td>
+<td><a href="../../../cli/commands/#search-benchmarks"><code>search benchmarks</code></a></td>
+<td>Search benchmarks</td>
+</tr>
+<tr>
+<td><code>search_invoices()</code></td>
+<td><a href="../../../cli/commands/#search-invoices"><code>search invoices</code></a></td>
+<td>Search invoices</td>
+</tr>
+</tbody>
+</table>
+<h2 id="instance-methods">Instance Methods<a class="headerlink" href="#instance-methods" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>SDK Method</th>
+<th>CLI Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>show_instances()</code></td>
+<td><a href="../../../cli/commands/#show-instances"><code>show instances</code></a></td>
+<td>List all instances</td>
+</tr>
+<tr>
+<td><code>show_instance(id)</code></td>
+<td><a href="../../../cli/commands/#show-instance"><code>show instance</code></a></td>
+<td>Get instance details</td>
+</tr>
+<tr>
+<td><code>create_instance(id, image, ...)</code></td>
+<td><a href="../../../cli/commands/#create-instance"><code>create instance</code></a></td>
+<td>Create instance</td>
+</tr>
+<tr>
+<td><code>launch_instance(...)</code></td>
+<td><a href="../../../cli/commands/#launch-instance"><code>launch instance</code></a></td>
+<td>Search and launch in one</td>
+</tr>
+<tr>
+<td><code>destroy_instance(id)</code></td>
+<td><a href="../../../cli/commands/#destroy-instance"><code>destroy instance</code></a></td>
+<td>Delete instance</td>
+</tr>
+<tr>
+<td><code>destroy_instances(ids)</code></td>
+<td><a href="../../../cli/commands/#destroy-instances"><code>destroy instances</code></a></td>
+<td>Delete multiple</td>
+</tr>
+<tr>
+<td><code>start_instance(id)</code></td>
+<td><a href="../../../cli/commands/#start-instance"><code>start instance</code></a></td>
+<td>Start stopped instance</td>
+</tr>
+<tr>
+<td><code>start_instances(ids)</code></td>
+<td><a href="../../../cli/commands/#start-instances"><code>start instances</code></a></td>
+<td>Start multiple</td>
+</tr>
+<tr>
+<td><code>stop_instance(id)</code></td>
+<td><a href="../../../cli/commands/#stop-instance"><code>stop instance</code></a></td>
+<td>Stop running instance</td>
+</tr>
+<tr>
+<td><code>stop_instances(ids)</code></td>
+<td><a href="../../../cli/commands/#stop-instances"><code>stop instances</code></a></td>
+<td>Stop multiple</td>
+</tr>
+<tr>
+<td><code>reboot_instance(id)</code></td>
+<td><a href="../../../cli/commands/#reboot-instance"><code>reboot instance</code></a></td>
+<td>Reboot instance</td>
+</tr>
+<tr>
+<td><code>recycle_instance(id)</code></td>
+<td><a href="../../../cli/commands/#recycle-instance"><code>recycle instance</code></a></td>
+<td>Destroy and recreate</td>
+</tr>
+<tr>
+<td><code>label_instance(id, label)</code></td>
+<td><a href="../../../cli/commands/#label-instance"><code>label instance</code></a></td>
+<td>Set instance label</td>
+</tr>
+<tr>
+<td><code>update_instance(id, ...)</code></td>
+<td><a href="../../../cli/commands/#update-instance"><code>update instance</code></a></td>
+<td>Update from template</td>
+</tr>
+<tr>
+<td><code>prepay_instance(id, amount)</code></td>
+<td><a href="../../../cli/commands/#prepay-instance"><code>prepay instance</code></a></td>
+<td>Add reserved credits</td>
+</tr>
+<tr>
+<td><code>logs(id, ...)</code></td>
+<td><a href="../../../cli/commands/#logs"><code>logs</code></a></td>
+<td>Get instance logs</td>
+</tr>
+<tr>
+<td><code>execute(id, command)</code></td>
+<td><a href="../../../cli/commands/#execute"><code>execute</code></a></td>
+<td>Run command on instance</td>
+</tr>
+</tbody>
+</table>
+<h2 id="volume-methods">Volume Methods<a class="headerlink" href="#volume-methods" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>SDK Method</th>
+<th>CLI Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>show_volumes()</code></td>
+<td><a href="../../../cli/commands/#show-volumes"><code>show volumes</code></a></td>
+<td>List volumes</td>
+</tr>
+<tr>
+<td><code>create_volume(...)</code></td>
+<td><a href="../../../cli/commands/#create-volume"><code>create volume</code></a></td>
+<td>Create volume</td>
+</tr>
+<tr>
+<td><code>delete_volume(id)</code></td>
+<td><a href="../../../cli/commands/#delete-volume"><code>delete volume</code></a></td>
+<td>Delete volume</td>
+</tr>
+<tr>
+<td><code>clone_volume(id)</code></td>
+<td><a href="../../../cli/commands/#clone-volume"><code>clone volume</code></a></td>
+<td>Clone volume</td>
+</tr>
+<tr>
+<td><code>create_network_volume(...)</code></td>
+<td><a href="../../../cli/commands/#create-network-volume"><code>create network-volume</code></a></td>
+<td>Create network volume</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ssh-file-transfer-methods">SSH &amp; File Transfer Methods<a class="headerlink" href="#ssh-file-transfer-methods" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>SDK Method</th>
+<th>CLI Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ssh_url(id)</code></td>
+<td><a href="../../../cli/commands/#ssh-url"><code>ssh-url</code></a></td>
+<td>Get SSH URL</td>
+</tr>
+<tr>
+<td><code>scp_url(id, path)</code></td>
+<td><a href="../../../cli/commands/#scp-url"><code>scp-url</code></a></td>
+<td>Get SCP URL</td>
+</tr>
+<tr>
+<td><code>copy(src, dst)</code></td>
+<td><a href="../../../cli/commands/#copy"><code>copy</code></a></td>
+<td>Copy files</td>
+</tr>
+<tr>
+<td><code>cloud_copy(src, dst)</code></td>
+<td><a href="../../../cli/commands/#cloud-copy"><code>cloud copy</code></a></td>
+<td>Cloud provider copy</td>
+</tr>
+<tr>
+<td><code>cancel_copy(dst_id)</code></td>
+<td><a href="../../../cli/commands/#cancel-copy"><code>cancel copy</code></a></td>
+<td>Cancel copy</td>
+</tr>
+<tr>
+<td><code>attach_ssh(instance_id, key_id)</code></td>
+<td><a href="../../../cli/commands/#attach-ssh"><code>attach ssh</code></a></td>
+<td>Attach SSH key</td>
+</tr>
+<tr>
+<td><code>detach_ssh(instance_id, key_id)</code></td>
+<td><a href="../../../cli/commands/#detach-ssh"><code>detach ssh</code></a></td>
+<td>Detach SSH key</td>
+</tr>
+</tbody>
+</table>
+<h2 id="billing-methods">Billing Methods<a class="headerlink" href="#billing-methods" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>SDK Method</th>
+<th>CLI Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>show_user()</code></td>
+<td><a href="../../../cli/commands/#show-user"><code>show user</code></a></td>
+<td>Get account info</td>
+</tr>
+<tr>
+<td><code>show_invoices()</code></td>
+<td><a href="../../../cli/commands/#show-invoices"><code>show invoices</code></a></td>
+<td>List invoices (deprecated)</td>
+</tr>
+<tr>
+<td><code>show_invoices_v1(...)</code></td>
+<td><a href="../../../cli/commands/#show-invoices-v1"><code>show invoices-v1</code></a></td>
+<td>List invoices/charges</td>
+</tr>
+<tr>
+<td><code>transfer_credit(amount, recipient)</code></td>
+<td><a href="../../../cli/commands/#transfer-credit"><code>transfer credit</code></a></td>
+<td>Transfer credits</td>
+</tr>
+<tr>
+<td><code>show_deposit(id)</code></td>
+<td><a href="../../../cli/commands/#show-deposit"><code>show deposit</code></a></td>
+<td>Show reserve deposit</td>
+</tr>
+<tr>
+<td><code>show_audit_logs()</code></td>
+<td><a href="../../../cli/commands/#show-audit-logs"><code>show audit-logs</code></a></td>
+<td>Show audit history</td>
+</tr>
+<tr>
+<td><code>show_ipaddrs()</code></td>
+<td><a href="../../../cli/commands/#show-ipaddrs"><code>show ipaddrs</code></a></td>
+<td>Show IP history</td>
+</tr>
+</tbody>
+</table>
+<h2 id="team-methods">Team Methods<a class="headerlink" href="#team-methods" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>SDK Method</th>
+<th>CLI Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>create_team(name)</code></td>
+<td><a href="../../../cli/commands/#create-team"><code>create team</code></a></td>
+<td>Create team</td>
+</tr>
+<tr>
+<td><code>destroy_team()</code></td>
+<td><a href="../../../cli/commands/#destroy-team"><code>destroy team</code></a></td>
+<td>Delete team</td>
+</tr>
+<tr>
+<td><code>invite_member(email)</code></td>
+<td><a href="../../../cli/commands/#invite-member"><code>invite member</code></a></td>
+<td>Invite member</td>
+</tr>
+<tr>
+<td><code>remove_member(id)</code></td>
+<td><a href="../../../cli/commands/#remove-member"><code>remove member</code></a></td>
+<td>Remove member</td>
+</tr>
+<tr>
+<td><code>show_members()</code></td>
+<td><a href="../../../cli/commands/#show-members"><code>show members</code></a></td>
+<td>List members</td>
+</tr>
+<tr>
+<td><code>create_team_role(name)</code></td>
+<td><a href="../../../cli/commands/#create-team-role"><code>create team-role</code></a></td>
+<td>Create role</td>
+</tr>
+<tr>
+<td><code>show_team_roles()</code></td>
+<td><a href="../../../cli/commands/#show-team-roles"><code>show team-roles</code></a></td>
+<td>List roles</td>
+</tr>
+<tr>
+<td><code>show_team_role(id)</code></td>
+<td><a href="../../../cli/commands/#show-team-role"><code>show team-role</code></a></td>
+<td>Show role</td>
+</tr>
+<tr>
+<td><code>update_team_role(id, ...)</code></td>
+<td><a href="../../../cli/commands/#update-team-role"><code>update team-role</code></a></td>
+<td>Update role</td>
+</tr>
+<tr>
+<td><code>remove_team_role(id)</code></td>
+<td><a href="../../../cli/commands/#remove-team-role"><code>remove team-role</code></a></td>
+<td>Remove role</td>
+</tr>
+</tbody>
+</table>
+<h2 id="autoscaling-worker-group-methods">Autoscaling / Worker Group Methods<a class="headerlink" href="#autoscaling-worker-group-methods" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>SDK Method</th>
+<th>CLI Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>show_workergroups()</code></td>
+<td><a href="../../../cli/commands/#show-workergroups"><code>show workergroups</code></a></td>
+<td>List worker groups</td>
+</tr>
+<tr>
+<td><code>create_workergroup(...)</code></td>
+<td><a href="../../../cli/commands/#create-workergroup"><code>create workergroup</code></a></td>
+<td>Create worker group</td>
+</tr>
+<tr>
+<td><code>delete_workergroup(id)</code></td>
+<td><a href="../../../cli/commands/#delete-workergroup"><code>delete workergroup</code></a></td>
+<td>Delete worker group</td>
+</tr>
+<tr>
+<td><code>update_workergroup(id, ...)</code></td>
+<td><a href="../../../cli/commands/#update-workergroup"><code>update workergroup</code></a></td>
+<td>Update worker group</td>
+</tr>
+<tr>
+<td><code>show_autoscalers()</code></td>
+<td><a href="../../../cli/commands/#show-workergroups"><code>show workergroups</code></a></td>
+<td>Alias for workergroups</td>
+</tr>
+<tr>
+<td><code>create_autoscaler(...)</code></td>
+<td><a href="../../../cli/commands/#create-workergroup"><code>create workergroup</code></a></td>
+<td>Alias</td>
+</tr>
+<tr>
+<td><code>delete_autoscaler(id)</code></td>
+<td><a href="../../../cli/commands/#delete-workergroup"><code>delete workergroup</code></a></td>
+<td>Alias</td>
+</tr>
+<tr>
+<td><code>update_autoscaler(id, ...)</code></td>
+<td><a href="../../../cli/commands/#update-workergroup"><code>update workergroup</code></a></td>
+<td>Alias</td>
+</tr>
+<tr>
+<td><code>get_wrkgrp_logs(id)</code></td>
+<td><a href="../../../cli/commands/#get-wrkgrp-logs"><code>get wrkgrp-logs</code></a></td>
+<td>Get worker group logs</td>
+</tr>
+</tbody>
+</table>
+<h2 id="endpoint-methods-serverless">Endpoint Methods (Serverless)<a class="headerlink" href="#endpoint-methods-serverless" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>SDK Method</th>
+<th>CLI Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>show_endpoints()</code></td>
+<td><a href="../../../cli/commands/#show-endpoints"><code>show endpoints</code></a></td>
+<td>List endpoints</td>
+</tr>
+<tr>
+<td><code>create_endpoint(...)</code></td>
+<td><a href="../../../cli/commands/#create-endpoint"><code>create endpoint</code></a></td>
+<td>Create endpoint</td>
+</tr>
+<tr>
+<td><code>delete_endpoint(id)</code></td>
+<td><a href="../../../cli/commands/#delete-endpoint"><code>delete endpoint</code></a></td>
+<td>Delete endpoint</td>
+</tr>
+<tr>
+<td><code>update_endpoint(id, ...)</code></td>
+<td><a href="../../../cli/commands/#update-endpoint"><code>update endpoint</code></a></td>
+<td>Update endpoint</td>
+</tr>
+<tr>
+<td><code>get_endpt_logs(id)</code></td>
+<td><a href="../../../cli/commands/#get-endpt-logs"><code>get endpt-logs</code></a></td>
+<td>Get endpoint logs</td>
+</tr>
+</tbody>
+</table>
+<h2 id="api-key-methods">API Key Methods<a class="headerlink" href="#api-key-methods" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>SDK Method</th>
+<th>CLI Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>show_api_keys()</code></td>
+<td><a href="../../../cli/commands/#show-api-keys"><code>show api-keys</code></a></td>
+<td>List API keys</td>
+</tr>
+<tr>
+<td><code>show_api_key(id)</code></td>
+<td><a href="../../../cli/commands/#show-api-key"><code>show api-key</code></a></td>
+<td>Show key details</td>
+</tr>
+<tr>
+<td><code>create_api_key(name, ...)</code></td>
+<td><a href="../../../cli/commands/#create-api-key"><code>create api-key</code></a></td>
+<td>Create API key</td>
+</tr>
+<tr>
+<td><code>delete_api_key(id)</code></td>
+<td><a href="../../../cli/commands/#delete-api-key"><code>delete api-key</code></a></td>
+<td>Delete API key</td>
+</tr>
+<tr>
+<td><code>reset_api_key()</code></td>
+<td><a href="../../../cli/commands/#reset-api-key"><code>reset api-key</code></a></td>
+<td>Reset primary key</td>
+</tr>
+<tr>
+<td><code>set_api_key(key)</code></td>
+<td><a href="../../../cli/commands/#set-api-key"><code>set api-key</code></a></td>
+<td>Store API key</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ssh-key-methods">SSH Key Methods<a class="headerlink" href="#ssh-key-methods" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>SDK Method</th>
+<th>CLI Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>show_ssh_keys()</code></td>
+<td><a href="../../../cli/commands/#show-ssh-keys"><code>show ssh-keys</code></a></td>
+<td>List SSH keys</td>
+</tr>
+<tr>
+<td><code>create_ssh_key(name, key)</code></td>
+<td><a href="../../../cli/commands/#create-ssh-key"><code>create ssh-key</code></a></td>
+<td>Add SSH key</td>
+</tr>
+<tr>
+<td><code>delete_ssh_key(id)</code></td>
+<td><a href="../../../cli/commands/#delete-ssh-key"><code>delete ssh-key</code></a></td>
+<td>Delete SSH key</td>
+</tr>
+<tr>
+<td><code>update_ssh_key(id, ...)</code></td>
+<td><a href="../../../cli/commands/#update-ssh-key"><code>update ssh-key</code></a></td>
+<td>Update SSH key</td>
+</tr>
+</tbody>
+</table>
+<h2 id="environment-variable-methods">Environment Variable Methods<a class="headerlink" href="#environment-variable-methods" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>SDK Method</th>
+<th>CLI Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>show_env_vars()</code></td>
+<td><a href="../../../cli/commands/#show-env-vars"><code>show env-vars</code></a></td>
+<td>List env vars</td>
+</tr>
+<tr>
+<td><code>create_env_var(key, value)</code></td>
+<td><a href="../../../cli/commands/#create-env-var"><code>create env-var</code></a></td>
+<td>Create env var</td>
+</tr>
+<tr>
+<td><code>update_env_var(key, value)</code></td>
+<td><a href="../../../cli/commands/#update-env-var"><code>update env-var</code></a></td>
+<td>Update env var</td>
+</tr>
+<tr>
+<td><code>delete_env_var(key)</code></td>
+<td><a href="../../../cli/commands/#delete-env-var"><code>delete env-var</code></a></td>
+<td>Delete env var</td>
+</tr>
+</tbody>
+</table>
+<h2 id="template-methods">Template Methods<a class="headerlink" href="#template-methods" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>SDK Method</th>
+<th>CLI Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>create_template(...)</code></td>
+<td><a href="../../../cli/commands/#create-template"><code>create template</code></a></td>
+<td>Create template</td>
+</tr>
+<tr>
+<td><code>delete_template(id)</code></td>
+<td><a href="../../../cli/commands/#delete-template"><code>delete template</code></a></td>
+<td>Delete template</td>
+</tr>
+<tr>
+<td><code>update_template(id, ...)</code></td>
+<td><a href="../../../cli/commands/#update-template"><code>update template</code></a></td>
+<td>Update template</td>
+</tr>
+</tbody>
+</table>
+<h2 id="subaccount-methods">Subaccount Methods<a class="headerlink" href="#subaccount-methods" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>SDK Method</th>
+<th>CLI Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>create_subaccount(...)</code></td>
+<td><a href="../../../cli/commands/#create-subaccount"><code>create subaccount</code></a></td>
+<td>Create subaccount</td>
+</tr>
+<tr>
+<td><code>show_subaccounts()</code></td>
+<td><a href="../../../cli/commands/#show-subaccounts"><code>show subaccounts</code></a></td>
+<td>List subaccounts</td>
+</tr>
+</tbody>
+</table>
+<h2 id="scheduled-job-methods">Scheduled Job Methods<a class="headerlink" href="#scheduled-job-methods" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>SDK Method</th>
+<th>CLI Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>show_scheduled_jobs()</code></td>
+<td><a href="../../../cli/commands/#show-scheduled-jobs"><code>show scheduled-jobs</code></a></td>
+<td>List scheduled jobs</td>
+</tr>
+<tr>
+<td><code>delete_scheduled_job(id)</code></td>
+<td><a href="../../../cli/commands/#delete-scheduled-job"><code>delete scheduled-job</code></a></td>
+<td>Delete scheduled job</td>
+</tr>
+</tbody>
+</table>
+<h2 id="snapshot-methods">Snapshot Methods<a class="headerlink" href="#snapshot-methods" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>SDK Method</th>
+<th>CLI Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>take_snapshot(...)</code></td>
+<td><a href="../../../cli/commands/#take-snapshot"><code>take snapshot</code></a></td>
+<td>Schedule container snapshot</td>
+</tr>
+</tbody>
+</table>
+<h2 id="connection-methods">Connection Methods<a class="headerlink" href="#connection-methods" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>SDK Method</th>
+<th>CLI Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>show_connections(id)</code></td>
+<td><a href="../../../cli/commands/#show-connections"><code>show connections</code></a></td>
+<td>Show peer connections</td>
+</tr>
+</tbody>
+</table>
+<h2 id="two-factor-authentication-methods">Two-Factor Authentication Methods<a class="headerlink" href="#two-factor-authentication-methods" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>SDK Method</th>
+<th>CLI Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tfa_status()</code></td>
+<td><a href="../../../cli/commands/#tfa-status"><code>tfa status</code></a></td>
+<td>Show 2FA status</td>
+</tr>
+<tr>
+<td><code>tfa_totp_setup()</code></td>
+<td><a href="../../../cli/commands/#tfa-totp-setup"><code>tfa totp-setup</code></a></td>
+<td>Set up TOTP authenticator</td>
+</tr>
+<tr>
+<td><code>tfa_send_sms()</code></td>
+<td><a href="../../../cli/commands/#tfa-send-sms"><code>tfa send-sms</code></a></td>
+<td>Request SMS code</td>
+</tr>
+<tr>
+<td><code>tfa_activate(...)</code></td>
+<td><a href="../../../cli/commands/#tfa-activate"><code>tfa activate</code></a></td>
+<td>Activate 2FA method</td>
+</tr>
+<tr>
+<td><code>tfa_login(...)</code></td>
+<td><a href="../../../cli/commands/#tfa-login"><code>tfa login</code></a></td>
+<td>Complete 2FA login</td>
+</tr>
+<tr>
+<td><code>tfa_delete(...)</code></td>
+<td><a href="../../../cli/commands/#tfa-delete"><code>tfa delete</code></a></td>
+<td>Remove 2FA method</td>
+</tr>
+<tr>
+<td><code>tfa_update(...)</code></td>
+<td><a href="../../../cli/commands/#tfa-update"><code>tfa update</code></a></td>
+<td>Update 2FA settings</td>
+</tr>
+<tr>
+<td><code>tfa_regen_codes(...)</code></td>
+<td><a href="../../../cli/commands/#tfa-regen-codes"><code>tfa regen-codes</code></a></td>
+<td>Regenerate backup codes</td>
+</tr>
+<tr>
+<td><code>tfa_resend_sms(...)</code></td>
+<td><a href="../../../cli/commands/#tfa-resend-sms"><code>tfa resend-sms</code></a></td>
+<td>Resend SMS code</td>
+</tr>
+</tbody>
+</table>
+<h2 id="host-methods">Host Methods<a class="headerlink" href="#host-methods" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>SDK Method</th>
+<th>CLI Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>show_machines()</code></td>
+<td><a href="../../../cli/commands/#show-machines"><code>show machines</code></a></td>
+<td>List hosted machines</td>
+</tr>
+<tr>
+<td><code>show_machine(id)</code></td>
+<td><a href="../../../cli/commands/#show-machine"><code>show machine</code></a></td>
+<td>Show machine details</td>
+</tr>
+<tr>
+<td><code>list_machine(id)</code></td>
+<td><a href="../../../cli/commands/#list-machine"><code>list machine</code></a></td>
+<td>List for rent</td>
+</tr>
+<tr>
+<td><code>unlist_machine(id)</code></td>
+<td><a href="../../../cli/commands/#unlist-machine"><code>unlist machine</code></a></td>
+<td>Remove from market</td>
+</tr>
+<tr>
+<td><code>delete_machine(id)</code></td>
+<td><a href="../../../cli/commands/#delete-machine"><code>delete machine</code></a></td>
+<td>Delete machine</td>
+</tr>
+<tr>
+<td><code>set_min_bid(id, price)</code></td>
+<td><a href="../../../cli/commands/#set-min-bid"><code>set min-bid</code></a></td>
+<td>Set min price</td>
+</tr>
+<tr>
+<td><code>self_test_machine(id)</code></td>
+<td><a href="../../../cli/commands/#self-test-machine"><code>self-test machine</code></a></td>
+<td>Run diagnostics</td>
+</tr>
+<tr>
+<td><code>show_earnings(...)</code></td>
+<td><a href="../../../cli/commands/#show-earnings"><code>show earnings</code></a></td>
+<td>Show earnings</td>
+</tr>
+<tr>
+<td><code>reports(id)</code></td>
+<td><a href="../../../cli/commands/#reports"><code>reports</code></a></td>
+<td>Get machine reports</td>
+</tr>
+<tr>
+<td><code>schedule_maint(id, ...)</code></td>
+<td><a href="../../../cli/commands/#schedule-maint"><code>schedule maint</code></a></td>
+<td>Schedule maintenance</td>
+</tr>
+<tr>
+<td><code>cancel_maint(id)</code></td>
+<td><a href="../../../cli/commands/#cancel-maint"><code>cancel maint</code></a></td>
+<td>Cancel maintenance</td>
+</tr>
+<tr>
+<td><code>show_maints()</code></td>
+<td><a href="../../../cli/commands/#show-maints"><code>show maints</code></a></td>
+<td>Show maintenance</td>
+</tr>
+<tr>
+<td><code>cleanup_machine(id)</code></td>
+<td><a href="../../../cli/commands/#cleanup-machine"><code>cleanup machine</code></a></td>
+<td>Clean expired storage</td>
+</tr>
+<tr>
+<td><code>defrag_machines()</code></td>
+<td><a href="../../../cli/commands/#defrag-machines"><code>defrag machines</code></a></td>
+<td>Defragment storage</td>
+</tr>
+</tbody>
+</table>
+<h2 id="cluster-methods-beta">Cluster Methods (Beta)<a class="headerlink" href="#cluster-methods-beta" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>SDK Method</th>
+<th>CLI Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>create_cluster(...)</code></td>
+<td><a href="../../../cli/commands/#create-cluster"><code>create cluster</code></a></td>
+<td>Create cluster</td>
+</tr>
+<tr>
+<td><code>delete_cluster(id)</code></td>
+<td><a href="../../../cli/commands/#delete-cluster"><code>delete cluster</code></a></td>
+<td>Delete cluster</td>
+</tr>
+<tr>
+<td><code>join_cluster(id, machines)</code></td>
+<td><a href="../../../cli/commands/#join-cluster"><code>join cluster</code></a></td>
+<td>Join machines</td>
+</tr>
+<tr>
+<td><code>show_clusters()</code></td>
+<td><a href="../../../cli/commands/#show-clusters"><code>show clusters</code></a></td>
+<td>List clusters</td>
+</tr>
+<tr>
+<td><code>remove_machine_from_cluster(...)</code></td>
+<td><a href="../../../cli/commands/#remove-machine-from-cluster"><code>remove-machine-from-cluster</code></a></td>
+<td>Remove from cluster</td>
+</tr>
+<tr>
+<td><code>create_overlay(...)</code></td>
+<td><a href="../../../cli/commands/#create-overlay"><code>create overlay</code></a></td>
+<td>Create overlay network</td>
+</tr>
+<tr>
+<td><code>delete_overlay(id)</code></td>
+<td><a href="../../../cli/commands/#delete-overlay"><code>delete overlay</code></a></td>
+<td>Delete overlay</td>
+</tr>
+<tr>
+<td><code>show_overlays()</code></td>
+<td><a href="../../../cli/commands/#show-overlays"><code>show overlays</code></a></td>
+<td>List overlays</td>
+</tr>
+<tr>
+<td><code>join_overlay(...)</code></td>
+<td><a href="../../../cli/commands/#join-overlay"><code>join overlay</code></a></td>
+<td>Join overlay</td>
+</tr>
+<tr>
+<td><code>add_network_disk(...)</code></td>
+<td><a href="../../../cli/commands/#add-network-disk"><code>add network-disk</code></a></td>
+<td>Add network disk</td>
+</tr>
+<tr>
+<td><code>show_network_disks()</code></td>
+<td><a href="../../../cli/commands/#show-network-disks"><code>show network-disks</code></a></td>
+<td>List network disks</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../vastai/">VastAI Class Reference</a> - Constructor and patterns</li>
+<li><a href="../../quickstart/">Quick Start Guide</a> - Working examples</li>
+<li><a href="../../../cli/commands/">CLI Command Reference</a> - Full CLI documentation</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.top", "navigation.instant", "content.code.copy", "content.code.annotate"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
