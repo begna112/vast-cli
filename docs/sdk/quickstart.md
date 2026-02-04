@@ -237,33 +237,40 @@ client.search_offers(limit=1)
 ## Working with Teams
 
 ```python
-# List teams
-teams = client.show_teams()
-for team in teams:
-    print(f"Team: {team['name']} (ID: {team['id']})")
+# Create a team
+result = client.create_team(team_name="my-team")
 
-# Switch team context
-client.select_team(id=team_id)
+# List team members
+members = client.show_members()
+for member in members:
+    print(f"Member: {member['email']} (ID: {member['id']})")
+
+# Invite a member
+client.invite_member(email="colleague@example.com")
+
+# Remove a member
+client.remove_member(id=member_id)
 ```
 
 ## Volumes (Persistent Storage)
 
 ```python
-# Create a volume
-result = client.create_volume(
-    name="my-data",
-    size=100  # GB
-)
+# Search volume offers
+volume_offers = client.search_volumes()
 
-# List volumes
+# List your volumes
 volumes = client.show_volumes()
+for vol in volumes:
+    print(f"Volume: {vol['name']} ({vol['size']}GB)")
 
-# Attach volume to instance
-client.attach_volume(
-    volume_id=volume_id,
-    instance_id=instance_id
-)
+# Clone a volume
+result = client.clone_volume(src_id=source_volume_id, dst_id=dest_offer_id)
+
+# Delete a volume
+client.delete_volume(id=volume_id)
 ```
+
+Note: Volumes are associated with instances at creation time, not attached/detached dynamically.
 
 ## Templates
 
