@@ -59,15 +59,7 @@ try:
 except ImportError:
     from urllib.parse import quote_plus  # Python 3+
 
-try:
-    JSONDecodeError = json.JSONDecodeError
-except AttributeError:
-    JSONDecodeError = ValueError
-
-try:
-    input = raw_input
-except NameError:
-    pass
+JSONDecodeError = json.JSONDecodeError
 
 
 #server_url_default = "https://vast.ai"
