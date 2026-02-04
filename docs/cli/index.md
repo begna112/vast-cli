@@ -39,13 +39,22 @@ Examples:
 
 ## Authentication
 
-Get your API key from [https://vast.ai/console/cli/](https://vast.ai/console/cli/).
+Get your API key from [https://cloud.vast.ai/manage-keys/](https://cloud.vast.ai/manage-keys/).
 
 ```bash
 vastai set api-key YOUR_API_KEY
 ```
 
-The key is stored in `~/.config/vastai/vast_api_key`.
+### API Key Storage
+
+Keys are searched in this order:
+
+1. `--api-key` command-line argument
+2. `VAST_API_KEY` environment variable
+3. `~/.config/vastai/vast_api_key` (XDG standard, preferred)
+4. `~/.vast_api_key` (legacy location, still supported)
+
+The CLI stores keys in the XDG-compliant location by default.
 
 ## Global Options
 
@@ -121,8 +130,91 @@ For GPU providers hosting on Vast.ai:
 ### Account Commands
 
 - `show user` - Show account info
-- `show invoices` - List invoices
+- `show invoices-v1` - List invoices and charges (recommended)
 - `transfer credit` - Transfer credits
+
+!!! note "Invoices Commands"
+    Use `show invoices-v1` for the newer, feature-rich billing interface with pagination,
+    filtering by type, tree/table views, and rich formatting. The older `show invoices`
+    command is deprecated but still available for backwards compatibility.
+
+## Query Syntax
+
+Many commands accept a `--query` parameter for filtering results. The query language supports flexible operators and field comparisons.
+
+### Operators
+
+| Operator | Aliases | Description | Example |
+|----------|---------|-------------|---------|
+| `=` | `==`, `eq` | Equals | `gpu_name = RTX_4090` |
+| `!=` | `neq`, `not eq`, `noteq` | Not equals | `gpu_name != GTX_1080` |
+| `>` | `gt` | Greater than | `gpu_ram > 16` |
+| `>=` | `gte` | Greater or equal | `num_gpus >= 2` |
+| `<` | `lt` | Less than | `dph_total < 1.0` |
+| `<=` | `lte` | Less or equal | `reliability <= 0.99` |
+| `in` | | Value in list | `geolocation in [US,CA,UK]` |
+| `notin` | `not in`, `nin` | Value not in list | `geolocation notin [CN,RU]` |
+
+### Wildcards
+
+Special values for flexible matching:
+
+| Wildcard | Description | Example |
+|----------|-------------|---------|
+| `any` | Match any value | `cuda_vers = any` |
+| `?` | Nullable (any or null) | `inet_up = ?` |
+| `*` | Wildcard in strings | `gpu_name = RTX_*` |
+
+### Field Names
+
+Underscores in field names are converted to spaces when matching against offer data:
+
+```bash
+vastai search offers --query "gpu_name = RTX 4090"
+# Matches the "gpu name" field with value "RTX 4090"
+```
+
+### Quoting Rules
+
+- Simple values don't need quotes: `gpu_ram >= 24`
+- Values with spaces need quotes: `gpu_name = "RTX 4090"`
+- List values use brackets: `geolocation in [US,CA,UK]`
+- Multiple conditions are space-separated (implicit AND)
+
+### Common Query Fields
+
+| Field | Description | Type |
+|-------|-------------|------|
+| `num_gpus` | Number of GPUs | int |
+| `gpu_name` | GPU model name | string |
+| `gpu_ram` | GPU memory (GB) | float |
+| `gpu_frac` | GPU fraction (for partial GPU) | float |
+| `cpu_cores` | Number of CPU cores | int |
+| `cpu_ram` | System memory (GB) | float |
+| `disk_space` | Available disk (GB) | float |
+| `dph_total` | Total price per hour ($) | float |
+| `reliability` | Host reliability score (0-1) | float |
+| `geolocation` | Country code | string |
+| `inet_up` | Upload bandwidth (Mbps) | float |
+| `inet_down` | Download bandwidth (Mbps) | float |
+| `cuda_vers` | CUDA version | float |
+| `dlperf` | Deep learning performance score | float |
+
+### Examples
+
+```bash
+# High-end GPUs with good reliability
+vastai search offers --query "num_gpus >= 4 gpu_ram >= 24 reliability > 0.99"
+
+# Budget option under $1/hour
+vastai search offers --query "dph_total < 1.0" --order "dph_total"
+
+# Specific GPU model in North America
+vastai search offers --query "gpu_name = RTX_4090 geolocation in [US,CA]"
+
+# Exclude certain regions
+vastai search offers --query "geolocation notin [CN,RU,IR]"
+```
 
 ## Next Steps
 

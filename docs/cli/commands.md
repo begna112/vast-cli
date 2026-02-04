@@ -24,7 +24,7 @@ positional arguments:
   cloud copy                   Copy files/folders to and from cloud providers
   take snapshot                Schedule a snapshot of a running container and push it to your repo in a container registry
   create api-key               Create a new api-key with restricted permissions. Can be sent to other users and teammates
-  create cluster               Create Vast cluster
+  create cluster               [Beta] Create Vast cluster
   create env-var               Create a new user environment variable
   create ssh-key               Create a new ssh-key
   create workergroup           Create a new autoscale group
@@ -36,11 +36,11 @@ positional arguments:
   create template              Create a new template
   create volume                Create a new volume
   create network-volume        Create a new network volume
-  create overlay               Creates overlay network on top of a physical cluster
+  create overlay               [Beta] Creates overlay network on top of a physical cluster
   delete api-key               Remove an api-key
   delete ssh-key               Remove an ssh-key
   delete scheduled-job         Delete a scheduled job
-  delete cluster               Delete Cluster
+  delete cluster               [Beta] Delete Cluster
   delete workergroup           Delete a workergroup group
   delete endpoint              Delete an endpoint group
   delete env-var               Delete a user environment variable
@@ -55,7 +55,7 @@ positional arguments:
   get endpt-logs               Fetch logs for a specific serverless endpoint group
   get wrkgrp-logs              Fetch logs for a specific serverless worker group group
   invite member                Invite a team member
-  join cluster                 Join Machine to Cluster
+  join cluster                 [Beta] Join Machine to Cluster
   join overlay                 Adds instance to an overlay network
   label instance               Assign a string label to an instance
   launch instance              Launch the top instance from the search offers based on the given parameters
@@ -97,7 +97,7 @@ positional arguments:
   show instance                Display user's current instances
   show instances               Display user's current instances
   show ipaddrs                 Display user's history of ip addresses
-  show clusters                Show clusters associated with your account.
+  show clusters                [Beta] Show clusters associated with your account.
   show overlays                Show overlays associated with your account.
   show subaccounts             Get current subaccounts
   show members                 Show your team members
@@ -105,7 +105,7 @@ positional arguments:
   show team-roles              Show roles for a team
   show user                    Get current user data
   show volumes                 Show stats on owned volumes.
-  remove-machine-from-cluster  Removes machine from cluster
+  remove-machine-from-cluster  [Beta] Removes machine from cluster
   transfer credit              Transfer credits to another account
   update workergroup           Update an existing autoscale group
   update endpoint              Update an existing endpoint group
@@ -472,7 +472,7 @@ You can find more information about permissions here: https://vast.ai/docs/cli/r
 
 ### create cluster
 
-Create Vast cluster
+[Beta] Create Vast cluster
 
 ```
 usage: vastai create cluster SUBNET MANAGER_ID
@@ -680,7 +680,7 @@ provided the size of all volumes does not exceed the size of the offer.
 
 ### create overlay
 
-Creates overlay network on top of a physical cluster
+[Beta] Creates overlay network on top of a physical cluster
 
 ```
 usage: vastai create overlay CLUSTER_ID OVERLAY_NAME
@@ -1012,7 +1012,7 @@ Global options (available for all commands):
 
 ### delete cluster
 
-Delete Cluster
+[Beta] Delete Cluster
 
 ```
 usage: vastai delete cluster CLUSTER_ID
@@ -1551,7 +1551,7 @@ Global options (available for all commands):
 
 ### join cluster
 
-Join Machine to Cluster
+[Beta] Join Machine to Cluster
 
 ```
 usage: vastai join cluster CLUSTER_ID MACHINE_IDS
@@ -1892,7 +1892,7 @@ Global options (available for all commands):
 
 ### remove-machine-from-cluster
 
-Removes machine from cluster
+[Beta] Removes machine from cluster
 
 ```
 usage: vastai remove-machine-from-cluster CLUSTER_ID MACHINE_ID NEW_MANAGER_ID
@@ -2500,7 +2500,7 @@ Global options (available for all commands):
  --no-color         Disable colored output for commands that support it (Note: the 'rich' python module is required for colored output)
 
 Stores your Vast.ai API key locally for authentication with all CLI commands.
-Get your API key from the Vast.ai console: https://console.vast.ai/account/
+Get your API key from the Vast.ai console: https://cloud.vast.ai/manage-keys/
 
 Examples:
     vastai set api-key abc123def456...         # Set your API key
@@ -2509,7 +2509,7 @@ Security notes:
   - API key is stored in ~/.config/vastai/vast_api_key
   - Permissions are set to user-read-only (600)
   - Do NOT share your API key or commit it to version control
-  - Regenerate your key at https://console.vast.ai/account/ if compromised
+  - Regenerate your key at https://cloud.vast.ai/manage-keys/ if compromised
   - You can also use the VAST_API_KEY environment variable instead
 
 The legacy location ~/.vast_api_key is automatically removed when you set a new key.
@@ -2642,7 +2642,7 @@ Global options (available for all commands):
 
 ### show clusters
 
-Show clusters associated with your account.
+[Beta] Show clusters associated with your account.
 
 ```
 usage: vastai show clusters
