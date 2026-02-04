@@ -8426,10 +8426,10 @@ def show__machines(args):
 
 
 @parser.command(
-    argument("-ids", help="comma seperated string of machine_ids for which to get maintenance information", type=str),
+    argument("-i", "--ids", help="comma separated string of machine_ids for which to get maintenance information", type=str),
     argument("-q", "--quiet", action="store_true", help="only display numeric ids of the machines in maintenance"),
     description="[Host] List scheduled maintenance windows",
-    usage="\nvastai show maints -ids 'machine_id_1' [OPTIONS]\nvastai show maints -ids 'machine_id_1, machine_id_2' [OPTIONS]",
+    usage="vastai show maints --ids MACHINE_IDS [OPTIONS]",
     help="[Host] List scheduled maintenance windows",
 )
 def show__maints(args):

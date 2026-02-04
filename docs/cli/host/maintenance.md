@@ -54,17 +54,17 @@ For deleting a machine's scheduled maintenance window(s), use this cancel maint 
 
 ## show maints
 
-vastai show maints -ids 'machine_id_1' [OPTIONS]
+[Host] List scheduled maintenance windows
 
 ```bash
-vastai show maints -ids 'machine_id_1' [OPTIONS]
+vastai show maints --ids MACHINE_IDS [OPTIONS]
 ```
 
 **Options:**
 
 | Option | Description |
 |--------|-------------|
-| `-ids IDS` | comma seperated string of machine_ids for which to get maintenance information |
+| `-i, --ids IDS` | comma separated string of machine_ids for which to get maintenance information |
 | `-q, --quiet` | only display numeric ids of the machines in maintenance |
 
 ---
