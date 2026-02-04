@@ -4941,15 +4941,13 @@ Global options (available for all commands):
 List scheduled maintenance windows
 
 ```
-usage: 
-vastai show maints -ids 'machine_id_1' [OPTIONS]
-vastai show maints -ids 'machine_id_1, machine_id_2' [OPTIONS]
+usage: vastai show maints --ids MACHINE_IDS [OPTIONS]
 
 [Host] List scheduled maintenance windows
 
 options:
  -h, --help         show this help message and exit
- -ids IDS           comma seperated string of machine_ids for which to get maintenance information
+ -i, --ids IDS      comma separated string of machine_ids for which to get maintenance information
  -q, --quiet        only display numeric ids of the machines in maintenance
 
 Global options (available for all commands):

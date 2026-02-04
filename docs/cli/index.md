@@ -166,19 +166,28 @@ Special values for flexible matching:
 | `?` | Nullable (any or null) | `inet_up = ?` |
 | `*` | Wildcard in strings | `gpu_name = RTX_*` |
 
-### Field Names
+### String Values with Spaces
 
-Underscores in field names are converted to spaces when matching against offer data:
+When searching for values that contain spaces (like GPU names), you have two options:
 
-```bash
-vastai search offers --query "gpu_name = RTX 4090"
-# Matches the "gpu name" field with value "RTX 4090"
-```
+1. **Underscores (recommended)** - most portable across shells:
+   ```bash
+   vastai search offers "gpu_name=RTX_4090"
+   ```
+   Underscores in values are converted to spaces when sent to the API.
+
+2. **Escaped double quotes** - wrap query in single quotes, escape inner double quotes:
+   ```bash
+   vastai search offers 'gpu_name=\"RTX 4090\"'
+   ```
+
+!!! warning
+    Single quotes around values do NOT work: `gpu_name='RTX 4090'` will fail.
 
 ### Quoting Rules
 
 - Simple values don't need quotes: `gpu_ram >= 24`
-- Values with spaces need quotes: `gpu_name = "RTX 4090"`
+- Values with spaces: use underscores (`RTX_4090`) or escaped quotes (`\"RTX 4090\"`)
 - List values use brackets: `geolocation in [US,CA,UK]`
 - Multiple conditions are space-separated (implicit AND)
 
@@ -205,16 +214,16 @@ vastai search offers --query "gpu_name = RTX 4090"
 
 ```bash
 # High-end GPUs with good reliability
-vastai search offers --query "num_gpus >= 4 gpu_ram >= 24 reliability > 0.99"
+vastai search offers "num_gpus>=4 gpu_ram>=24 reliability>0.99"
 
 # Budget option under $1/hour
-vastai search offers --query "dph_total < 1.0" --order "dph_total"
+vastai search offers "dph_total<1.0" --order "dph_total"
 
 # Specific GPU model in North America
-vastai search offers --query "gpu_name = RTX_4090 geolocation in [US,CA]"
+vastai search offers "gpu_name=RTX_4090 geolocation in [US,CA]"
 
 # Exclude certain regions
-vastai search offers --query "geolocation notin [CN,RU,IR]"
+vastai search offers "geolocation notin [CN,RU,IR]"
 ```
 
 ## Next Steps
