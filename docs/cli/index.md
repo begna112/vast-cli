@@ -69,6 +69,39 @@ All commands support these options:
 | `--curl` | Show equivalent curl command |
 | `--retry N` | Set retry limit (default: 3) |
 
+## Reading Command Help
+
+Understanding the help output format:
+
+### Required vs Optional Arguments
+
+- **Positional arguments** (shown without `--`) are **required**
+- **Options** (shown with `--`) are **optional** unless noted
+
+### Argument Types
+
+- **Flags** like `--ssh` or `--raw` are boolean toggles (no value needed)
+- **Value options** show a metavar: `--disk DISK` means `--disk 50`
+- **UPPERCASE** metavars indicate the expected value type:
+    - `ID` - typically an integer identifier
+    - `PRICE` - a decimal number
+    - `IMAGE` - a string (docker image name)
+    - `PATH` - a file/directory path
+
+### Example
+
+```
+usage: vastai create instance ID [OPTIONS]
+
+positional arguments:
+  id                    id of instance type to launch  ← REQUIRED (integer)
+
+options:
+  --disk DISK           size of local disk in GB       ← OPTIONAL (takes number)
+  --image IMAGE         docker image to launch         ← OPTIONAL (takes string)
+  --ssh                 Launch as SSH instance         ← OPTIONAL (flag, no value)
+```
+
 ## Output Formats
 
 ### Human-Readable (default)
@@ -105,38 +138,6 @@ Or for a single session:
 ```bash
 eval "$(register-python-argcomplete vastai)"
 ```
-
-## Command Categories
-
-### Client Commands
-
-For renting and using GPU instances:
-
-- `search offers` - Find available machines
-- `create instance` - Launch an instance
-- `show instances` - List your instances
-- `destroy instance` - Terminate an instance
-- `ssh-url` - Get SSH connection info
-- `copy` - Copy files to/from instances
-
-### Host Commands
-
-For GPU providers hosting on Vast.ai:
-
-- `show machines` - List your machines
-- `set min-bid` - Set minimum bid price
-- `self-test machine` - Test a machine
-
-### Account Commands
-
-- `show user` - Show account info
-- `show invoices-v1` - List invoices and charges (recommended)
-- `transfer credit` - Transfer credits
-
-!!! note "Invoices Commands"
-    Use `show invoices-v1` for the newer, feature-rich billing interface with pagination,
-    filtering by type, tree/table views, and rich formatting. The older `show invoices`
-    command is deprecated but still available for backwards compatibility.
 
 ## Query Syntax
 

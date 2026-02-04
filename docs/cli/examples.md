@@ -180,7 +180,14 @@ vastai show invoices
 ### Transfer Credits
 
 ```bash
-vastai transfer credit --amount 10.00 --recipient user@example.com
+# Recommended: named flags (clearer, order doesn't matter)
+vastai transfer credit --recipient user@example.com --amount 10.00
+
+# Short flags
+vastai transfer credit -r user@example.com -a 10.00
+
+# Legacy positional syntax (still supported)
+vastai transfer credit user@example.com 10.00
 ```
 
 ## Host Commands

@@ -1349,12 +1349,12 @@ Before destroying:
 Destroy a list of instances (irreversible, deletes data)
 
 ```
-usage: vastai destroy instances [--raw] <id>
+usage: vastai destroy instances IDS [OPTIONS]
 
 Destroy a list of instances (irreversible, deletes data)
 
 positional arguments:
- ids                ids of instance to destroy
+ ids                ids of instances to destroy
 
 options:
  -h, --help         show this help message and exit
@@ -2448,12 +2448,12 @@ Available fields:
 Set the API key for CLI and SDK authentication
 
 ```
-usage: vastai set api-key APIKEY
+usage: vastai set api-key API_KEY
 
 Set the API key for CLI and SDK authentication
 
 positional arguments:
- new_api_key        Api key to set as currently logged in user
+ api_key            API key to set as currently logged in user
 
 options:
  -h, --help         show this help message and exit
@@ -2542,12 +2542,12 @@ tfa_enabled                     bool
 Show details for a specific API key
 
 ```
-usage: vastai show api-key
+usage: vastai show api-key ID
 
 Show details for a specific API key
 
 positional arguments:
- id                 id of apikey to get
+ id                 id of API key to show
 
 options:
  -h, --help         show this help message and exit
@@ -2761,12 +2761,12 @@ Global options (available for all commands):
 Show details for a specific instance
 
 ```
-usage: vastai show instance [--api-key API_KEY] [--raw]
+usage: vastai show instance ID [OPTIONS]
 
 Show details for a specific instance
 
 positional arguments:
- id                 id of instance to get
+ id                 id of instance to show
 
 options:
  -h, --help         show this help message and exit
@@ -3309,12 +3309,12 @@ Examples:
 Start multiple stopped instances
 
 ```
-usage: vastai start instances [OPTIONS] ID0 ID1 ID2...
+usage: vastai start instances IDS [OPTIONS]
 
 Start multiple stopped instances
 
 positional arguments:
- ids                ids of instance to start
+ ids                ids of instances to start
 
 options:
  -h, --help         show this help message and exit
@@ -3371,12 +3371,12 @@ There are ways to move data off of a stopped instance, which are described here:
 Stop multiple running instances
 
 ```
-usage: vastai stop instances [OPTIONS] ID0 ID1 ID2...
+usage: vastai stop instances IDS [OPTIONS]
 
 Stop multiple running instances
 
 positional arguments:
- ids                ids of instance to stop
+ ids                ids of instances to stop
 
 options:
  -h, --help         show this help message and exit
@@ -3853,30 +3853,37 @@ Examples:
 Transfer credits to another account
 
 ```
-usage: vastai transfer credit RECIPIENT AMOUNT
+usage: vastai transfer credit [--recipient EMAIL] [--amount DOLLARS] [RECIPIENT AMOUNT]
 
 Transfer credits to another account
 
-positional arguments:
- recipient          email (or id) of recipient account
- amount             $dollars of credit to transfer 
-
 options:
- -h, --help         show this help message and exit
- --skip             skip confirmation
+ -h, --help                 show this help message and exit
+ --recipient, -r RECIPIENT  email (or id) of recipient account
+ --amount, -a AMOUNT        dollars of credit to transfer
+ --skip                     skip confirmation
 
 Global options (available for all commands):
- --url URL          Server REST API URL
- --retry RETRY      Retry limit
- --explain          Output verbose explanation of mapping of CLI calls to HTTPS API endpoints
- --raw              Output machine-readable json
- --full             Print full results instead of paging with `less` for commands that support it
- --curl             Show a curl equivalency to the call
- --api-key API_KEY  API Key to use. defaults to using the one stored in C:\Users\begna112\.config\vastai\vast_api_key
- --version          Show CLI version
- --no-color         Disable colored output for commands that support it (Note: the 'rich' python module is required for colored output)
+ --url URL                  Server REST API URL
+ --retry RETRY              Retry limit
+ --explain                  Output verbose explanation of mapping of CLI calls to HTTPS API endpoints
+ --raw                      Output machine-readable json
+ --full                     Print full results instead of paging with `less` for commands that support it
+ --curl                     Show a curl equivalency to the call
+ --api-key API_KEY          API Key to use. defaults to using the one stored in C:\Users\begna112\.config\vastai\vast_api_key
+ --version                  Show CLI version
+ --no-color                 Disable colored output for commands that support it (Note: the 'rich' python module is required for colored output)
 
-Transfer (amount) credits to account with email (recipient).
+Transfer credits to another account. This action is irreversible.
+
+Supports two syntax styles (named flags recommended):
+  vastai transfer credit --recipient user@example.com --amount 10.00
+  vastai transfer credit user@example.com 10.00  (legacy positional)
+
+Examples:
+  vastai transfer credit --recipient user@example.com --amount 25.50
+  vastai transfer credit -r user@example.com -a 25.50
+  vastai transfer credit user@example.com 25.50
 ```
 
 ---
@@ -4403,12 +4410,12 @@ We strongly recommend you test the machine first and only list when ready.
 List multiple machines for rent on the marketplace
 
 ```
-usage: vastai list machines IDs [options]
+usage: vastai list machines IDS [OPTIONS]
 
 [Host] List multiple machines for rent on the marketplace
 
 positional arguments:
- ids                                ids of instance to list
+ ids                                ids of machines to list
 
 options:
  -h, --help                         show this help message and exit
@@ -4513,12 +4520,12 @@ Allocates a section of disk on a machine to be used for volumes.
 List disk space on multiple machines as rentable volumes
 
 ```
-usage: vastai list volume IDs [options]
+usage: vastai list volumes IDS [OPTIONS]
 
 [Host] List disk space on multiple machines as rentable volumes
 
 positional arguments:
- ids                          id of machines list
+ ids                          ids of machines to list volumes on
 
 options:
  -h, --help                   show this help message and exit
@@ -4882,7 +4889,7 @@ usage: vastai show machine ID [OPTIONS]
 [Host] Show details for a specific hosted machine
 
 positional arguments:
- Machine            id of machine to display
+ id                 id of machine to display
 
 options:
  -h, --help         show this help message and exit
